@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\DcIndikasiGangguanController;
 use App\Http\Controllers\Api\DcIndikasiGangguanTipeController;
 use App\Http\Controllers\Api\DcJenisKeadaanPmtController;
 use App\Http\Controllers\Api\DcSpeedjardistCuacaController;
+use App\Http\Controllers\Api\DcTipeGangguanController;
 use App\Http\Controllers\Api\SmMeterGiController;
 use Froiden\RestAPI\Facades\ApiRoute;
 use Illuminate\Http\Request;
