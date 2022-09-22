@@ -68,8 +68,10 @@ class CreateUserDetailsTable extends Migration
      */
     public function down()
     { 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Schema::dropIfExists('designations');
         Schema::dropIfExists('teams');
         Schema::dropIfExists('employee_details');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
