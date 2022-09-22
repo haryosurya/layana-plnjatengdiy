@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\API\Dc_apjAPIController;
+use App\Http\Controllers\Api\Dc_apjAPIController;
 use App\Http\Controllers\Api\DcCubicleController;
 use App\Http\Controllers\Api\DcGarduIndukController;
 use App\Http\Controllers\Api\DcIncomingFeederController;
