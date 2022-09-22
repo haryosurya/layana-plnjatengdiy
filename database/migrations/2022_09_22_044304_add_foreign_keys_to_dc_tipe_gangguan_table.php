@@ -14,7 +14,7 @@ class AddForeignKeysToDcTipeGangguanTable extends Migration
     public function up()
     {
         Schema::table('dc_tipe_gangguan', function (Blueprint $table) {
-            $table->foreign(['INDUK_KODE'], 'FK_INDUK_KODE_TIPE_GGN')->references(['ID_INDUK_KODE_GGN'])->on('dc_tipe_gangguan_kode_induk');
+            // $table->foreign(['INDUK_KODE'], 'FK_INDUK_KODE_TIPE_GGN')->references(['ID_INDUK_KODE_GGN'])->on('dc_tipe_gangguan');
         });
     }
 
@@ -26,7 +26,7 @@ class AddForeignKeysToDcTipeGangguanTable extends Migration
     public function down()
     {
         Schema::table('dc_tipe_gangguan', function (Blueprint $table) {
-            $table->dropForeign('FK_INDUK_KODE_TIPE_GGN');
+            // $table->dropForeign('FK_INDUK_KODE_TIPE_GGN');
         });
     }
 }

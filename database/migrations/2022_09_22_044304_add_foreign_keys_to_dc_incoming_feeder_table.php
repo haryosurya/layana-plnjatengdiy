@@ -28,9 +28,9 @@ class AddForeignKeysToDcIncomingFeederTable extends Migration
     public function down()
     {
         Schema::table('dc_incoming_feeder', function (Blueprint $table) {
-            $table->dropForeign('FK_APJ_ID_INC_FDR');
-            $table->dropForeign('FK_TRF_INC_FDR');
-            $table->dropForeign('FK_GI_ID_INCOMING_FEE');
+            // $table->dropForeign('FK_APJ_ID_INC_FDR');
+            // $table->dropForeign('FK_TRF_INC_FDR');
+            // $table->dropForeign('FK_GI_ID_INCOMING_FEE');
         });
     }
 }
