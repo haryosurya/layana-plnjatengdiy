@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDcApjsTable extends Migration
+class CreateDcIndikasiGangguanTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,10 +13,9 @@ class CreateDcApjsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dc_apjs', function (Blueprint $table) {
-            $table->id('id');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create('dc_indikasi_gangguan', function (Blueprint $table) {
+            $table->integer('ID_INDIKASI_GANGGUAN', true);
+            $table->string('NAMA_INDIKASI_GANGGUAN', 40)->nullable();
         });
     }
 
@@ -28,6 +26,6 @@ class CreateDcApjsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dc_apjs');
+        Schema::dropIfExists('dc_indikasi_gangguan');
     }
 }

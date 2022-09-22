@@ -11,8 +11,7 @@ use Illuminate\Http\Request;
 class SmMeterGiController extends Controller
 {
     public function index(Request $request)
-    {
-        // $get_data=isset($_POST['data']); 
+    { 
         if ($request->get('IA_TIME_FROM') && !empty($request->get('IA_TIME_TO')))
             {
                 $from = Carbon::parse($request->get('IA_TIME_FROM'))->toDateTimeString();    
@@ -47,12 +46,12 @@ class SmMeterGiController extends Controller
             } 
         else
             {
-                $result = Sm_meter_gi::orderBy('OUTGOING_METER_ID','ASC')->paginate(10);
+                $result = Sm_meter_gi::orderBy('OUTGOING_METER_ID','DESC')->paginate(10);
             } 
-        $total_records=Sm_meter_gi::count(); 
+        // $total_records=Sm_meter_gi::count(); 
         return ApiResponse::make(array(            
             'data' => $result,
-            'total_records' => $total_records,
+            // 'total_records' => $total_records,
             'status_code' => 200
         ));
     }
