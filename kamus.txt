@@ -1,0 +1,10 @@
+    API Counting Dari gangguan berdasarkan status (Good, Moderate, Bad)
+    API Data PMT
+    API Data Gardu Induk
+    API Data DCC
+    API Data Status Penyulang
+    API Rekap Gangguan PMT
+    API Beban Realtime
+    API Data Inspeksi(Form post dan get)
+    API Data User
+    API Beranda
