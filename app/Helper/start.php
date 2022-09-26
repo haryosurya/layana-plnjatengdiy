@@ -307,65 +307,6 @@ if (!function_exists('download_local_s3')) {
     }
 
 }
-
-
-if (!function_exists('gdpr_setting')) {
-
-    // @codingStandardsIgnoreLine
-    function gdpr_setting()
-    {
-        if (!session()->has('gdpr_setting')) {
-            session(['gdpr_setting' => \App\Models\GdprSetting::first()]);
-        }
-
-        return session('gdpr_setting');
-    }
-
-}
-     
-
-if (!function_exists('currency_formatter')) {
-
-    // @codingStandardsIgnoreLine
-    function currency_formatter($amount, $currencySymbol = null)
-    {
-        $formats = currency_format_setting();
-        $settings = global_setting();
-
-        if ($currencySymbol === '') {
-            $currency_symbol = '';
-
-        } else {
-            $currency_symbol = (!is_null($currencySymbol) && $currencySymbol != '') ? $currencySymbol : $settings->currency->currency_symbol;
-        }
-
-        $currency_position = $formats->currency_position;
-        $no_of_decimal = !is_null($formats->no_of_decimal) ? $formats->no_of_decimal : '0';
-        $thousand_separator = !is_null($formats->thousand_separator) ? $formats->thousand_separator : '';
-        $decimal_separator = !is_null($formats->decimal_separator) ? $formats->decimal_separator : '0';
-
-        $amount = number_format($amount, $no_of_decimal, $decimal_separator, $thousand_separator);
-
-        switch ($currency_position) {
-        case 'right':
-            $amount = $amount . $currency_symbol;
-            break;
-        case 'left_with_space':
-            $amount = $currency_symbol . ' ' . $amount;
-            break;
-        case 'right_with_space':
-            $amount = $amount . ' ' . $currency_symbol;
-            break;
-        default:
-            $amount = $currency_symbol . $amount;
-            break;
-        }
-
-        return $amount;
-    }
-
-}
-  
  
 
 if (!function_exists('abort_403')) {

@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="modelHeading">@lang('modules.client.clientCategory')</h5>
+    <h5 class="modal-title" id="modelHeading">@lang('modules.permission.addRoleMember')</h5>
     <button type="button"  class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">×</span></button>
 </div>
@@ -20,7 +20,7 @@
                 <td><span class="text-lightest"><span class="badge badge-primary">{{ $role->unsynced_users_count }}</span> @lang('app.unsyncedUsers')</span></td>
                 <td class="text-right">
                     @if (!in_array($role->name, ['admin', 'employee', 'client']))
-                        <x-forms.button-secondary data-cat-id="{{ $role->id }}" icon="trash" class="delete-category">
+                        <x-forms.button-secondary data-cat-id="{{ $role->id }}" icon="trash" class="delete-role">
                             @lang('app.delete')
                         </x-forms.button-secondary>
                     @else
@@ -68,7 +68,7 @@
 <script>
     init(MODAL_LG);
 
-    $('.delete-category').click(function() {
+    $('.delete-role').click(function() {
 
         var id = $(this).data('cat-id');
         var url = "{{ route('role-permissions.delete_role') }}";
@@ -153,7 +153,7 @@
             let id = $(this).data('row-id');
             let value = $(this).html();
 
-            var url = "{{ route('clientCategory.update', ':id') }}";
+            var url = "{{ route('role-permissions.update', ':id') }}";
             url = url.replace(':id', id);
 
             var token = "{{ csrf_token() }}";

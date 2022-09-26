@@ -29,10 +29,15 @@ return [
     */
 
     'disks' => [
-
+        'customFtp' => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+        ],
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => public_path('user-uploads'),
         ],
 
         'public' => [
@@ -51,6 +56,15 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+        ],
+        'storage' => [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+        ],
+
+        'localBackup' => [
+            'driver' => 'local',
+            'root' => storage_path(''),
         ],
 
     ],

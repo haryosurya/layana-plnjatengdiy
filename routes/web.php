@@ -15,6 +15,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SocialAuthSettingController;
+use App\Http\Controllers\StorageSettingController;
 use App\Http\Controllers\ThemeSettingController;
 use App\Http\Controllers\TwoFASettingController;
 use Illuminate\Support\Facades\Route;
@@ -59,7 +60,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     /* setting */
     Route::group(['prefix' => 'settings'], function () {
         Route::post('image/upload', [ImageController::class, 'store'])->name('image.store');
-
+        /* app setting */
         Route::post('app-settings/deleteSessions', [AppSettingController::class, 'deleteSessions'])->name('app-settings.delete_sessions');
         Route::resource('app-settings', AppSettingController::class);
         Route::resource('profile-settings', ProfileSettingController::class);
@@ -72,14 +73,27 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::get('2fa-email-confirm', [TwoFASettingController::class, 'showEmailConfirm'])->name('two-fa-settings.validate_email_confirm');
         Route::post('2fa-email-confirm', [TwoFASettingController::class, 'emailConfirm'])->name('two-fa-settings.email_confirm');
         Route::resource('two-fa-settings', TwoFASettingController::class);
-
+        /* profile setting */
         Route::post('profile/dark-theme', [ProfileController::class, 'darkTheme'])->name('profile.dark_theme');
         Route::post('profile/updateOneSignalId', [ProfileController::class, 'updateOneSignalId'])->name('profile.update_onesignal_id');
         Route::resource('profile', ProfileController::class);
-
+        /* storage setting*/
+        Route::get('storage-settings/aws-test-modal', [StorageSettingController::class, 'awsTestModal'])->name('storage-settings.aws_test_modal');
+        Route::post('storage-settings/aws-test', [StorageSettingController::class, 'awsTest'])->name('storage-settings.aws_test');
+        Route::resource('storage-settings', StorageSettingController::class);
+        // Language settings
+        Route::get('language-settings/auto-translate', [LanguageSettingController::class, 'autoTranslate'])->name('language_settings.auto_translate');
+        Route::post('language-settings/auto-translate', [LanguageSettingController::class, 'autoTranslateUpdate'])->name('language_settings.auto_translate_update');
+        Route::post('language-settings/update-data/{id?}', [LanguageSettingController::class, 'updateData'])->name('language_settings.update_data');
+        Route::resource('language-settings', LanguageSettingController::class);
+        
+        // Social Auth Settings
+        Route::resource('social-auth-settings', SocialAuthSettingController::class, ['only' => ['index', 'update']]);
+        
+        /* notification */
         // Route::get('smtp-settings/show-send-test-mail-modal', [SmtpSettingController::class, 'showTestEmailModal'])->name('smtp_settings.show_send_test_mail_modal');
         // Route::get('smtp-settings/send-test-mail', [SmtpSettingController::class, 'sendTestEmail'])->name('smtp_settings.send_test_mail');
- 
+    
         // Route::get('push-notification-settings/send-test-notification', [PushNotificationController::class, 'sendTestNotification'])->name('push_notification_settings.send_test_notification');
 
         // Route::resource('smtp-settings', SmtpSettingController::class);
@@ -87,20 +101,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         // Route::resource('slack-settings', SlackSettingController::class);
         // Route::resource('push-notification-settings', PushNotificationController::class);
         // Route::resource('pusher-settings', PusherSettingsController::class);
-            
-        // Language settings
-        Route::get('language-settings/auto-translate', [LanguageSettingController::class, 'autoTranslate'])->name('language_settings.auto_translate');
-        Route::post('language-settings/auto-translate', [LanguageSettingController::class, 'autoTranslateUpdate'])->name('language_settings.auto_translate_update');
-        Route::post('language-settings/update-data/{id?}', [LanguageSettingController::class, 'updateData'])->name('language_settings.update_data');
-        Route::resource('language-settings', LanguageSettingController::class);
- 
-        // Social Auth Settings
-        Route::resource('social-auth-settings', SocialAuthSettingController::class, ['only' => ['index', 'update']]);
- 
+                    
         // Security Settings
         // Route::get('verify-google-recaptcha-v3', [SecuritySettingController::class, 'verify'])->name('verify_google_recaptcha_v3');
         // Route::resource('security-settings', SecuritySettingController::class);
-
+        
         // Google Calendar Settings
         Route::resource('google-calendar-settings', GoogleCalendarSettingController::class);
         Route::get('google-auth', [GoogleAuthController::class, 'index'])->name('googleAuth');
@@ -114,6 +119,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::post('role-permissions/customPermissions', [RolePermissionController::class, 'customPermissions'])->name('role-permissions.custom_permissions');
         Route::post('role-permissions/reset-permissions', [RolePermissionController::class, 'resetPermissions'])->name('role-permissions.reset_permissions');
         Route::resource('role-permissions', RolePermissionController::class);
+        Route::resource('role-permissions-create', RolePermissionController::class, 'newperms')->name('role-permissions-create');
 
         // Theme settings
         Route::resource('theme-settings', ThemeSettingController::class);

@@ -38,13 +38,14 @@ class Dc_apjAPIController extends Controller
             } 
             $total_records=Dc_apj::count(); 
             return ApiResponse::make(array(            
+                'status' => true,
                 'data' => $result,
                 'total_records' => $total_records,
                 'status_code' => 200
             ));
         } 
         else{ 
-            return ApiResponse::make('Unauthenticated.',200);
+            return ApiResponse::make(['status'=>false,'Unauthenticated.',200]);
         }
     }
      

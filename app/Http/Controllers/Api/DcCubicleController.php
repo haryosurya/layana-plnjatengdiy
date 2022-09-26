@@ -12,20 +12,29 @@ class DcCubicleController extends Controller
     //
     public function index(Request $request)
     {
-        if ($request->get('CUBICLE_NAME')) 
-        {
-            $keyword = $request->get('CUBICLE_NAME');    
-            $result = Dc_cubicle::where('CUBICLE_NAME', $keyword )->orderBy('OUTGOING_ID','DESC')->paginate(12);  
+        try{
+            if ($request->get('CUBICLE_NAME')) 
+            {
+                $keyword = $request->get('CUBICLE_NAME');    
+                $result = Dc_cubicle::where('CUBICLE_NAME', $keyword )->orderBy('OUTGOING_ID','DESC')->paginate(12);  
+            }
+            else
+            {
+                $result = Dc_cubicle::orderBy('OUTGOING_ID','DESC')->paginate(12);
+            } 
+            $total_records=Dc_cubicle::count(); 
+            return ApiResponse::make(array(    
+                'status'=>true,        
+                'data' => $result,
+                'total_records' => $total_records,
+                'status_code' => 200
+            ));
         }
-        else
-        {
-            $result = Dc_cubicle::orderBy('OUTGOING_ID','DESC')->paginate(12);
-        } 
-        $total_records=Dc_cubicle::count(); 
-        return ApiResponse::make(array(            
-            'data' => $result,
-            'total_records' => $total_records,
-            'status_code' => 200
-        ));
+        catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }

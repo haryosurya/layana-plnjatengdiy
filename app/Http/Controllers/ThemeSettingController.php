@@ -31,8 +31,7 @@ class ThemeSettingController extends AccountBaseController
 
         $this->adminTheme = $themes['admin'][0];
         $this->projectAdminTheme = $themes['project_admin'][0];
-        $this->employeeTheme = $themes['employee'][0];
-        $this->clientTheme = $themes['client'][0];
+        $this->employeeTheme = $themes['employee'][0]; 
 
         return view('theme-settings.index', $this->data);
     }

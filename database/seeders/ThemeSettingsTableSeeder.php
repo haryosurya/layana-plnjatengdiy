@@ -17,10 +17,18 @@ class ThemeSettingsTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('theme_settings')->delete();
+        DB::table('theme_settings')->truncate();
 
         $theme = new ThemeSetting();
         $theme->panel = 'admin';
+        $theme->header_color = '#1d82f5';
+        $theme->sidebar_color = '#171F29';
+        $theme->sidebar_text_color = '#99A5B5';
+        $theme->link_color = '#F7FAFF';
+        $theme->save();
+
+        $theme = new ThemeSetting();
+        $theme->panel = 'project_admin';
         $theme->header_color = '#1d82f5';
         $theme->sidebar_color = '#171F29';
         $theme->sidebar_text_color = '#99A5B5';

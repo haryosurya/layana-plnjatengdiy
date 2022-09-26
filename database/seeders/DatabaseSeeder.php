@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageSettingsSeeder::class);
         $this->call(SocialAuthSettingsTableSeeder::class);
         $this->call(ThemeSettingsTableSeeder::class);
+        $this->call(ModuleTableSeeder::class);
         $this->call(UserTableSeeder::class);
         
     }

@@ -42,51 +42,96 @@ class AuthController extends ApiBaseController
     {
         
         // Modifications to this function may also require modifications to
-        $email = $request->get('email');
-        $password = $request->get('password');
-        $days =  365;
-        $minutes =  60 * 60 * $days;
-        config()->set('jwt.ttl', $minutes);
-        $claims = ['exp' => (int)Carbon::now()->addYear()->getTimestamp(), 'remember' => 1, 'type' => 1];
+        // $email = $request->get('email');
+        // $password = $request->get('password');
+        // $days =  365;
+        // $minutes =  60 * 60 * $days;
+        // config()->set('jwt.ttl', $minutes);
+        // $claims = ['exp' => (int)Carbon::now()->addYear()->getTimestamp(), 'remember' => 1, 'type' => 1];
 
-        $token = auth()->claims($claims)->attempt(['email' => $email, 'password' => $password]);
         // $token = auth()->claims($claims)->attempt(['email' => $email, 'password' => $password]);
+        // // $token = auth()->claims($claims)->attempt(['email' => $email, 'password' => $password]);
  
-        if ($token) {
-            $user = User::where('email', $email)->first();
+        // if ($token) {
+        //     $user = User::where('email', $email)->first();
 
-            if ($user && $user->status === 'deactive') {
-                $exception = new ApiException('User account disabled', null, 403, 403, 2015);
-                return ApiResponse::exception($exception);
-            } 
-            /** @var Admin $user */
-            $user = auth()->user();
+        //     if ($user && $user->status === 'deactive') {
+        //         $exception = new ApiException('User account disabled', null, 403, 403, 2015);
+        //         return ApiResponse::exception($exception);
+        //     } 
+        //     /** @var Admin $user */
+        //     $user = auth()->user();
  
-            //          $payload = auth()->payload();
+        //     //          $payload = auth()->payload();
 
-            $expire = \Carbon\Carbon::now()->addYear(1);
-            return ApiResponse::make('Logged in successfully', [
-                // 'token' => $token,
+        //     $expire = \Carbon\Carbon::now()->addYear(1);
+        //     return ApiResponse::make('Logged in successfully', [
+        //         // 'token' => $token,
+        //         'token' => $user->createToken('token-auth')->plainTextToken,
+        //         'user' => $user->load('roles', 'roles.perms', 'roles.permissions'),
+        //         'expires' => $expire,
+        //         'expires_in' => auth()->factory()->getTTL(),
+        //     ]);
+        // }
+
+        // $exception = new ApiException('Wrong credentials provided', null, 403, 403, 2001);
+        // return ApiResponse::exception($exception);
+        try {
+            $validateUser = Validator::make($request->all(), 
+            [
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            if(!Auth::attempt($request->only(['email', 'password']))){
+                $user = auth()->user();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email & Password does not match with our record.',
+                ], 401);
+            }
+
+            $user = User::where('email', $request->email)->first();
+            return response()->json([
+                'status' => true,
                 'token' => $user->createToken('token-auth')->plainTextToken,
                 'user' => $user->load('roles', 'roles.perms', 'roles.permissions'),
-                'expires' => $expire,
-                'expires_in' => auth()->factory()->getTTL(),
-            ]);
-        }
+                'message' => 'User Logged In Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ], 200);
 
-        $exception = new ApiException('Wrong credentials provided', null, 403, 403, 2001);
-        return ApiResponse::exception($exception);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     public function logout()
     { 
-        auth()->user()->tokens()->delete();
-
-        return ApiResponse::make('Token invalidated successfully');
+        try{
+            auth()->user()->tokens()->delete();
+            return ApiResponse::make(['status'=>true,'message'=>'Token invalidated successfully']); 
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     public function forgotPassword(ForgotPasswordRequest $request)
-    { 
+    { try{
         $input = $request->only('email');
         $validator = Validator::make($input, ['email' => "required|email"]);
         if ($validator->fails()) {
@@ -98,11 +143,17 @@ class AuthController extends ApiBaseController
         }
         else{
             $message = "Email could not be sent to this email address";
+        } 
+        return response()->json([
+            'status' => true, 
+            'message' => $message, 
+        ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
         }
-        //$message = $response == Password::RESET_LINK_SENT ? 'Mail send successfully' : GLOBAL_SOMETHING_WANTS_TO_WRONG;
-        // $response = ['data'=>'','message' => $message];
-         
-        return ApiResponse::make($message);
     }
 
     protected  function resetPassword(ResetPasswordRequest $request)

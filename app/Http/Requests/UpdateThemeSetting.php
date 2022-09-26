@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests;
 
-use App\Http\Requests\CoreRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateEmployee extends CoreRequest
+class UpdateThemeSetting extends CoreRequest
 {
 
     /**
@@ -25,8 +25,14 @@ class UpdateEmployee extends CoreRequest
     public function rules()
     {
         return [
-            'email' => 'required|unique:users,email,' . $this->route('employee'), 
-            'name' => 'required',
+            'primary_color.*' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'primary_color.*.required' => __('messages.primaryColorRequired'),
         ];
     }
 

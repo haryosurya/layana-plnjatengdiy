@@ -83,28 +83,33 @@
          <div class="sidebar-menu {{ user()->dark_theme ? 'bg-dark' : '' }}" id="sideMenuScroll">
              <ul>
                 <!-- NAV ITEM - DASHBOARD COLLAPSE MENU-->
-                @if (in_array('admin', user_roles()) || in_array('dashboards', user_modules()))
+                {{-- @if (in_array('admin', user_roles()) || in_array('dashboards', user_modules()))
                     <x-menu-item icon="house" :text="__('app.menu.dashboard')">
                         <x-slot name="iconPath">
                             <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                             <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
                         </x-slot>
                         <div class="accordionItemContent pb-2">
-                            <x-sub-menu-item :link="route('dashboard')" :text="__('app.admin') . ' ' . __('app.menu.dashboard')" />
-                            <x-sub-menu-item :link="route('dashboard.member')" :text="__('app.private') . ' ' . __('app.menu.dashboard')" />
+                            <x-sub-menu-item :link="route('dashboard')" :text="__('app.admin') . ' ' . __('app.menu.dashboard')" /> 
                         </div>
                     </x-menu-item>
-                @else
+                @else --}}
                     <x-menu-item icon="house" :text="__('app.menu.dashboard')" :link="route('dashboard')">
                         <x-slot name="iconPath">
                             <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                             <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
                         </x-slot>
                     </x-menu-item>
-                @endif
+                {{-- @endif --}}
 
                      
-
+                    <x-menu-item icon="house" :text="__('app.menu.dashboard')" :link="route('dashboard')">
+                        <x-slot name="iconPath">
+                            <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                        </x-slot>
+                    </x-menu-item>
+                    
                  <!-- NAV ITEM - REPORTS COLLAPASE MENU -->
                     <!-- NAV ITEM - SETTINGS -->
                     <x-menu-item icon="gear" :text="__('app.menu.settings')"

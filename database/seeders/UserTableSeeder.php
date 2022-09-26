@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EmployeeDetails;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -46,8 +47,8 @@ class UserTableSeeder extends Seeder
         $employee->perms()->sync([]);
         $employee->attachPermissions($allPermissions);  
 
-        DB::table('users')->delete();
-        DB::table('employee_details')->delete(); 
+        DB::table('users')->truncate();
+        DB::table('employee_details')->truncate(); 
 
         DB::statement('ALTER TABLE users AUTO_INCREMENT = 1');
         DB::statement('ALTER TABLE employee_details AUTO_INCREMENT = 1'); 
@@ -62,7 +63,7 @@ class UserTableSeeder extends Seeder
         $user->password = Hash::make('123456');
         $user->save();
 
-        $employee = new UserDetail();
+        $employee = new EmployeeDetails();
         $employee->user_id = $user->id;
         $employee->employee_id = 'emp-' . $user->id;
         $employee->address = $faker->address; 

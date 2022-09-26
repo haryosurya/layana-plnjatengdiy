@@ -20,14 +20,11 @@ class ProfileController extends AccountBaseController
 
         $user = User::withoutGlobalScope('active')->findOrFail($id);
         $user->name = $request->name;
-        $user->email = $request->email;
-        $user->salutation = $request->salutation;
+        $user->email = $request->email; 
         $user->gender = $request->gender;
-        $user->country_id = $request->phone_code;
         $user->mobile = $request->mobile;
         $user->email_notifications = $request->email_notifications;
-        $user->locale = $request->locale;
-        $user->rtl = $request->rtl;
+        $user->locale = $request->locale; 
         $user->email_notifications = $request->email_notifications;
 
         if (!is_null($request->password)) {

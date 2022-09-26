@@ -13,23 +13,10 @@
             </x-forms.file>
         </div>
 
-        <div class="col-lg-4">
-            <label class="f-14 text-dark-grey mb-12 w-100 mt-3"
-                for="usr">@lang('modules.profile.yourName')</label>
-            <div class="input-group">
-                <select class="select-picker form-control" name="salutation" id="salutation"
-                    data-live-search="true">
-                    <option value="">--</option>
-                    @foreach ($salutations as $salutation)
-                        <option value="{{ $salutation }}" @if ($user->salutation == $salutation) selected @endif>@lang('app.'.$salutation)
-                        </option>
-                    @endforeach
-                </select>
-                <div class="input-group-append w-70">
-                    <input type="text" class="form-control f-14" placeholder="@lang('placeholders.name')"
-                        name="name" id="name" value="{{ ucwords($user->name) }}">
-                </div>
-            </div>
+        <div class="col-lg-4"> 
+            <x-forms.text class="mr-0 mr-lg-2 mr-md-2" :fieldLabel="__('modules.profile.yourName')"
+                fieldRequired="true" :fieldPlaceholder="__('placeholders.name')" fieldName="name"
+                fieldId="name" :fieldValue="$user->name"></x-forms.text>
         </div>
 
         <div class="col-lg-4">
@@ -77,20 +64,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-4">
-            <div class="form-group my-3">
-                <label class="f-14 text-dark-grey mb-12 w-100" for="usr">@lang('app.rtlTheme')</label>
-                <div class="d-flex">
-                    <x-forms.radio fieldId="rtl-yes" :fieldLabel="__('app.yes')" fieldName="rtl" fieldValue="1"
-                        :checked="($user->rtl == 1) ? 'checked' : ''">
-                    </x-forms.radio>
-                    <x-forms.radio fieldId="rtl-no" :fieldLabel="__('app.no')" fieldValue="0" fieldName="rtl"
-                        :checked="($user->rtl == 0) ? 'checked' : ''">
-                    </x-forms.radio>
-                </div>
-            </div>
-        </div> 
+ 
 
         <div class="col-lg-4">
             <x-forms.tel fieldId="mobile" :fieldLabel="__('app.mobile')" fieldName="mobile"

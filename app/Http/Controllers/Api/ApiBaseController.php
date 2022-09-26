@@ -36,6 +36,7 @@ class ApiBaseController extends ApiController
         
         config(['jwt.secret' => config('restapi.jwt_secret')]);
         config(['app.debug' => config('restapi.debug')]);
+        
     }
     
 }

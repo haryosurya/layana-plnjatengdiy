@@ -1,7 +1,7 @@
 <tr class="custom-permissions" id="module-custom-permission-{{ $modulesData->id }}">
     <td></td>
     <td colspan="4">
-        <table class="table table-bordered rounded">
+        <table class="table table-bordered rounded">sss
             @foreach ($modulesData->customPermissions as $permission)
                 <tr>
                     <td>

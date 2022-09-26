@@ -4,27 +4,26 @@ namespace App\Observers;
 
 use App\Models\EmployeeLeaveQuota;
 use App\Models\LeaveType;
-use App\Models\EmployeeDetails;
-use App\Models\UserDetail;
+use App\Models\EmployeeDetails; 
 
 class EmployeeDetailsObserver
 {
 
-    public function saving(UserDetail $detail)
+    public function saving(EmployeeDetails $detail)
     {
         if (!isRunningInConsoleOrSeeding() && auth()->check()) {
             $detail->last_updated_by = user()->id;
         }
     }
 
-    public function creating(UserDetail $detail)
+    public function creating(EmployeeDetails $detail)
     {
         if (!isRunningInConsoleOrSeeding() && auth()->check()) {
             $detail->added_by = user()->id;
         }
     }
 
-    public function created(UserDetail $detail)
+    public function created(EmployeeDetails $detail)
     { 
     }
 

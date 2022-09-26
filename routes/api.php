@@ -37,9 +37,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('auth/refresh',[AuthController::class, 'refresh','as' => 'auth.refresh', ]);
     Route::post('auth/forgot-password',[AuthController::class, 'forgotPassword','as' => 'auth.forgotPassword', ]); 
     Route::get('profile',[ AuthController::class,'me']);
+
+
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
+    /* outgoing feeder. focusess app */
     Route::get('dcCubicle', [DcCubicleController::class,'index']);
-    Route::get('dcGarduInduk', [DcGarduIndukController::class,'index']);
+    /* outgoing feeder. focusess app */
+    Route::get('dcGarduInduk', [DcGarduIndukController::class,'index']); /* gardu induk */
     Route::get('DcIncomingFeeder', [DcIncomingFeederController::class,'index']);
     Route::get('DcIndikasiGangguan', [DcIndikasiGangguanController::class,'index']);
     Route::get('DcIndikasiGangguanTipe', [DcIndikasiGangguanTipeController::class,'index']);
