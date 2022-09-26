@@ -119,7 +119,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::post('role-permissions/customPermissions', [RolePermissionController::class, 'customPermissions'])->name('role-permissions.custom_permissions');
         Route::post('role-permissions/reset-permissions', [RolePermissionController::class, 'resetPermissions'])->name('role-permissions.reset_permissions');
         Route::resource('role-permissions', RolePermissionController::class);
-        Route::resource('role-permissions-create', RolePermissionController::class, 'newperms')->name('role-permissions-create');
+        // Route::resource('role-permissions-create', RolePermissionController::class, 'newperms')->name('role-permissions-create');
 
         // Theme settings
         Route::resource('theme-settings', ThemeSettingController::class);
