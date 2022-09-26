@@ -33,7 +33,7 @@ class DcIncomingFeederController extends Controller
                 $result = Dc_incoming_feeder::orderBy('INCOMING_ID','DESC')->paginate(12);
             } 
             $total_records=Dc_incoming_feeder::count(); 
-            return ApiResponse::make(array( 
+            return response()->json(array( 
                 'status' => true, 
                 'data' => $result,
                 'total_records' => $total_records,

@@ -24,7 +24,7 @@ class DcTipeGangguanController extends Controller
                     $result = Dc_tipe_gangguan::orderBy('ID_TIPE_GANGGUAN','DESC')->paginate(12);
                 } 
             $total_records=Dc_tipe_gangguan::count(); 
-            return ApiResponse::make(array(        
+            return response()->json(array(        
                 'status'=>true,    
                 'data' => $result,
                 'total_records' => $total_records,

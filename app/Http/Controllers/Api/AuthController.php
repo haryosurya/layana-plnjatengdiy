@@ -186,7 +186,7 @@ class AuthController extends ApiBaseController
         try{
             if (auth()->user()){
                 $user = Auth::user();
-                return ApiResponse::make([
+                return response()->json([
                     'status' => true, 
                     'message' =>'Authenticated',
                     'user' => $user,

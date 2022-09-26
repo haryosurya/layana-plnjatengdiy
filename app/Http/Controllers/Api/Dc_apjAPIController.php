@@ -37,12 +37,12 @@ class Dc_apjAPIController extends Controller
                 $result = Dc_apj::orderBy('APJ_ID','DESC')->paginate(12);
             } 
             $total_records=Dc_apj::count(); 
-            return ApiResponse::make(array(            
+            return response()->json( [           
                 'status' => true,
                 'data' => $result,
                 'total_records' => $total_records,
                 'status_code' => 200
-            ));
+            ]);
         } 
         else{ 
             return ApiResponse::make(['status'=>false,'Unauthenticated.',200]);

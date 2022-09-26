@@ -50,7 +50,7 @@ class SmMeterGiController extends Controller
                     $result = Sm_meter_gi::orderBy('OUTGOING_METER_ID','DESC')->paginate(10);
                 } 
             // $total_records=Sm_meter_gi::count(); 
-            return ApiResponse::make(array(  
+            return response()->json(array(  
                 'status'=>true,          
                 'data' => $result,
                 // 'total_records' => $total_records,

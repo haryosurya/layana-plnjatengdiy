@@ -23,7 +23,7 @@ class DcJenisKeadaanPmtController extends Controller
                     $result = Dc_jenis_keadaan_pmt::orderBy('JENIS_KEADAAN_PMT_ID','DESC')->paginate(12);
                 } 
             $total_records=Dc_jenis_keadaan_pmt::count(); 
-            return ApiResponse::make(array(    
+            return response()->json(array(    
                 'status'=>true,        
                 'data' => $result,
                 'total_records' => $total_records,

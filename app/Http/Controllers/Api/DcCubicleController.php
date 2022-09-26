@@ -23,7 +23,7 @@ class DcCubicleController extends Controller
                 $result = Dc_cubicle::orderBy('OUTGOING_ID','DESC')->paginate(12);
             } 
             $total_records=Dc_cubicle::count(); 
-            return ApiResponse::make(array(    
+            return response()->json(array(    
                 'status'=>true,        
                 'data' => $result,
                 'total_records' => $total_records,
