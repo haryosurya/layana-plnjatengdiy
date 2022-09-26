@@ -29,15 +29,15 @@ use Illuminate\Support\Facades\Route;
  
 Route::get('apitest',[AppController::class, 'app','as' => 'app', ]);
 Route::post('auth/login',[AuthController::class, 'login','as' => 'auth.login']);
-Route::group(['middleware' => ['auth:sanctum']], function () { 
-// Route::group(['middleware' => ['api']], function () { 
+
+Route::group(['middleware' => ['auth:sanctum']], function () {  
     Route::get('test',[AppController::class, 'app','as' => 'app', ]);
     Route::post('auth/logout',[AuthController::class, 'logout','as' => 'auth.logout', ]);
     Route::post('auth/reset-password',[AuthController::class, 'resetPassword','as' => 'auth.resetPassword', ]);
     Route::post('auth/refresh',[AuthController::class, 'refresh','as' => 'auth.refresh', ]);
     Route::post('auth/forgot-password',[AuthController::class, 'forgotPassword','as' => 'auth.forgotPassword', ]); 
-    Route::get('profile',[ AuthController::class,'me']);
-
+    /* profile */
+    Route::get('profile',[ AuthController::class,'me']); 
 
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
     /* outgoing feeder. focusess app */

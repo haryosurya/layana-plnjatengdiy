@@ -183,15 +183,25 @@ class AuthController extends ApiBaseController
   
     public function me()
     {
-        if (auth()->user()){
-            $user = Auth::user();
-            return ApiResponse::make('Auth User', [ 
-                'user' => $user,
-                'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
-            ]);
-        }
-        else{
-            return ApiResponse::make('Unauthenticated');
+        try{
+            if (auth()->user()){
+                $user = Auth::user();
+                return ApiResponse::make('Auth User', [ 
+                    'status' => true, 
+                    'user' => $user,
+                    'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
+                ]);
+            }
+            else{
+                return ApiResponse::make([
+                'status' => false,
+                'message'=>'Unauthenticated']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
         }
     }
 }
