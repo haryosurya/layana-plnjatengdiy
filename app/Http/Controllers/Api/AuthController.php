@@ -186,8 +186,9 @@ class AuthController extends ApiBaseController
         try{
             if (auth()->user()){
                 $user = Auth::user();
-                return ApiResponse::make('Auth User', [ 
+                return ApiResponse::make([
                     'status' => true, 
+                    'message' =>'Authenticated',
                     'user' => $user,
                     'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
                 ]);
