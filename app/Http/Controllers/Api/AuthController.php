@@ -120,8 +120,8 @@ class AuthController extends ApiBaseController
     public function logout()
     { 
         try{
-            auth()->user()->tokens()->delete();
-            return ApiResponse::make(['status'=>true,'message'=>'Token invalidated successfully']); 
+            auth()->user()->tokens()->delete(); 
+            return response()->json(['status'=>true,'message'=>'Token invalidated successfully']); 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,

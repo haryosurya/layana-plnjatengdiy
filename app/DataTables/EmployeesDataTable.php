@@ -222,26 +222,7 @@ class EmployeesDataTable extends BaseDataTable
                 $users = $users->where(DB::raw('(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1)'), $request->role);
             }
         }
-
-        if ((is_array($request->skill) && $request->skill[0] != 'all') && $request->skill != '' && $request->skill != null && $request->skill != 'null') {
-            $users = $users->join('employee_skills', 'employee_skills.user_id', '=', 'users.id')
-                ->whereIn('employee_skills.skill_id', $request->skill);
-        }
-
-        if ($this->viewEmployeePermission == 'added') {
-            $users = $users->where('employee_details.added_by', user()->id);
-        }
-
-        if ($this->viewEmployeePermission == 'owned') {
-            $users = $users->where('employee_details.user_id', user()->id);
-        }
-
-        if ($this->viewEmployeePermission == 'both') {
-            $users = $users->where(function ($q) {
-                $q->where('employee_details.user_id', user()->id);
-                $q->orWhere('employee_details.added_by', user()->id);
-            });
-        }
+ 
 
         if ($request->startDate != '' && $request->endDate != '') {
             $startDate = Carbon::createFromFormat($this->global->date_format, $request->startDate)->toDateString();

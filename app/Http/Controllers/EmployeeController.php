@@ -2,50 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\EmployeesDataTable;
+use App\Helper\Reply;
+use App\Http\Requests\Admin\Employee\StoreRequest;
+use App\Models\Designation;
+use App\Models\EmployeeDetails;
+use App\Models\Role;
+use App\Models\RoleUser;
+use App\Models\User;
 use Artisan;
 use Carbon\Carbon;
-use App\Models\Role;
-use App\Models\Task;
-use App\Models\Team;
-use App\Models\User;
-use App\Helper\Files;
-use App\Helper\Reply;
-use App\Models\Leave;
-use App\Models\Skill;
-use App\Models\Module;
-use App\Models\Ticket;
-use App\Models\Country;
-use App\Models\RoleUser;
-use App\Models\LeaveType;
-use App\Models\Attendance;
-use App\Models\Designation;
-use App\Models\UserActivity;
-use Illuminate\Http\Request;
-use App\Models\EmployeeSkill;
-use App\Models\ProjectTimeLog;
-use App\Models\UserInvitation;
-use App\Imports\EmployeeImport;
-use App\Jobs\ImportEmployeeJob;
-use App\Models\EmployeeDetails;
-use App\Models\TaskboardColumn;
-use App\Models\UniversalSearch;
-use App\DataTables\LeaveDataTable;
-use App\DataTables\TasksDataTable;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProjectTimeLogBreak;
-use Illuminate\Support\Facades\Bus;
-use Maatwebsite\Excel\Facades\Excel;
-use App\DataTables\ProjectsDataTable;
-use App\DataTables\TimeLogsDataTable;
-use App\DataTables\EmployeesDataTable;
-use Maatwebsite\Excel\HeadingRowImport;
-use App\Http\Requests\User\InviteEmailRequest;
-use App\Http\Requests\Admin\Employee\StoreRequest;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use App\Http\Requests\Admin\Employee\ImportRequest;
-use App\Http\Requests\Admin\Employee\UpdateRequest;
-use App\Http\Requests\User\CreateInviteLinkRequest;
-use App\Http\Requests\Admin\Employee\ImportProcessRequest;
+use Request;
 
 class EmployeeController extends AccountBaseController
 {
@@ -70,9 +37,7 @@ class EmployeeController extends AccountBaseController
         abort_403(!in_array($viewPermission, ['all', 'added', 'owned', 'both']));
 
         if (!request()->ajax()) {
-            $this->employees = User::allEmployees();
-            $this->skills = Skill::all();
-            $this->departments = Team::all();
+            $this->employees = User::allEmployees(); 
             $this->designations = Designation::allDesignations();
             $this->totalEmployees = count($this->employees);
             $this->roles = Role::where('name', '<>', 'client')
@@ -94,12 +59,9 @@ class EmployeeController extends AccountBaseController
         $addPermission = user()->permission('add_employees');
         abort_403(!in_array($addPermission, ['all', 'added']));
 
-
-        $this->teams = Team::all();
+ 
         $this->designations = Designation::allDesignations();
-
-        $this->skills = Skill::all()->pluck('name')->toArray();
-        $this->countries = Country::all();
+ 
         $this->lastEmployeeID = EmployeeDetails::max('id');
 
         $employee = new EmployeeDetails();
