@@ -11,8 +11,7 @@ class DcIndikasiGangguanTipeController extends Controller
 {
     //
     public function index(Request $request)
-    {
-        // $get_data=isset($_POST['data']); 
+    { 
         try{ 
             if ($request->get('NAMA_TIPE_INDIKASI_GGN'))
             {

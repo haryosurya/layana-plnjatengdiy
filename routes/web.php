@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DC\IncomingFeederPMTController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GoogleCalendarSettingController;
 use App\Http\Controllers\ImageController;
@@ -51,6 +53,7 @@ Route::get('cropper/{element}', [ImageController::class, 'cropper'])->name('crop
 /* Account routes starts from here */
  
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
+    Route::get('incoming-feeder',[IncomingFeederPMTController::class, 'index' ] )->name('incoming-feeder');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('checklist', [DashboardController::class, 'checklist'])->name('checklist');
     Route::get('dashboard-member', [DashboardController::class, 'memberDashboard'])->name('dashboard.member');

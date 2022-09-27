@@ -118,22 +118,7 @@
 
         <x-setting-sidebar :activeMenu="$activeSettingMenu" />
 
-        <x-setting-card>
-
-            @if ($global->hide_cron_message == 0 || \Carbon\Carbon::now()->diffInHours($global->last_cron_run) > 48)
-                <x-slot name="buttons">
-                    <div class="alert alert-primary">
-                        <h6>Set following cron command on your server (Ignore if already done)</h6>
-                        @php
-                            try {
-                                echo '<code>* * * * * ' . PHP_BINDIR . '/php  ' . base_path() . '/artisan schedule:run >> /dev/null 2>&1</code>';
-                            } catch (\Throwable $th) {
-                                echo '<code>* * * * * /php' . base_path() . '/artisan schedule:run >> /dev/null 2>&1</code>';
-                            }
-                        @endphp
-                    </div>
-                </x-slot>
-            @endif
+        <x-setting-card> 
 
             <x-slot name="header">
                 <div class="s-b-n-header" id="tabs">
@@ -178,19 +163,7 @@
                                 </option>
                             @endforeach
                         </x-forms.select>
-                    </div>
-                    <div class="col-lg-2">
-                        <x-forms.select fieldId="currency_id" :fieldLabel="__('modules.accountSettings.defaultCurrency')"
-                            fieldName="currency_id" search="true">
-                            @foreach ($currencies as $currency)
-                                <option @if ($currency->id == $global->currency_id)
-                                    selected
-                                    @endif value="{{ $currency->id }}">
-                                    {{ $currency->currency_symbol . ' (' . $currency->currency_code . ')' }}
-                                </option>
-                            @endforeach
-                        </x-forms.select>
-                    </div>
+                    </div> 
                     <div class="col-lg-2">
                         <x-forms.select fieldId="locale" :fieldLabel="__('modules.accountSettings.language')"
                             fieldName="locale" search="true">

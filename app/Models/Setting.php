@@ -39,12 +39,7 @@ class Setting extends BaseModel
         'd D M Y' => 'DD ddd MMM YYYY',
         'D d M Y' => 'ddd DD MMM YYYY',
         'dS M Y' => 'Do MMM YYYY',
-    ];
-
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class, 'currency_id');
-    }
+    ]; 
 
     public function getLogoUrlAttribute()
     {

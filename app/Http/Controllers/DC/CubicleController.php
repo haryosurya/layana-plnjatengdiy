@@ -2,30 +2,19 @@
 
 namespace App\Http\Controllers\DC;
 
-use App\DataTables\DC\IncomingFeederDatatable;
-use App\Http\Controllers\AccountBaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class IncomingFeederPMTController extends AccountBaseController
+class CubicleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    public function index()
     {
-        parent::__construct();
-        $this->pageTitle = 'app.menu.incoming-feeder';
-        $this->middleware(function ($request, $next) {
-            // in_array('client', user_roles()) ? abort_403(!(in_array('orders', $this->user->modules) && user()->permission('add_order') == 'all')) : abort_403(!in_array('products', $this->user->modules));
-            return $next($request);
-        });
-    }
-    public function index(IncomingFeederDatatable $dataTable)
-    {  
-        return $dataTable->render('dc.incoming-feeder.index', $this->data);
+        //
     }
 
     /**

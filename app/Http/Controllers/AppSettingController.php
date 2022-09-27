@@ -69,8 +69,7 @@ class AppSettingController extends AccountBaseController
 
         config(['filesystems.default' => 'local']);
 
-        $setting = Setting::first();
-        $setting->currency_id = $request->currency_id;
+        $setting = Setting::first(); 
         $setting->timezone = $request->timezone;
         $setting->locale = $request->locale;
         $setting->date_format = $request->date_format;

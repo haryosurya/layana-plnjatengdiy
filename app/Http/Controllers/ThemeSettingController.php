@@ -48,10 +48,7 @@ class ThemeSettingController extends AccountBaseController
 
         $employeeTheme = ThemeSetting::where('panel', 'employee')->first();
         $this->themeUpdate($employeeTheme, $request->theme_settings[3], $request->primary_color[1]);
-
-        $clientTheme = ThemeSetting::where('panel', 'client')->first();
-        $this->themeUpdate($clientTheme, $request->theme_settings[4], $request->primary_color[2]);
-
+ 
         $setting = $this->global;
         $setting->logo_background_color = $request->logo_background_color;
         $setting->auth_theme = $request->auth_theme;

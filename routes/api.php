@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DcGarduIndukController;
 use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\Api\DcIndikasiGangguanController;
 use App\Http\Controllers\Api\DcIndikasiGangguanTipeController;
+use App\Http\Controllers\Api\DcInspeksiPenyulangController;
 use App\Http\Controllers\Api\DcJenisKeadaanPmtController;
 use App\Http\Controllers\Api\DcSpeedjardistCuacaController;
 use App\Http\Controllers\Api\DcTipeGangguanController;
@@ -51,6 +52,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('DcSpeedjardist', [DcSpeedjardistCuacaController::class,'index']);
     Route::get('DcTipeGangguan', [DcTipeGangguanController::class,'index']);
     Route::get('SmMeterGi', [SmMeterGiController::class,'index']);
+
+    Route::get('inspeksiPenyulang', [DcInspeksiPenyulangController::class,'index']);
+    Route::post('postinspeksiPenyulang', [DcInspeksiPenyulangController::class,'store']);
 }); 
 
 
