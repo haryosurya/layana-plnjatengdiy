@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Sm_meter_gi
+ *
  * @property int $OUTGOING_METER_ID
  * @property int $OUTGOING_ID
  * @property float $IA
@@ -29,6 +31,34 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $IFC_TIME
  * @property float $IFN
  * @property string $IFN_TIME
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIA($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIATIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIB($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIBTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIC($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereICTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFA($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFATIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFB($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFBTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFC($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFCTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFN($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIFNTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereIN($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereINTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereKW($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereKWTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereOUTGOINGID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereOUTGOINGMETERID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi wherePF($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi wherePFTIME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereVLL($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sm_meter_gi whereVLLTIME($value)
+ * @mixin \Eloquent
  */
 class Sm_meter_gi extends BaseModel
 {

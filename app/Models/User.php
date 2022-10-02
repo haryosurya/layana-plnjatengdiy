@@ -20,6 +20,82 @@ use Laravel\Sanctum\HasApiTokens;
 use Trebol\Entrust\Traits\EntrustUserTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $email
+ * @property string $password
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property string|null $image
+ * @property string|null $mobile
+ * @property string|null $gender
+ * @property string $locale
+ * @property string $status
+ * @property string $login
+ * @property string|null $onesignal_player_id
+ * @property int $email_notifications
+ * @property int $dark_theme
+ * @property string|null $two_fa_verify_via
+ * @property string|null $two_factor_code when authenticator is email
+ * @property \Illuminate\Support\Carbon|null $two_factor_expires_at
+ * @property int $admin_approval
+ * @property int $permission_sync
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $last_login
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EmployeeDetails[] $employee
+ * @property-read int|null $employee_count
+ * @property-read \App\Models\EmployeeDetails|null $employeeDetail
+ * @property-read \App\Models\EmployeeDetails|null $employeeDetails
+ * @property-read mixed $image_url
+ * @property-read mixed $modules
+ * @property-read mixed $user_other_role
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissionTypes
+ * @property-read int|null $permission_types_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RoleUser[] $role
+ * @property-read int|null $role_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
+ * @property-read int|null $roles_count
+ * @property-read \App\Models\Session|null $session
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User query()
+ * @method static Builder|User whereAdminApproval($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDarkTheme($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailNotifications($value)
+ * @method static Builder|User whereGender($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereImage($value)
+ * @method static Builder|User whereLastLogin($value)
+ * @method static Builder|User whereLocale($value)
+ * @method static Builder|User whereLogin($value)
+ * @method static Builder|User whereMobile($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User whereOnesignalPlayerId($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePermissionSync($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereStatus($value)
+ * @method static Builder|User whereTwoFaVerifyVia($value)
+ * @method static Builder|User whereTwoFactorCode($value)
+ * @method static Builder|User whereTwoFactorExpiresAt($value)
+ * @method static Builder|User whereTwoFactorRecoveryCodes($value)
+ * @method static Builder|User whereTwoFactorSecret($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withRole(string $role)
+ * @mixin \Eloquent
+ */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, EntrustUserTrait, Authenticatable, Authorizable, CanResetPassword,  TwoFactorAuthenticatable;
@@ -135,11 +211,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasMany(RoleUser::class, 'user_id');
     }
- 
-    public function group()
-    {
-        return $this->hasMany(EmployeeTeam::class, 'user_id');
-    }
+  
         
     public static function allEmployees($exceptId = null, $active = false)
     {
@@ -150,7 +222,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $users = User::withRole('employee')
             ->join('employee_details', 'employee_details.user_id', '=', 'users.id')
             ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'users.image', 'designations.name as designation_name', 'users.email_notifications', 'users.mobile', 'users.country_id');
+            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'users.image', 'designations.name as designation_name', 'users.email_notifications', 'users.mobile' );
 
         if (!is_null($exceptId)) {
             $users->where('users.id', '<>', $exceptId);
@@ -373,10 +445,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function contracts()
-    {
-        return $this->hasMany(Contract::class, 'client_id', 'id');
-    }
+ 
 
     public function assignUserRolePermission($roleId)
     {

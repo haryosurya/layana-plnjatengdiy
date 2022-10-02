@@ -21,28 +21,17 @@ class DcCubicleDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query) 
-            ->addIndexColumn() 
+            ->addIndexColumn()  
             ->addColumn('action', function ($row) {
-                $action = '<div class="task_view"> 
-                            <div class="dropdown">
-                                <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
-                                    id="dropdownMenuLink-' . $row->INCOMING_ID . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-options-vertical icons"></i>
-                                </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->INCOMING_ID . '" tabindex="0">'; 
-                $action .= '<a href=" " class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                $action = '<div class="task_view">
 
-                
-                $action .= '<a class="dropdown-item openRightModal" href=" ">
-                            <i class="fa fa-edit mr-2"></i>
-                            ' . trans('app.edit') . '
-                        </a>'; 
-
-                $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-user-id="' . $row->INCOMING_ID . '">
-                        <i class="fa fa-trash mr-2"></i>
-                        ' . trans('app.delete') . '
-                    </a>';
-            
+                    <div class="dropdown">
+                        <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
+                            id="dropdownMenuLink-' . $row->id . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-options-vertical icons"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
+ 
 
                 $action .= '</div>
                     </div>
@@ -61,15 +50,35 @@ class DcCubicleDatatable extends DataTable
      */
     public function query(Dc_cubicle $model)
     {
-        return $model->newQuery();
         $request = $this->request();
-        $dateRange = null;
-        $endDate = null; 
-        $model = $model->with('dc_apj', 'dc_gardu_induk')
-            ->join('dc_apj', 'dc_incoming_feeder.APJ_ID', '=', 'dc_apj.APJ_ID')
-            ->join('dc_gardu_induk', 'dc_incoming_feeder.GARDU_INDUK_ID', '=', 'dc_gardu_induk.GARDU_INDUK_ID')
-            ->select('dc_apj.INCOMING_ID'); 
-        return $model;
+ 
+
+        $gardu = $model->with('dc_apj')
+            ->withoutGlobalScope('active')
+            ->join('dc_apj', 'dc_apj.APJ_ID', '=', 'dc_gardu_induk.APJ_ID') 
+            ->select(
+                'dc_gardu_induk.GARDU_INDUK_ID',
+                'dc_apj.APJ_NAMA AS APJ_NAMA',
+                'dc_gardu_induk.GARDU_INDUK_NAMA',
+                'dc_gardu_induk.GARDU_INDUK_KODE',
+                'dc_gardu_induk.GARDU_INDUK_RTU_ID',
+                'dc_gardu_induk.GARDU_INDUK_ALIAS',
+                'dc_gardu_induk.GARDU_INDUK_ALIAS_ROPO',
+                'dc_gardu_induk.GARDU_INDUK_ALAMAT',
+                'dc_gardu_induk.UPT_ID',
+                'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK',
+                'dc_gardu_induk.PEMELIHARAAN_GI',
+                'dc_gardu_induk.BATAS_TEGANGAN_BAWAH',
+                'dc_gardu_induk.BATAS_TEGANGAN_ATAS'
+                )
+            ;
+            if ($request->searchText != '') {
+                $gardu = $gardu->where(function ($query) {
+                    $query->where('APJ_NAMA', 'like', '%' . request('searchText') . '%')
+                        ->orWhere('dc_gardu_induk.GARDU_INDUK_NAMA', 'like', '%' . request('searchText') . '%');
+                });
+            }
+        return $gardu->groupBy('dc_gardu_induk.GARDU_INDUK_ID');
     }
 
     /**

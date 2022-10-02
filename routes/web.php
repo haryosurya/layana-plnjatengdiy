@@ -3,7 +3,11 @@
 use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DC\GarduIndukController;
 use App\Http\Controllers\DC\IncomingFeederPMTController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GoogleCalendarSettingController;
 use App\Http\Controllers\ImageController;
@@ -34,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 // Socialite routes
@@ -53,15 +57,35 @@ Route::get('cropper/{element}', [ImageController::class, 'cropper'])->name('crop
 /* Account routes starts from here */
  
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
-    Route::get('incoming-feeder',[IncomingFeederPMTController::class, 'index' ] )->name('incoming-feeder');
+    Route::resource('incoming-feeder',IncomingFeederPMTController::class );
+    Route::resource('gardu-induk',GarduIndukController::class );
+
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('checklist', [DashboardController::class, 'checklist'])->name('checklist');
     Route::get('dashboard-member', [DashboardController::class, 'memberDashboard'])->name('dashboard.member');
     Route::post('dashboard/widget/{dashboardType}', [DashboardController::class, 'widget'])->name('dashboard.widget');
-    Route::get('settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change_language');
     Route::resource('settings', SettingsController::class)->only(['edit', 'update', 'index', 'change_language']);
-    /* setting */
+    // employee routes
+    Route::post('employees/apply-quick-action', [EmployeeController::class, 'applyQuickAction'])->name('employees.apply_quick_action');
+    Route::post('employees/assignRole', [EmployeeController::class, 'assignRole'])->name('employees.assign_role');
+    Route::get('employees/byDepartment/{id}', [EmployeeController::class, 'byDepartment'])->name('employees.by_department');
+    Route::get('employees/invite-member', [EmployeeController::class, 'inviteMember'])->name('employees.invite_member');
+    Route::get('employees/import', [EmployeeController::class, 'importMember'])->name('employees.import');
+    Route::post('employees/import', [EmployeeController::class, 'importStore'])->name('employees.import.store');
+    Route::post('employees/import/process', [EmployeeController::class, 'importProcess'])->name('employees.import.process');
+    Route::get('import/process/{name}/{id}', [ImportController::class, 'getImportProgress'])->name('import.process.progress');
+
+    Route::get('employees/import/exception/{name}', [ImportController::class, 'getQueueException'])->name('import.process.exception');
+    Route::post('employees/send-invite', [EmployeeController::class, 'sendInvite'])->name('employees.send_invite');
+    Route::post('employees/create-link', [EmployeeController::class, 'createLink'])->name('employees.create_link');
+    Route::resource('employees', EmployeeController::class);
+    
+    Route::resource('designations', DesignationController::class);
+    Route::resource('departments', DepartmentController::class);
+
+    /* setting */ 
     Route::group(['prefix' => 'settings'], function () {
+        Route::get('change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change_language'); 
         Route::post('image/upload', [ImageController::class, 'store'])->name('image.store');
         /* app setting */
         Route::post('app-settings/deleteSessions', [AppSettingController::class, 'deleteSessions'])->name('app-settings.delete_sessions');
@@ -131,6 +155,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::resource('module-settings', ModuleSettingController::class);
   
     });
+    /* Setting menu routes ends here */
+    Route::resource('company-settings', SettingsController::class)->only(['edit', 'update', 'index', 'change_language']);
+
     Route::post('mark-read', [NotificationController::class, 'markRead'])->name('mark_single_notification_read');
     Route::get('routes', function () {
         $routeCollection = Route::getRoutes();
@@ -152,4 +179,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         }
         echo "</table>";
     });
+    Route::get('apis',function () { return view('apis'); });
 });

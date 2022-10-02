@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Designation;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Dc_apj;
+use App\Http\Requests\CoreRequest;
 
-class CreateDc_apjRequest extends FormRequest
+class UpdateRequest extends CoreRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,6 +24,9 @@ class CreateDc_apjRequest extends FormRequest
      */
     public function rules()
     {
-        return Dc_apj::$rules;
+        return [
+            'designation_name' => 'required|unique:designations,name,'.$this->route('designation')
+        ];
     }
+
 }

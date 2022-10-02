@@ -30,8 +30,16 @@ class DcIncomingFeederController extends Controller
             }
             else
             {
-                $result = Dc_incoming_feeder::orderBy('INCOMING_ID','DESC')->paginate(12);
+                $result = Dc_incoming_feeder::orderBy('INCOMING_ID','DESC') 
+                ->select('dc_incoming_feeder.INCOMING_ID')
+                ->paginate(12);
             } 
+            $data = [];
+            foreach($result as $r){
+                $id = $r['INCOMING_ID'];
+                $name = $r['INCOMING_ID'];
+
+            }
             $total_records=Dc_incoming_feeder::count(); 
             return response()->json(array( 
                 'status' => true, 
@@ -46,5 +54,8 @@ class DcIncomingFeederController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+    public function single($id){
+
     }
 }

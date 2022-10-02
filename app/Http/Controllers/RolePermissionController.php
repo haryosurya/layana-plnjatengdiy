@@ -28,7 +28,7 @@ class RolePermissionController extends AccountBaseController
         abort_403(user()->permission('manage_role_permission_setting') != 'all');
 
         $this->roles = Role::withCount('roleuser')
-            // ->where('name', '<>', 'admin')
+            ->where('name', '<>', 'admin')
             ->orderBy('id', 'asc')
             ->get();
 
@@ -111,8 +111,15 @@ class RolePermissionController extends AccountBaseController
     {
         $roleId = request('roleId');
         $this->role = Role::with('permissions')->find($roleId);
- 
-        $this->modulesData = Module::with('permissions')->withCount('customPermissions')->get(); 
+
+        if ($this->role->name == 'client') {
+            $clientModules = ModuleSetting::where('type', 'client')->get()->pluck('module_name');
+            $this->modulesData = Module::with('permissions')->withCount('customPermissions')
+                ->whereIn('module_name', $clientModules)->get();
+
+        } else {
+            $this->modulesData = Module::with('permissions')->withCount('customPermissions')->get();
+        }
 
         $html = view('role-permissions.ajax.permissions', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'html' => $html]);
@@ -208,11 +215,7 @@ class RolePermissionController extends AccountBaseController
         case 'employee':
             $rolePermissionsArray = PermissionRole::employeeRolePermissions();
                 break;
-
-        case 'client':
-            $rolePermissionsArray = PermissionRole::clientRolePermissions();
-                break;
-            
+ 
         default:
                 return Reply::error(__('messages.permissionDenied'));
         }
@@ -248,17 +251,5 @@ class RolePermissionController extends AccountBaseController
         return Reply::success(__('messages.recordSaved'));
 
     }
-    public function newperms(Request $request, $id)
-    {
-        $this->editPermission = user()->permission('manage_client_category');
-        abort_403 ($this->editPermission != 'all');
 
-        $category = Role::find($id);
-        $category->category_name = strip_tags($request->category_name);
-        $category->save();
-
-        $categoryData = Role::all();
-
-        return Reply::successWithData(__('messages.updatedSuccessfully'), ['data' => $categoryData]);
-    }
 }

@@ -15,7 +15,7 @@ class CreateSmMeterGiTable extends Migration
     {
         Schema::create('sm_meter_gi', function (Blueprint $table) {
             $table->integer('OUTGOING_METER_ID', true);
-            $table->integer('OUTGOING_ID')->nullable();
+            $table->integer('OUTGOING_ID');
             $table->decimal('IA')->nullable();
             $table->dateTime('IA_TIME')->nullable();
             $table->decimal('IB')->nullable();

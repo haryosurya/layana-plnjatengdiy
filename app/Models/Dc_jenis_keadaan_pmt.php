@@ -5,8 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Dc_jenis_keadaan_pmt
+ *
  * @property int $JENIS_KEADAAN_PMT_ID
  * @property string $JENIS_KEADAAN_PMT
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_jenis_keadaan_pmt newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_jenis_keadaan_pmt newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_jenis_keadaan_pmt query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_jenis_keadaan_pmt whereJENISKEADAANPMT($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_jenis_keadaan_pmt whereJENISKEADAANPMTID($value)
+ * @mixin \Eloquent
  */
 class Dc_jenis_keadaan_pmt extends BaseModel
 {

@@ -101,7 +101,7 @@ class EmployeesDataTable extends BaseDataTable
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
 
-                $action .= '<a href="' . route('employees.show', [$row->id]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                $action .= '<a href="' . route('employees.show', [$row->id]) . '" class="dropdown-item openRightModal"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
 
                 if ($this->editEmployeePermission == 'all'
                     || ($this->editEmployeePermission == 'added' && user()->id == $row->added_by)
@@ -185,7 +185,7 @@ class EmployeesDataTable extends BaseDataTable
             ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->select('users.id', 'employee_details.added_by', 'users.name', 'users.email', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', DB::raw('(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`'), DB::raw('(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`'), 'designations.name as designation_name', 'employee_details.employee_id')
-            ->where('roles.name', '<>', 'client');
+            ;
 
         if ($request->status != 'all' && $request->status != '') {
 

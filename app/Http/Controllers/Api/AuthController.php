@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Exists;
 use RefreshTokenRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -39,82 +40,48 @@ class AuthController extends ApiBaseController
         ]);
     } 
     public function login(LoginRequest $request)
-    {
-        
-        // Modifications to this function may also require modifications to
-        // $email = $request->get('email');
-        // $password = $request->get('password');
-        // $days =  365;
-        // $minutes =  60 * 60 * $days;
-        // config()->set('jwt.ttl', $minutes);
-        // $claims = ['exp' => (int)Carbon::now()->addYear()->getTimestamp(), 'remember' => 1, 'type' => 1];
-
-        // $token = auth()->claims($claims)->attempt(['email' => $email, 'password' => $password]);
-        // // $token = auth()->claims($claims)->attempt(['email' => $email, 'password' => $password]);
- 
-        // if ($token) {
-        //     $user = User::where('email', $email)->first();
-
-        //     if ($user && $user->status === 'deactive') {
-        //         $exception = new ApiException('User account disabled', null, 403, 403, 2015);
-        //         return ApiResponse::exception($exception);
-        //     } 
-        //     /** @var Admin $user */
-        //     $user = auth()->user();
- 
-        //     //          $payload = auth()->payload();
-
-        //     $expire = \Carbon\Carbon::now()->addYear(1);
-        //     return ApiResponse::make('Logged in successfully', [
-        //         // 'token' => $token,
-        //         'token' => $user->createToken('token-auth')->plainTextToken,
-        //         'user' => $user->load('roles', 'roles.perms', 'roles.permissions'),
-        //         'expires' => $expire,
-        //         'expires_in' => auth()->factory()->getTTL(),
-        //     ]);
-        // }
-
-        // $exception = new ApiException('Wrong credentials provided', null, 403, 403, 2001);
-        // return ApiResponse::exception($exception);
-        try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
-
-            if($validateUser->fails()){
+    { 
+            try {
+                $validateUser = Validator::make($request->all(), 
+                [
+                    'email' => 'required|email',
+                    'password' => 'required'
+                ]);
+    
+                if($validateUser->fails()){
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'validation error',
+                        'errors' => $validateUser->errors()
+                    ], 401);
+                }
+    
+                if(!Auth::attempt($request->only(['email', 'password']))){
+                    $user = auth()->user();
+    
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Email & Password does not match with our record.',
+                    ], 401);
+                }
+    
+                $user = User::where('email', $request->email)->first();
+                // \Auth::logoutOtherDevices($request->password);
+                \Auth::user()->tokens()->delete();  
+                // Auth::user()->currentAccessToken()->delete();
+                return response()->json([
+                    'status' => true,
+                    'token' => $user->createToken('token-auth')->plainTextToken,
+                    'user' => $user->load('roles', 'roles.perms', 'roles.permissions'),
+                    'message' => 'User Logged In Successfully', 
+                ], 200);
+    
+            } catch (\Throwable $th) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            if(!Auth::attempt($request->only(['email', 'password']))){
-                $user = auth()->user();
-
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
-                ], 401);
-            }
-
-            $user = User::where('email', $request->email)->first();
-            return response()->json([
-                'status' => true,
-                'token' => $user->createToken('token-auth')->plainTextToken,
-                'user' => $user->load('roles', 'roles.perms', 'roles.permissions'),
-                'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+                    'message' => $th->getMessage()
+                ], 500);
+            } 
     }
 
     public function logout()
@@ -183,26 +150,33 @@ class AuthController extends ApiBaseController
   
     public function me()
     {
-        try{
-            if (auth()->user()){
-                $user = Auth::user();
+        if (auth('sanctum')->check()){
+
+            try{
+                if (auth()->user()){
+                    $user = Auth::user();
+                    return response()->json([
+                        'status' => true, 
+                        'message' =>'Authenticated',
+                        'user' => $user,
+                        'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
+                    ]);
+                }
+                else{
+                    return ApiResponse::make([
+                    'status' => false,
+                    'message'=>'Unauthenticated']);
+                }
+            } catch (\Throwable $th) {
                 return response()->json([
-                    'status' => true, 
-                    'message' =>'Authenticated',
-                    'user' => $user,
-                    'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
-                ]);
+                    'status' => false,
+                    'message' => $th->getMessage()
+                ], 500);
             }
-            else{
-                return ApiResponse::make([
-                'status' => false,
-                'message'=>'Unauthenticated']);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+        }        
+        else{ 
+            return response()->json(['status'=>false,'Unauthenticated.',200]);
         }
+
     }
 }

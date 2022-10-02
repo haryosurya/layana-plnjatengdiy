@@ -427,3 +427,61 @@ if (!function_exists('isRunningTests')) {
     }
 
 }
+
+if (!function_exists('abort_403')) {
+
+    /**
+     * @param mixed $condition
+     */
+
+    // @codingStandardsIgnoreLine
+    function abort_403($condition)
+    {
+        abort_if($condition, 403, __('messages.permissionDenied'));
+    }
+
+}
+
+if (!function_exists('sidebar_user_perms')) {
+
+    // @codingStandardsIgnoreLine
+    function sidebar_user_perms()
+    {
+        if (!session()->has('sidebar_user_perms')) {
+
+            $sidebarPermissionsArray = [ 
+                'view_employees', 
+                'view_gardu',
+                'view_incoming_feeder',
+                'manage_company_setting',
+                'add_employees', 
+            ];
+
+            $sidebarPermissions = Permission::whereIn('name', $sidebarPermissionsArray)->select('id', 'name')->orderBy('id', 'asc')->get();
+
+            $sidebarPermissionsId = $sidebarPermissions->pluck('id')->toArray();
+
+            $sidebarUserPermissionType = UserPermission::where('user_id', user()->id)
+            ->whereIn('permission_id', $sidebarPermissionsId)
+            ->orderBy('id', 'asc')
+            ->groupBy(['user_id', 'permission_id', 'permission_type_id'])
+            ->get()->pluck('permission_type_id')->toArray();
+
+            $sidebarUserPermissions = [];
+
+            foreach ($sidebarPermissionsArray as $key => $value) {
+                $sidebarUserPermissions[$value] = 'none';
+            }
+
+            if (count($sidebarUserPermissionType) == count($sidebarPermissions->pluck('name')->toArray())) {
+                $sidebarUserPermissions = array_combine($sidebarPermissions->pluck('name')->toArray(), $sidebarUserPermissionType);
+            }
+
+            session(['sidebar_user_perms' => $sidebarUserPermissions]);
+        }
+
+        return session('sidebar_user_perms');
+
+    }
+
+}

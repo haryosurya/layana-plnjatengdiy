@@ -8,3 +8,10 @@
     API Data Inspeksi(Form post dan get)
     API Data User
     API Beranda
+
+    dcc ??
+
+Diganti dengan jumlah penyulang yang posisinya close. Perhitungannya dari table dc_cubicle, colom SCB & SCB_INV. Yang di hitung adalah SCB = 1 SCB_INV = 0 dan SCB = 0 SCB_INV = 1.
+Tampilannya menjadi “XXX Penyulang Operasi”
+
+REKAP PMT = grafik = kalkulasi berdasarkan histori 100 OUTGOING / SM_METER

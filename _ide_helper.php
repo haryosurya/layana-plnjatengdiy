@@ -24314,7 +24314,8 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
-            class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {} 
+            class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {}
+            class PDF extends \Barryvdh\DomPDF\Facade\Pdf {}
             class Msg91 extends \Craftsys\Msg91\Facade\Msg91 {}
             class PushNotification extends \Edujugon\PushNotification\Facades\PushNotification {}
             class Flare extends \Facade\Ignition\Facades\Flare {}

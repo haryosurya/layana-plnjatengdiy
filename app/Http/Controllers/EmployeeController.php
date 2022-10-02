@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\EmployeesDataTable;
+use App\Helper\Files;
 use App\Helper\Reply;
 use App\Http\Requests\Admin\Employee\StoreRequest;
+use App\Http\Requests\Admin\Employee\UpdateRequest;
 use App\Models\Designation;
 use App\Models\EmployeeDetails;
 use App\Models\Role;
 use App\Models\RoleUser;
+use App\Models\Team;
 use App\Models\User;
 use Artisan;
 use Carbon\Carbon;
-use Request;
-
+use DB;
+// use Request;
+use Illuminate\Http\Request;
 class EmployeeController extends AccountBaseController
 {
 
@@ -59,6 +63,7 @@ class EmployeeController extends AccountBaseController
         $addPermission = user()->permission('add_employees');
         abort_403(!in_array($addPermission, ['all', 'added']));
 
+        $this->teams = Team::all();
  
         $this->designations = Designation::allDesignations();
  
@@ -66,9 +71,9 @@ class EmployeeController extends AccountBaseController
 
         $employee = new EmployeeDetails();
 
-        if (!empty($employee->getCustomFieldGroupsWithFields())) {
-            $this->fields = $employee->getCustomFieldGroupsWithFields()->fields;
-        }
+        // if (!empty($employee->getCustomFieldGroupsWithFields())) {
+        //     $this->fields = $employee->getCustomFieldGroupsWithFields()->fields;
+        // }
 
         if (request()->ajax()) {
             $html = view('employees.ajax.create', $this->data)->render();
@@ -121,60 +126,31 @@ class EmployeeController extends AccountBaseController
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
-            $user->mobile = $request->mobile;
-            $user->country_id = $request->country;
+            $user->mobile = $request->mobile; 
             $user->gender = $request->gender;
 
             if ($request->has('login')) {
                 $user->login = $request->login;
             }
-
-            if ($request->has('sendMail')) {
-                $user->email_notifications = $request->sendMail == 'yes' ? 1 : 0;
-            }
-
+ 
             if ($request->hasFile('image')) {
                 Files::deleteFile($user->image, 'avatar');
                 $user->image = Files::upload($request->image, 'avatar', 300);
             }
+ 
 
-            if ($request->has('telegram_user_id')) {
-                $user->telegram_user_id = $request->telegram_user_id;
-            }
-
-            $user->save();
-
-            $tags = json_decode($request->tags);
-
-            if (!empty($tags)) {
-                foreach ($tags as $tag) {
-                    // check or store skills
-                    $skillData = Skill::firstOrCreate(['name' => strtolower($tag->value)]);
-
-                    // Store user skills
-                    $skill = new EmployeeSkill();
-                    $skill->user_id = $user->id;
-                    $skill->skill_id = $skillData->id;
-                    $skill->save();
-                }
-            }
-
+            $user->save(); 
             if ($user->id) {
                 $employee = new EmployeeDetails();
                 $employee->user_id = $user->id;
                 $this->employeeData($request, $employee);
                 $employee->save();
-
-                // To add custom fields data
-                if ($request->get('custom_fields_data')) {
-                    $employee->updateCustomFieldData($request->get('custom_fields_data'));
-                }
+ 
             }
 
             $employeeRole = Role::where('name', 'employee')->first();
             $user->attachRole($employeeRole);
-            $user->assignUserRolePermission($employeeRole->id);
-            $this->logSearchEntry($user->id, $user->name, 'employees.show', 'employee');
+            $user->assignUserRolePermission($employeeRole->id); 
 
             // Commit Transaction
             DB::commit();
@@ -186,7 +162,11 @@ class EmployeeController extends AccountBaseController
         } catch (\Exception $e) {
             // Rollback Transaction
             DB::rollback();
-            return Reply::error('Some error occurred when inserting the data. Please try again or contact support');
+            // return Reply::error('Some error occurred when inserting the data. Please try again or contact support');
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
 
         return Reply::successWithData(__('messages.employeeAdded'), ['redirectUrl' => route('employees.index')]);
@@ -242,19 +222,10 @@ class EmployeeController extends AccountBaseController
         || ($this->editPermission == 'both' && ($this->employee->id == user()->id || $this->employee->employeeDetail->added_by == user()->id))
         ));
 
-        $this->pageTitle = __('app.update') . ' ' . __('app.employee');
-        $this->skills = Skill::all()->pluck('name')->toArray();
+        $this->pageTitle = __('app.update') . ' ' . __('app.employee'); 
         $this->teams = Team::allDepartments();
-        $this->designations = Designation::allDesignations();
-        $this->countries = Country::all();
-
-        if (!is_null($this->employee->employeeDetail)) {
-            $this->employeeDetail = $this->employee->employeeDetail->withCustomFields();
-
-            if (!empty($this->employeeDetail->getCustomFieldGroupsWithFields())) {
-                $this->fields = $this->employeeDetail->getCustomFieldGroupsWithFields()->fields;
-            }
-        }
+        $this->designations = Designation::allDesignations(); 
+ 
 
         if (request()->ajax()) {
             $html = view('employees.ajax.edit', $this->data)->render();
@@ -285,8 +256,7 @@ class EmployeeController extends AccountBaseController
             $user->password = bcrypt($request->password);
         }
 
-        $user->mobile = $request->mobile;
-        $user->country_id = $request->country;
+        $user->mobile = $request->mobile; 
         $user->gender = $request->gender;
 
         if (request()->has('status')) {
@@ -296,10 +266,7 @@ class EmployeeController extends AccountBaseController
         if($id != user()->id){
             $user->login = $request->login;
         }
-
-        if ($request->has('sendMail')) {
-            $user->email_notifications = $request->sendMail == 'yes' ? 1 : 0;
-        }
+ 
 
         if ($request->image_delete == 'yes') {
             Files::deleteFile($user->image, 'avatar');
@@ -317,23 +284,7 @@ class EmployeeController extends AccountBaseController
         }
 
         $user->save();
-
-        $tags = json_decode($request->tags);
-
-        if (!empty($tags)) {
-            EmployeeSkill::where('user_id', $user->id)->delete();
-
-            foreach ($tags as $tag) {
-                // Check or store skills
-                $skillData = Skill::firstOrCreate(['name' => strtolower($tag->value)]);
-
-                // Store user skills
-                $skill = new EmployeeSkill();
-                $skill->user_id = $user->id;
-                $skill->skill_id = $skillData->id;
-                $skill->save();
-            }
-        }
+ 
 
         $employee = EmployeeDetails::where('user_id', '=', $user->id)->first();
 
@@ -351,11 +302,7 @@ class EmployeeController extends AccountBaseController
         }
 
         $employee->save();
-
-        // To add custom fields data
-        if ($request->get('custom_fields_data')) {
-            $employee->updateCustomFieldData($request->get('custom_fields_data'));
-        }
+ 
 
         if (user()->id == $user->id) {
             session()->forget('user');
@@ -379,14 +326,7 @@ class EmployeeController extends AccountBaseController
         if ($user->id == 1) {
             return Reply::error(__('messages.adminCannotDelete'));
         }
-
-        $universalSearches = UniversalSearch::where('searchable_id', $id)->where('module_type', 'employee')->get();
-
-        if ($universalSearches) {
-            foreach ($universalSearches as $universalSearch) {
-                UniversalSearch::destroy($universalSearch->id);
-            }
-        }
+  
 
         User::withoutGlobalScope('active')->where('id', $id)->delete();
         return Reply::success(__('messages.employeeDeleted'));
@@ -401,7 +341,7 @@ class EmployeeController extends AccountBaseController
      */
     public function show($id)
     {
-        $this->employee = User::with(['employeeDetail', 'employeeDetail.designation', 'employeeDetail.department', 'leaveTypes', 'country', 'emergencyContacts'])->withoutGlobalScope('active')->with('employee')->withCount('member', 'agents', 'openTasks')->findOrFail($id);
+        $this->employee = User::with(['employeeDetail', 'employeeDetail.designation', 'employeeDetail.department'])->withoutGlobalScope('active')->with('employee')->findOrFail($id);
 
         $this->viewPermission = user()->permission('view_employees');
 
@@ -417,93 +357,13 @@ class EmployeeController extends AccountBaseController
         ));
 
         $this->pageTitle = ucfirst($this->employee->name);
-
-        if (!is_null($this->employee->employeeDetail)) {
-            $this->employeeDetail = $this->employee->employeeDetail->withCustomFields();
-
-            if (!empty($this->employeeDetail->getCustomFieldGroupsWithFields())) {
-                $this->fields = $this->employeeDetail->getCustomFieldGroupsWithFields()->fields;
-            }
-        }
-
-        $taskBoardColumn = TaskboardColumn::completeColumn();
-
-        $this->taskCompleted = Task::join('task_users', 'task_users.task_id', '=', 'tasks.id')
-            ->where('task_users.user_id', $id)
-            ->where('tasks.board_column_id', $taskBoardColumn->id)
-            ->count();
-
-        $hoursLogged = ProjectTimeLog::where('user_id', $id)->sum('total_minutes');
-        $breakMinutes = ProjectTimeLogBreak::userBreakMinutes($id);
-
-        $timeLog = intdiv($hoursLogged - $breakMinutes, 60);
-
-        $this->hoursLogged = $timeLog;
-
-        $this->activities = UserActivity::where('user_id', $id)->orderBy('id', 'desc')->get();
-
-        $this->fromDate = Carbon::now()->timezone($this->global->timezone)->startOfMonth()->toDateString();
-        $this->toDate = Carbon::now()->timezone($this->global->timezone)->toDateString();
-
-        $this->lateAttendance = Attendance::whereBetween(DB::raw('DATE(`clock_in_time`)'), [$this->fromDate, $this->toDate])
-            ->where('late', 'yes')->where('user_id', $id)->count();
-
-        $this->leavesTaken = Leave::
-            selectRaw('count(*) as count, SUM(if(duration="half day", 1, 0)) AS halfday')
-            ->where('user_id', $id)
-            ->where('status', 'approved')
-            ->whereBetween(DB::raw('DATE(`leave_date`)'), [$this->fromDate, $this->toDate])
-            ->first();
-
-        $this->leavesTaken = (!is_null($this->leavesTaken)) ? $this->leavesTaken->count - ($this->leavesTaken->halfday * 0.5) : 0;
-
-        $this->taskChart = $this->taskChartData($id);
-        $this->ticketChart = $this->ticketChartData($id);
-
-        $tab = request('tab');
-
-        switch ($tab) {
-        case 'projects':
-            return $this->projects();
-        case 'tasks':
-            return $this->tasks();
-        case 'leaves':
-            return $this->leaves();
-        case 'timelogs':
-            return $this->timelogs();
-        case 'documents':
-            $this->view = 'employees.ajax.documents';
-            break;
-        case 'emergency-contacts':
-            $this->view = 'employees.ajax.emergency-contacts';
-            break;
-        case 'leaves-quota':
-            $this->leaveTypes = LeaveType::byUser($id);
-            $this->leavesTakenByUser = Leave::byUserCount($id);
-            $this->allowedLeaves = $this->employee->leaveTypes->sum('no_of_leaves');
-            $this->employeeLeavesQuota = $this->employee->leaveTypes;
-            $this->employeeLeavesQuotas = User::with('leaveTypes', 'leaveTypes.leaveType')->withoutGlobalScope('active')->findOrFail($id)->leaveTypes;
-            $this->view = 'employees.ajax.leaves_quota';
-                break;
-        case 'permissions':
-            abort_403(user()->permission('manage_role_permission_setting') != 'all');
-
-            $this->modulesData = Module::with('permissions')->withCount('customPermissions')->get();
-            $this->view = 'employees.ajax.permissions';
-            break;
-        default:
-            $this->view = 'employees.ajax.profile';
-            break;
-        }
-
+ 
         if (request()->ajax()) {
-            $html = view($this->view, $this->data)->render();
+            $html = view('employees.ajax.profile', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
         }
 
-        $this->activeTab = ($tab == '') ? 'profile' : $tab;
-
-        return view('employees.show', $this->data);
+        return view('employees.create', $this->data);
 
     }
 
@@ -564,99 +424,7 @@ class EmployeeController extends AccountBaseController
 
         return Reply::dataOnly(['status' => 'success', 'data' => $options]);
     }
-
-    public function projects()
-    {
-
-        $viewPermission = user()->permission('view_employee_projects');
-        abort_403(!in_array($viewPermission, ['all']));
-
-        $tab = request('tab');
-        $this->activeTab = ($tab == '') ? 'profile' : $tab;
-        $this->view = 'employees.ajax.projects';
-
-        $dataTable = new ProjectsDataTable();
-        return $dataTable->render('employees.show', $this->data);
-
-    }
-
-    public function tasks()
-    {
-        $viewPermission = user()->permission('view_employee_tasks');
-        abort_403(!in_array($viewPermission, ['all']));
-
-        $tab = request('tab');
-        $this->activeTab = ($tab == '') ? 'profile' : $tab;
-        $this->taskBoardStatus = TaskboardColumn::all();
-        $this->view = 'employees.ajax.tasks';
-
-        $dataTable = new TasksDataTable();
-        return $dataTable->render('employees.show', $this->data);
-    }
-
-    public function leaves()
-    {
-
-        $viewPermission = user()->permission('view_leaves_taken');
-        abort_403(!in_array($viewPermission, ['all']));
-
-        $tab = request('tab');
-        $this->activeTab = ($tab == '') ? 'profile' : $tab;
-        $this->leaveTypes = LeaveType::all();
-        $this->view = 'employees.ajax.leaves';
-
-        $dataTable = new LeaveDataTable();
-        return $dataTable->render('employees.show', $this->data);
-    }
-
-    public function timelogs()
-    {
-
-        $viewPermission = user()->permission('view_employee_timelogs');
-        abort_403(!in_array($viewPermission, ['all']));
-
-        $tab = request('tab');
-        $this->activeTab = ($tab == '') ? 'profile' : $tab;
-        $this->view = 'employees.ajax.timelogs';
-
-        $dataTable = new TimeLogsDataTable();
-        return $dataTable->render('employees.show', $this->data);
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function inviteMember()
-    {
-        abort_403(!in_array(user()->permission('add_employees'), ['all']));
-
-        return view('employees.ajax.invite_member', $this->data);
-
-    }
-
-    /**
-     * XXXXXXXXXXX
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sendInvite(InviteEmailRequest $request)
-    {
-        $emails = json_decode($request->email);
-
-        if (!empty($emails)) {
-            foreach ($emails as $email) {
-                $invite = new UserInvitation();
-                $invite->user_id = user()->id;
-                $invite->email = $email->value;
-                $invite->message = $request->message;
-                $invite->invitation_type = 'email';
-                $invite->invitation_code = sha1(time() . user()->id);
-                $invite->save();
-            }
-        }
-
-        return Reply::success(__('messages.inviteEmailSuccess'));
-    }
+ 
 
     /**
      * XXXXXXXXXXX
@@ -682,12 +450,11 @@ class EmployeeController extends AccountBaseController
     public function employeeData($request, $employee): void
     {
         $employee->employee_id = $request->employee_id;
-        $employee->address = $request->address;
-        $employee->hourly_rate = $request->hourly_rate;
-        $employee->slack_username = $request->slack_username;
+        $employee->address = $request->address;  
         $employee->department_id = $request->department;
         $employee->designation_id = $request->designation;
         $employee->joining_date = Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d');
+        $employee->place_of_birth = $request->place_of_birth;
         $employee->date_of_birth = $request->date_of_birth ? Carbon::createFromFormat($this->global->date_format, $request->date_of_birth)->format('Y-m-d') : null;
     }
 

@@ -240,7 +240,8 @@ return array(
     'onlyAllow' => 'Only allow email addresses with domain ',
     'message' => 'Add a message (optional)',
     'exEmployee' => 'Ex employee',
-    'dateOfBirth' => 'Date of Birth'
+    'dateOfBirth' => 'Date of Birth',
+    'placeOfBirth' => 'Place of Birth'
   ),
   'projects' => array(
     'addNewProject' => 'Add New Project',

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\Team;
 
-use App\Models\Dc_apj;
-use InfyOm\Generator\Request\APIRequest;
+use App\Http\Requests\CoreRequest;
 
-class CreateDc_apjAPIRequest extends APIRequest
+class StoreDepartment extends CoreRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,6 +24,9 @@ class CreateDc_apjAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return Dc_apj::$rules;
+        return [
+            'team_name' => 'required|unique:teams'
+        ];
     }
+
 }

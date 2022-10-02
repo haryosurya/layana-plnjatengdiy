@@ -5,6 +5,143 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Setting
+ *
+ * @property int $id
+ * @property string $company_name
+ * @property string $company_email
+ * @property string $company_phone
+ * @property string|null $logo
+ * @property string|null $login_background
+ * @property string $address
+ * @property string|null $website
+ * @property string $timezone
+ * @property string $date_format
+ * @property string|null $date_picker_format
+ * @property string|null $moment_format
+ * @property string $time_format
+ * @property string $locale
+ * @property string $latitude
+ * @property string $longitude
+ * @property string $leaves_start_from
+ * @property string $active_theme
+ * @property string|null $google_map_key
+ * @property string $task_self
+ * @property string $weather_key
+ * @property string|null $purchase_code
+ * @property string|null $supported_until
+ * @property string $google_recaptcha_status
+ * @property string $google_recaptcha_v2_status
+ * @property string|null $google_recaptcha_v2_site_key
+ * @property string|null $google_recaptcha_v2_secret_key
+ * @property string $google_recaptcha_v3_status
+ * @property string|null $google_recaptcha_v3_site_key
+ * @property string|null $google_recaptcha_v3_secret_key
+ * @property int $app_debug
+ * @property int $rounded_theme
+ * @property int $hide_cron_message
+ * @property int $system_update
+ * @property string $logo_background_color
+ * @property int $before_days
+ * @property int $after_days
+ * @property int $show_review_modal
+ * @property int $dashboard_clock
+ * @property int $ticket_form_google_captcha
+ * @property int $lead_form_google_captcha
+ * @property int $taskboard_length
+ * @property string|null $last_cron_run
+ * @property string|null $favicon
+ * @property string $auth_theme
+ * @property string|null $light_logo
+ * @property string $sidebar_logo_style
+ * @property string $session_driver
+ * @property int $allow_client_signup
+ * @property int $admin_client_signup_approval
+ * @property string|null $allowed_file_types
+ * @property string $google_calendar_status
+ * @property string|null $google_client_id
+ * @property string|null $google_client_secret
+ * @property string $google_calendar_verification_status
+ * @property string|null $google_id
+ * @property string|null $name
+ * @property string|null $token
+ * @property int $allowed_file_size
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $dark_logo_url
+ * @property-read mixed $favicon_url
+ * @property-read mixed $light_logo_url
+ * @property-read mixed $login_background_url
+ * @property-read mixed $logo_url
+ * @property-read mixed $moment_date_format
+ * @property-read mixed $show_public_message
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereActiveTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAdminClientSignupApproval($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAfterDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAllowClientSignup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAllowedFileSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAllowedFileTypes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAppDebug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereAuthTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereBeforeDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCompanyEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCompanyName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCompanyPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereDashboardClock($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereDateFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereDatePickerFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereFavicon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleCalendarStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleCalendarVerificationStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleClientSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleMapKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV2SecretKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV2SiteKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV2Status($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV3SecretKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV3SiteKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereGoogleRecaptchaV3Status($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereHideCronMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLastCronRun($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLeadFormGoogleCaptcha($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLeavesStartFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLightLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLoginBackground($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLogoBackgroundColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereMomentFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting wherePurchaseCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereRoundedTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereSessionDriver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereShowReviewModal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereSidebarLogoStyle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereSupportedUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereSystemUpdate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereTaskSelf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereTaskboardLength($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereTicketFormGoogleCaptcha($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereTimeFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereWeatherKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereWebsite($value)
+ * @mixin \Eloquent
+ */
 class Setting extends BaseModel
 {
     protected $table = 'organisation_settings';

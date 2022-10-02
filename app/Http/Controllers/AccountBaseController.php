@@ -82,7 +82,7 @@ class AccountBaseController extends Controller
                 $this->checkListCompleted = $checkListCompleted;
             }
 
-            // $this->sidebarUserPermissions = sidebar_user_perms();
+            $this->sidebarUserPermissions = sidebar_user_perms();
 
             return $next($request);
         });
@@ -94,12 +94,11 @@ class AccountBaseController extends Controller
      */
     public function logUserActivity($userId, $text)
     {
-        // $activity = new UserActivity();
-        // $activity->user_id = $userId;
-        // $activity->activity = $text;
-        // $activity->save();
-    }
-  
+        $activity = new UserActivity();
+        $activity->user_id = $userId;
+        $activity->activity = $text;
+        $activity->save();
+    } 
 
     // public function triggerPusher($channel, $event, $data)
     // {

@@ -23,9 +23,7 @@
         @if (user()->permission('manage_company_setting') == 'all')
             <x-setting-menu-item :active="$activeMenu" menu="company_settings" :href="route('company-settings.index')"
                 :text="__('app.menu.accountSettings')" />
-
-            <x-setting-menu-item :active="$activeMenu" menu="business_address" :href="route('business-address.index')"
-                :text="__('app.menu.businessAddresses')" />
+ 
         @endif
 
         @if (user()->permission('manage_app_setting') == 'all')

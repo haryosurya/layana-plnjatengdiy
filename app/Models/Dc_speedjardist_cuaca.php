@@ -5,8 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Dc_speedjardist_cuaca
+ *
  * @property int $ID_CUACA
  * @property string $CUACA_NAME
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_speedjardist_cuaca newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_speedjardist_cuaca newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_speedjardist_cuaca query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_speedjardist_cuaca whereCUACANAME($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_speedjardist_cuaca whereIDCUACA($value)
+ * @mixin \Eloquent
  */
 class Dc_speedjardist_cuaca extends BaseModel
 {

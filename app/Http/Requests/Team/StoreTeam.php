@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\Team;
 
-use App\Models\Dc_apj;
-use InfyOm\Generator\Request\APIRequest;
+use App\Http\Requests\CoreRequest;
 
-class UpdateDc_apjAPIRequest extends APIRequest
+class StoreTeam extends CoreRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,8 +24,16 @@ class UpdateDc_apjAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Dc_apj::$rules;
-        
-        return $rules;
+        return [
+            'team_name' => 'required'
+        ];
     }
+
+    public function messages()
+    {
+        return [
+            'team_name.required' => __('app.team').' '.__('app.required')
+        ];
+    }
+
 }

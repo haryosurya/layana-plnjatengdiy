@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Dc_gardu_induk
+ *
  * @property int $GARDU_INDUK_ID
  * @property int $APJ_ID
  * @property string $GARDU_INDUK_NAMA
@@ -20,6 +22,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $BATAS_TEGANGAN_ATAS
  * @property DcApj $dcApj
  * @property DcIncomingFeeder[] $dcIncomingFeeders
+ * @property-read int|null $dc_incoming_feeders_count
+ * @property-read \App\Models\Dc_apj|null $dc_apj
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereAPJID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereBATASTEGANGANATAS($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereBATASTEGANGANBAWAH($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKALAMAT($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKALIAS($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKALIASROPO($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKKODE($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKNAMA($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereGARDUINDUKRTUID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereNAMAALIASGARDUINDUK($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk wherePEMELIHARAANGI($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dc_gardu_induk whereUPTID($value)
+ * @mixin \Eloquent
  */
 class Dc_gardu_induk extends BaseModel
 {
@@ -45,7 +66,7 @@ class Dc_gardu_induk extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function dcApj()
+    public function dc_apj()
     {
         return $this->belongsTo( Dc_apj::class,  'APJ_ID', 'APJ_ID');
     }
