@@ -13,6 +13,8 @@ class AddForeignKeysToDcOperasiPmtScadaTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0'); 
+
         Schema::table('dc_operasi_pmt_scada', function (Blueprint $table) {
             $table->foreign(['JARAK_GANGGUAN'], 'FK_JARAK_GGN_OPS_PMT_SCADA')->references(['ID_JARAK_GANGGUAN'])->on('dc_speedjardist_jarakgangguan');
             $table->foreign(['UPJ_ID'], 'FK_UPJ_ID_OPS_PMT_SCADA')->references(['UPJ_ID'])->on('dc_upj');
@@ -21,6 +23,8 @@ class AddForeignKeysToDcOperasiPmtScadaTable extends Migration
             $table->foreign(['ID_TIPE_GANGGUAN'], 'FK_TIPE_INDIKASI_OPS_PMT_SCADA')->references(['ID_TIPE_GANGGUAN'])->on('dc_tipe_gangguan');
             $table->foreign(['CUACA'], 'FK_CUACA_OPS_PMT_SCADA')->references(['ID_CUACA'])->on('dc_speedjardist_cuaca');
         });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1'); 
+
     }
 
     /**
