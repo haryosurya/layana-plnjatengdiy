@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BebanRealtimeController;
-use App\Http\Controllers\API\DashController;
+use App\Http\Controllers\Api\DashController;
 use App\Http\Controllers\Api\Dc_apjAPIController;
 use App\Http\Controllers\Api\DcCubicleController;
 use App\Http\Controllers\Api\DcGarduIndukController;
