@@ -109,6 +109,19 @@ class CreateDcCubicleTable extends Migration
             $table->smallInteger('SCBP')->nullable();
             $table->dateTime('SCBP_TIME')->nullable();
             $table->smallInteger('SCBP_INV')->nullable();
+            $table->decimal('TEMP_A')->nullable();
+            $table->dateTime('TEMP_A_TIME')->nullable();
+            $table->decimal('TEMP_B')->nullable();
+            $table->dateTime('TEMP_B_TIME')->nullable();
+            $table->decimal('TEMP_C')->nullable();
+            $table->dateTime('TEMP_C_TIME')->nullable();
+            $table->decimal('HUMIDITY')->nullable();
+            $table->dateTime('HUMIDITY_TIME')->nullable();
+            $table->decimal('LIMIT_UPPER_TEMP')->nullable();
+            $table->decimal('LIMIT_UPPER_HUMIDITY')->nullable();
+            $table->decimal('PD_CRITICAL')->nullable();
+            $table->string('PD_LEVEL', 10)->nullable();
+            $table->dateTime('PD_TIME')->nullable();
 
             $table->unique(['INCOMING_ID', 'CUBICLE_NAME'], 'IDX_CUB_INC_UNIQUE');
         });

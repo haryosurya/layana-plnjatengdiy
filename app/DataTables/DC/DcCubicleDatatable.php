@@ -89,18 +89,27 @@ class DcCubicleDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('dc/dccubicledatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('dccubicledatatable-table') 
+            ->columns($this->getColumns())
+            ->minifiedAjax() 
+            ->destroy(true)
+            ->orderBy(2)
+            ->responsive(true)
+            ->serverSide(true)
+            ->stateSave(false)
+            ->processing(true)
+            ->language(__('app.datatable'))
+            ->parameters([
+                'initComplete' => 'function () {
+                    window.LaravelDataTables["dccubicledatatable-table"].buttons().container()
+                     .appendTo( "#table-actions")
+                 }',
+                'fnDrawCallback' => 'function( oSettings ) {
+                   //
+                   $(".select-picker").selectpicker();
+                 }',
+            ])
+            ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel')]));
     }
 
     /**

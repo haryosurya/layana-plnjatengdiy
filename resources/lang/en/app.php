@@ -99,6 +99,7 @@ return array(
     'flutterwave' => 'Flutterwave',
     'offline' => 'Offline',
     'menu' => array(
+        'cubicle'=>'Cubicle',
         'incoming-feeder'=>'Incoming Feeder',
         'gardu-induk'=>'Gardu Induk',
         'home' => 'Home',

@@ -2,19 +2,32 @@
 
 namespace App\Http\Controllers\DC;
 
+use App\DataTables\DC\DcCubicleDatatable;
+use App\Http\Controllers\AccountBaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CubicleController extends Controller
+class CubicleController extends AccountBaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pageTitle = 'app.menu.cubicle'; 
+        $this->middleware(function ($request, $next) {
+            abort_403(!(user()->permission('view_gardu') == 'all'));
+            return $next($request);
+        });
+    }
+    public function index(DcCubicleDatatable $dataTable)
     {
         //
+        return $dataTable->render('dc.cubicle.index', $this->data);
+
     }
 
     /**

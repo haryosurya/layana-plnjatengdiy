@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DC\CubicleController;
 use App\Http\Controllers\DC\GarduIndukController;
 use App\Http\Controllers\DC\IncomingFeederPMTController;
 use App\Http\Controllers\DepartmentController;
@@ -59,6 +60,7 @@ Route::get('cropper/{element}', [ImageController::class, 'cropper'])->name('crop
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('incoming-feeder',IncomingFeederPMTController::class );
     Route::resource('gardu-induk',GarduIndukController::class );
+    Route::resource('cubicle',CubicleController::class );
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('checklist', [DashboardController::class, 'checklist'])->name('checklist');
