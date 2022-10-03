@@ -60,7 +60,7 @@ class DashController extends Controller
                     ->where('SCB','=','0')
                     ->where('SCB_INV', '=', '1');
                 })
-                ->join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
+                ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
                 ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
                 ->groupBy('Dc_incoming_feeder.GARDU_INDUK_ID')->count()
                 ;
