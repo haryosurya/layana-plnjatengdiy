@@ -61,8 +61,8 @@ class DashController extends Controller
                     ->where('SCB_INV', '=', '1');
                 })
                 ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-                ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
-                ->groupBy('Dc_incoming_feeder.GARDU_INDUK_ID')->count()
+                ->leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
+                ->groupBy('dc_incoming_feeder.GARDU_INDUK_ID')->count()
                 ;
                 // Mengambil data gangguan tiap bulan. Count dari table dc-operasi_pmt_scada dengan tanggal gangguan tiap bulan.
                 // Tampilannya menjadi “XXX Gangguan pada bulan ini”
