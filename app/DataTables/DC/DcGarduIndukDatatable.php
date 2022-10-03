@@ -21,14 +21,7 @@ class DcGarduIndukDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addIndexColumn() 
-            ->addColumn('check', function ($row) {
-                if ($row->id != 1 && $row->id != user()->id) {
-                    return '<input type="checkbox" class="select-table-row" id="datatable-row-' . $row->id . '"  name="datatable_ids[]" value="' . $row->id . '" onclick="dataTableRowCheck(' . $row->id . ')">';
-                }
-
-                return '--';
-            })
+            ->addIndexColumn()  
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
 
@@ -46,7 +39,7 @@ class DcGarduIndukDatatable extends DataTable
 
                 return $action;
             })
-            ->rawColumns(['action','check']);
+            ->rawColumns(['action' ]);
     }
 
     /**
@@ -127,13 +120,7 @@ class DcGarduIndukDatatable extends DataTable
      */
     protected function getColumns()
     {
-        return [
-            'check' => [
-                'title' => '<input type="checkbox" name="select_all_table" id="select-all-table" onclick="selectAllTable(this)">',
-                'exportable' => false,
-                'orderable' => false,
-                'searchable' => false
-            ],
+        return [ 
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
             __('app.id') => ['data' => 'GARDU_INDUK_ID', 'name' => 'APJ_NAMA', 'title' => __('app.id')],
             __('modules.dc.APJ_NAMA') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.APJ_NAMA')],

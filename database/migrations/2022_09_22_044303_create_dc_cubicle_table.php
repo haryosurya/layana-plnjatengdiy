@@ -13,6 +13,8 @@ class CreateDcCubicleTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0'); 
+
         Schema::create('dc_cubicle', function (Blueprint $table) {
             $table->integer('OUTGOING_ID', true);
             $table->integer('APJ_ID')->nullable()->index('FK_APJ_ID_CUBICLE');
@@ -125,6 +127,8 @@ class CreateDcCubicleTable extends Migration
 
             $table->unique(['INCOMING_ID', 'CUBICLE_NAME'], 'IDX_CUB_INC_UNIQUE');
         });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1'); 
+
     }
 
     /**

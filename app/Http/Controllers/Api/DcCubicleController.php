@@ -89,8 +89,12 @@ class DcCubicleController extends Controller
             {
                 $lr = 'REMOTE';
             }
-            else{
+            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 1) 
+            {
                 $lr = 'LOKAL';
+            }
+            else{
+                $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
             $history_pd = Dc_inspeksi_pd::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
