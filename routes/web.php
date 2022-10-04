@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DC\CubicleController;
+use App\Http\Controllers\DC\DccController;
 use App\Http\Controllers\DC\GarduIndukController;
 use App\Http\Controllers\DC\IncomingFeederPMTController;
 use App\Http\Controllers\DepartmentController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GoogleCalendarSettingController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\LanguageSettingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModuleSettingController;
@@ -58,6 +60,7 @@ Route::get('cropper/{element}', [ImageController::class, 'cropper'])->name('crop
 /* Account routes starts from here */
  
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
+    Route::resource('dccUp3',DccController::class  );
     Route::resource('incoming-feeder',IncomingFeederPMTController::class );
     Route::resource('gardu-induk',GarduIndukController::class );
     Route::resource('cubicle',CubicleController::class );

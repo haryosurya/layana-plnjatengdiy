@@ -83,6 +83,20 @@ if (!function_exists('admin_theme')) {
 
 }
  
+if (!function_exists('employee_theme')) {
+
+    // @codingStandardsIgnoreLine
+    function employee_theme()
+    {
+        if (!session()->has('employee_theme')) {
+            session(['employee_theme' => \App\Models\ThemeSetting::where('panel', 'employee')->first()]);
+        }
+
+        return session('employee_theme');
+    }
+
+}
+
 if (!function_exists('global_setting')) {
 
     // @codingStandardsIgnoreLine
@@ -224,19 +238,19 @@ if (!function_exists('user_modules')) {
 
 // }
 
-if (!function_exists('isSeedingData')) {
+// if (!function_exists('isSeedingData')) {
 
-    /**
-     * Check if app is seeding data
-     * @return boolean
-     */
-    function isSeedingData()
-    {
-        // We set config(['app.seeding' => true]) at the beginning of each seeder. And check here
-        return config('app.seeding');
-    }
+//     /**
+//      * Check if app is seeding data
+//      * @return boolean
+//      */
+//     function isSeedingData()
+//     {
+//         // We set config(['app.seeding' => true]) at the beginning of each seeder. And check here
+//         return config('app.seeding');
+//     }
 
-}
+// }
 
 if (!function_exists('isRunningInConsoleOrSeeding')) {
 
@@ -452,6 +466,7 @@ if (!function_exists('sidebar_user_perms')) {
             $sidebarPermissionsArray = [ 
                 'view_employees', 
                 'view_gardu',
+                'view_cubicle',
                 'view_incoming_feeder',
                 'manage_company_setting',
                 'add_employees', 

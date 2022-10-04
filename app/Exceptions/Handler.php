@@ -45,7 +45,16 @@ class Handler extends ExceptionHandler
                 return redirect()->route('login');
             };
         });
+        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Not authenticated'
+                ], 401);
+            }
+        });
     }
+    
     protected function invalidJson($request, ValidationException $exception)
     {
         return response()->json([
@@ -53,4 +62,5 @@ class Handler extends ExceptionHandler
         'errors' => $exception->errors(),
         ], $exception->status);
     }
+    
 }

@@ -23,9 +23,15 @@ class DashController extends Controller
                 $vll = Dc_cubicle::sum('VLL'); 
                 $mw = Dc_cubicle::avg('IA','IB','IC');
                 $total_records= Dc_cubicle::count(); 
-                $pd_level_good = Dc_cubicle::where('PD_LEVEL','good')->count() / $total_records * 100;
-                $pd_level_mod = Dc_cubicle::where('PD_LEVEL','moderate')->count()  / $total_records * 100 ;
-                $pd_level_bad = Dc_cubicle::where('PD_LEVEL','bad')->count()  / $total_records * 100;
+                $total_records_all = Dc_cubicle::count(); 
+                $total_records_level = Dc_cubicle::
+                where('PD_LEVEL','good') 
+                ->orWhere('PD_LEVEL','moderate') 
+                ->orWhere('PD_LEVEL','bad') 
+                ->count(); 
+                $pd_level_good = Dc_cubicle::where('PD_LEVEL','good')->count() ;
+                $pd_level_mod = Dc_cubicle::where('PD_LEVEL','moderate')->count();
+                $pd_level_bad = Dc_cubicle::where('PD_LEVEL','bad')->count() ;
                 // Menampilkan total outgoing, incoming, dan gardu induk.
                 // Total Outgoing = count di table dc_cubicle.
                 // Total Incoming = count di table dc_incoming_feeder.
@@ -78,12 +84,17 @@ class DashController extends Controller
                 $result = array(
                     // 'vll'=>$vll,
                     // 'mw'=>$mw,
-                    'total_mw'=>round($vll*$mw,0),
+                    'beban_sistem'=>round($vll*$mw,0),
+                    'total_frekuensi'=>round('',0),
                     'pd_level'=> array(
                         'good'=>round($pd_level_good,2),
                         'moderate'=>round($pd_level_mod,2),
                         'bad'=>round($pd_level_bad,2)
                     ),
+                    
+                    'total_record_all' =>$total_records_all,
+                    'total_record_level' =>$total_records_level,
+                     
                     'data_penyulang' => array(
                         'total_outgoing'=>$totalOutgoing,
                         'total_incoming'=>$totalIncoming,
@@ -127,15 +138,15 @@ class DashController extends Controller
                 ->orWhere('PD_LEVEL','moderate') 
                 ->orWhere('PD_LEVEL','bad') 
                 ->count(); 
-                $pd_level_good = Dc_cubicle::where('PD_LEVEL','good')->count() / $total_records_level * 100;
-                $pd_level_mod = Dc_cubicle::where('PD_LEVEL','moderate')->count()  / $total_records_level * 100 ;
-                $pd_level_bad = Dc_cubicle::where('PD_LEVEL','bad')->count()  / $total_records_level * 100;
+                $pd_level_good = Dc_cubicle::where('PD_LEVEL','good')->count() ;
+                $pd_level_mod = Dc_cubicle::where('PD_LEVEL','moderate')->count()   ;
+                $pd_level_bad = Dc_cubicle::where('PD_LEVEL','bad')->count() ;
                    
                 $result = array( 
                     'pd_level'=> array(
-                        'good'=>round($pd_level_good,2),
-                        'moderate'=>round($pd_level_mod,2),
-                        'bad'=>round($pd_level_bad,2)
+                        'good'=>$pd_level_good,
+                        'moderate'=>$pd_level_mod,
+                        'bad'=>$pd_level_bad,
                     ),
                     'total_record_all' =>$total_records_all,
                     'total_record_level' =>$total_records_level,

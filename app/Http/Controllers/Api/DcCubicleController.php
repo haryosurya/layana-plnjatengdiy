@@ -106,14 +106,15 @@ class DcCubicleController extends Controller
                 'condition' => $condition,      
                 'lokal_remote' => $lr,
                 'total_beban' => array(
-                    'phasa_r' => '',
-                    'phasa_s' => '',
-                    'phasa_t' => '',
-                    'tegangan' => ''
+                    'phasa_r' => $result['IA'],
+                    'phasa_s' => $result['IB'],
+                    'phasa_t' => $result['IC'],
+                    'tegangan' => $result['VLL'],
                 ),
-                'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
+                'gi' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'],
                 'incoming_name' => $gi['INCOMING_NAME'],
-                'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
+                'incoming_alias' => $gi['NAMA_ALIAS_INCOMING'],
+                'combine_gardu_dan_incoming' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'].' '.$gi['NAMA_ALIAS_INCOMING'],
                 'temperatur_a' =>$gi['TEMP_A'],
                 'temperatur_b' =>$gi['TEMP_B'],
                 'temperatur_c' =>$gi['TEMP_C'],
@@ -172,5 +173,79 @@ class DcCubicleController extends Controller
         else{ 
             return response()->json(['status'=>false,'Unauthenticated.',200]);
         }
+    }
+    public function singleRealtime($id){ 
+        try{
+            $result = Dc_cubicle::where('OUTGOING_ID',$id)->first(); 
+         
+            if ($result['SCB'] == 0 && $result['SCB_INV'] == 0) 
+            {
+                $condition = 'open';
+            }
+            elseif ($result['SCB'] == 1 && $result['SCB_INV'] == 0) 
+            {
+                $condition = 'close';
+            }
+            elseif ($result['SCB'] == 0 && $result['SCB_INV'] == 1) 
+            {
+                $condition = 'close';
+            }
+            else{
+                $condition = 'open';
+            } 
+            if ($result['SLR'] == 0 && $result['SLR_INV'] == 0) 
+            {
+                $lr = 'LOKAL';
+            }
+            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 0) 
+            {
+                $lr = 'REMOTE';
+            }
+            elseif ($result['SLR'] == 0 && $result['SLR_INV'] == 1) 
+            {
+                $lr = 'REMOTE';
+            }
+            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 1) 
+            {
+                $lr = 'LOKAL';
+            }
+            else{
+                $lr = '';
+            }
+            $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
+            $history_pd = Dc_inspeksi_pd::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->limit('10')->get();
+            $history_asset = Dc_inspeksi_asset::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            return response()->json(array(    
+                'status'=>true,  
+                'topstatus' => $result['PD_LEVEL'],
+                'condition' => $condition,      
+                'lokal_remote' => $lr,
+                'total_beban' => array(
+                    'phasa_r' => '',
+                    'phasa_s' => '',
+                    'phasa_t' => '',
+                    'tegangan' => ''
+                ),
+                'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
+                'incoming_name' => $gi['INCOMING_NAME'],
+                'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
+                'temperatur_a' =>$gi['TEMP_A'],
+                'temperatur_b' =>$gi['TEMP_B'],
+                'temperatur_c' =>$gi['TEMP_C'],
+                'history_pd' => $history_pd,
+                'history_pmt' => $history_pmt,
+                'history_asset' => $history_asset,
+                // 'data' => $result, 
+                'status_code' => 200
+            ));
+        }
+        catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+
     }
 }

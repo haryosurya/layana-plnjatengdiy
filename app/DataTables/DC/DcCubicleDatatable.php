@@ -111,7 +111,7 @@ class DcCubicleDatatable extends DataTable
                 return $action;
             })
             ->addColumn('gi', function ($row) {
-                $action =  ' GI '.$row->gardu.' Incoming '.$row->incoming_name ;
+                $action =  $row->gardu.' - '.$row->incoming_name ;
 
                 return $action;
             })
@@ -144,12 +144,12 @@ class DcCubicleDatatable extends DataTable
                 'dc_cubicle.SLR_INV',
                 'dc_cubicle.PD_LEVEL',
 
-                'dc_incoming_feeder.INCOMING_NAME as incoming_name', 
+                'dc_incoming_feeder.NAMA_ALIAS_INCOMING as incoming_name', 
                 
                 'dc_apj.APJ_NAMA AS APJ_NAMA',
                 'dc_apj.APJ_DCC AS dcc',
                 'dc_apj.APJ_ALIAS AS dcc_alias', 
-                'dc_gardu_induk.GARDU_INDUK_NAMA as gardu'
+                'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK as gardu'
                 )
             ;
             if ($request->searchText != '') {

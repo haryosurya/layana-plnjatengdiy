@@ -93,8 +93,7 @@ class DcGarduIndukDatatable extends DataTable
             ->setTableId('dcgarduindukdatatable-table') 
             ->columns($this->getColumns())
             ->minifiedAjax() 
-            ->destroy(true)
-            ->orderBy(2)
+            ->destroy(true) 
             ->responsive(true)
             ->serverSide(true)
             ->stateSave(false)
@@ -123,11 +122,11 @@ class DcGarduIndukDatatable extends DataTable
         return [ 
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
             __('app.id') => ['data' => 'GARDU_INDUK_ID', 'name' => 'APJ_NAMA', 'title' => __('app.id')],
-            __('modules.dc.APJ_NAMA') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.APJ_NAMA')],
-            __('modules.dc.GARDU_INDUK_NAMA') => ['data' => 'GARDU_INDUK_NAMA', 'name' => 'GARDU_INDUK_NAMA', 'title' => __('modules.dc.GARDU_INDUK_NAMA')],
-            __('modules.dc.GARDU_INDUK_KODE') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.GARDU_INDUK_KODE')],
+            __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
+            __('modules.dc.gi') => ['data' => 'GARDU_INDUK_NAMA', 'name' => 'GARDU_INDUK_NAMA', 'title' => __('modules.dc.gi')],
+            __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],
             // __('modules.dc.GARDU_INDUK_RTU_ID') => ['data' => 'GARDU_INDUK_RTU_ID', 'name' => 'GARDU_INDUK_RTU_ID', 'title' => __('modules.dc.GARDU_INDUK_RTU_ID')], 
-            __('modules.dc.GARDU_INDUK_ALIAS') => ['data' => 'GARDU_INDUK_ALIAS', 'name' => 'GARDU_INDUK_ALIAS', 'title' => __('modules.dc.GARDU_INDUK_ALIAS')],
+            __('modules.dc.gardu-alias') => ['data' => 'NAMA_ALIAS_GARDU_INDUK', 'name' => 'NAMA_ALIAS_GARDU_INDUK', 'title' => __('modules.dc.gardu-alias')],
             // __('modules.dc.GARDU_INDUK_ALIAS_ROPO') => ['data' => 'GARDU_INDUK_ALIAS_ROPO', 'name' => 'GARDU_INDUK_ALIAS_ROPO', 'title' => __('modules.dc.GARDU_INDUK_ALIAS_ROPO')],
             // __('modules.dc.GARDU_INDUK_ALAMAT') => ['data' => 'GARDU_INDUK_ALAMAT', 'name' => 'GARDU_INDUK_ALAMAT', 'title' => __('modules.dc.GARDU_INDUK_ALAMAT')],
             // __('modules.dc.UPT_ID') => ['data' => 'UPT_ID', 'name' => 'UPT_ID', 'title' => __('modules.dc.UPT_ID')],

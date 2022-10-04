@@ -37,6 +37,7 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'employees', 'description' => 'Manage Employee'], 
             ['module_name' => 'gardu-induk', 'description' => 'Manage Gardu Induk'], 
             ['module_name' => 'incoming-feeder', 'description' => 'Manage Incoming Feeder'], 
+            ['module_name' => 'cubicle', 'description' => 'Manage Cubicle'], 
         ]);
 
         ModuleSetting::insert([
@@ -44,17 +45,24 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'employees', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'admin'],  
 
             ['module_name' => 'employees', 'status' => 'active', 'type' => 'employee'], 
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'employee'],  
         ]); 
 
         Permission::insert([
-            ['name' => 'add_incoming_feeder', 'display_name' => 'Add Incoming Feeder induk', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
-            ['name' => 'view_incoming_feeder', 'display_name' => 'View Incoming Feeder induk', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
-            ['name' => 'edit_incoming_feeder', 'display_name' => 'Edit Incoming Feeder induk', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
-            ['name' => 'delete_incoming_feeder', 'display_name' => 'Delete Incoming Feeder induk', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+            ['name' => 'add_cubicle', 'display_name' => 'Add Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_cubicle', 'display_name' => 'View Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_cubicle', 'display_name' => 'Edit Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_cubicle', 'display_name' => 'Delete Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+             
+            ['name' => 'add_incoming_feeder', 'display_name' => 'Add Incoming Feeder', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_incoming_feeder', 'display_name' => 'View Incoming Feeder', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_incoming_feeder', 'display_name' => 'Edit Incoming Feeder', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_incoming_feeder', 'display_name' => 'Delete Incoming Feeder', 'module_id' => 4, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
              
             ['name' => 'add_gardu', 'display_name' => 'Add Gardu induk', 'module_id' => 3, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'view_gardu', 'display_name' => 'View Gardu induk', 'module_id' => 3, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],

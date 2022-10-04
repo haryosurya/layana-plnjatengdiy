@@ -84,6 +84,7 @@ return array(
         'cubicle'=>'Cubicle',
         'incoming-feeder'=>'Incoming Feeder',
         'gardu-induk'=>'Gardu Induk',
+        'total-gardu'=>'Total Gardu',
         'home' => 'Home',
         'holiday' => 'Holiday',
         'dashboard' => 'Dashboard',

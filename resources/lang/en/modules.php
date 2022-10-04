@@ -6,7 +6,12 @@ return array(
     'gi'=> 'Gardu Induk',
     'dcc'=> 'DCC',
     'gardu'=> 'Gardu',
+    'total-gardu'=> 'Total Gardu',
+    'gardu-code'=> 'Kode Gardu',
+    'gardu-alias'=> 'Nama Alias Gardu',
     'apj-nama'=> 'APJ Name',
+    'cubicle'=> 'Cubicle',
+    'ipd'=> 'Inspeksi PD',
   ),
   'dashboard' => array(
     'totalClients' => 'Total Clients',

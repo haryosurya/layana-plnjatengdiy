@@ -58,14 +58,14 @@
     <script> 
  
 
-        $('#dccubicledatatable-table').on('preXhr.dt', function(e, settings, data) {
+        $('#dccdatatable-table').on('preXhr.dt', function(e, settings, data) {
  
             var searchText = $('#search-text-field').val();
 
             data['searchText'] = searchText;
         });
         const showTable = () => {
-            window.LaravelDataTables["dccubicledatatable-table"].draw();
+            window.LaravelDataTables["dccdatatable-table"].draw();
         }
         $(' #search-text-field').on('change keyup',
             function() {

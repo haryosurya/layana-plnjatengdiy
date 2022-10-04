@@ -19,32 +19,29 @@ class BebanRealtimeController extends Controller
     {
         //
         try{
-            $result = Dc_cubicle::
-            join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-            ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
-            ->select('dc_cubicle.OUTGOING_ID','dc_cubicle.CUBICLE_NAME','dc_cubicle.PD_LEVEL','dc_cubicle.PD_CRITICAL','dc_incoming_feeder.INCOMING_ID','dc_gardu_induk.GARDU_INDUK_NAMA','dc_gardu_induk.GARDU_INDUK_KODE','dc_gardu_induk.GARDU_INDUK_ID') 
-            ->where(function($query){
-                return $query
-                ->where('SCB','=','1')
-                ->where('SCB_INV', '=', '0');
-            })
-           ->orWhere(function($query){
-                return $query
-                ->where('SCB','=','0')
-                ->where('SCB_INV', '=', '1');
-            });
+            $result = Dc_incoming_feeder::
+            leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
+            ->orderBy('ID', 'DESC')  
+            // AVG(dc_incoming_feeder.TEG_PRIMER+dc_incoming_feeder.TEG_SEKUNDER) AS TEGANGAN,
+            ->selectRaw(
+                'dc_incoming_feeder.INCOMING_ID AS ID,
+                dc_incoming_feeder.INCOMING_NAME, 
+                dc_incoming_feeder.NAMA_ALIAS_INCOMING, 
+                dc_gardu_induk.GARDU_INDUK_NAMA,
+                dc_gardu_induk.GARDU_INDUK_KODE,
+                dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK'
+                ) 
+            ;
             if ($request->get('gardu_induk')) 
             {
                 $keyword = $request->get('gardu_induk');    
                 $result =$result->where('dc_gardu_induk.GARDU_INDUK_ID','=', $keyword ) ;  
             } 
-            $result = $result ->paginate(12);
-
-            $total_records=Dc_cubicle::count(); 
+            $result = $result ->paginate(10);
+             
             return response()->json(array(    
                 'status'=>true,        
-                'data' => $result,
-                'total_records' => $total_records,
+                'data' =>  $result, 
                 'status_code' => 200
             ));
         }
@@ -55,89 +52,32 @@ class BebanRealtimeController extends Controller
             ], 500);
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function show($id)
     { 
         try{
-            $result = Dc_cubicle::where('OUTGOING_ID',$id)->first(); 
-         
-            if ($result['SCB'] == 0 && $result['SCB_INV'] == 0) 
-            {
-                $condition = 'open';
-            }
-            elseif ($result['SCB'] == 1 && $result['SCB_INV'] == 0) 
-            {
-                $condition = 'close';
-            }
-            elseif ($result['SCB'] == 0 && $result['SCB_INV'] == 1) 
-            {
-                $condition = 'close';
-            }
-            else{
-                $condition = 'open';
-            } 
-            if ($result['SLR'] == 0 && $result['SLR_INV'] == 0) 
-            {
-                $lr = 'LOKAL';
-            }
-            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 0) 
-            {
-                $lr = 'REMOTE';
-            }
-            elseif ($result['SLR'] == 0 && $result['SLR_INV'] == 1) 
-            {
-                $lr = 'REMOTE';
-            }
-            else{
-                $lr = 'LOKAL';
-            }
+            $result = Dc_incoming_feeder::where('INCOMING_ID',$id)->first();  
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first(); 
-            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->limit('1')->get();
+            $history_pmt = Dc_cubicle::where('INCOMING_ID',$id)
+            ->orderBy('OUTGOING_ID','DESC')
+            ->select('CUBICLE_NAME','IA','IB','IC','IN','PD_LEVEL')
+            ->limit('10')->get();
             return response()->json(array(    
-                'status'=>true,  
-                'topstatus' => $result['PD_LEVEL'],
-                'condition' => $condition,      
-                'lr' => $lr,
+                'status'=>true,   
+                'name' => $result['INCOMING_NAME'],       
+                'gardu_induk' => $result->dcGarduInduk['GARDU_INDUK_NAMA'],
+                'tegangan' => '',
+                'frekuensi' => '',
                 'total_beban' => array(
-                    'phasa_r' => '',
-                    'phasa_s' => '',
-                    'phasa_t' => '',
-                    'tegangan' => ''
+                    'phasa_r' => $result->IA,
+                    'phasa_s' => $result->IB,
+                    'phasa_t' => $result->IC,
+                    'netral' => $result->IG,
                 ),
-                'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
                 'incoming_name' => $gi['INCOMING_NAME'],
                 'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
-                'temperatur_a' =>$gi['TEMP_A'],
-                'temperatur_b' =>$gi['TEMP_B'],
-                'temperatur_c' =>$gi['TEMP_C'], 
-                'history_pmt' => $history_pmt,
+                 
+                'PMT' => $history_pmt,
                 // 'data' => $result, 
                 'status_code' => 200
             ));
