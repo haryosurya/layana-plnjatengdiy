@@ -115,7 +115,7 @@ class DashController extends Controller
                     'status'=>true,        
                     'data' => $result, 
                     'status_code' => 200
-                ));
+                )); 
             }
             catch (\Throwable $th) {
                 return response()->json([

@@ -80,9 +80,9 @@ class Dc_apjAPIController extends Controller
         if (auth('sanctum')->check()){  
             $result = Dc_cubicle::where('dc_cubicle.APJ_ID',$id)
             ->orderBy('dc_cubicle.OUTGOING_ID','ASC') 
-            ->join('Dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
-            ->join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-            ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
+            ->join('dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
+            ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
+            ->leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
             ->select('dc_cubicle.OUTGOING_ID as ID','dc_apj.APJ_ID as APJ_ID','dc_apj.APJ_NAMA as APJ_NAMA','dc_gardu_induk.GARDU_INDUK_ID as GARDU_ID','dc_gardu_induk.GARDU_INDUK_NAMA','dc_cubicle.CUBICLE_NAME','dc_cubicle.PD_LEVEL','dc_cubicle.PD_CRITICAL') ;
 
             if($request->APJ_NAMA){

@@ -7,8 +7,7 @@
             <div class="d-flex my-3">
                 <!-- STATUS START -->
                 <div class="select-box py-2 px-0 mr-3">
-                    <select class="form-control select-picker" name="status" id="status">
-                        <option value="not finished">@lang('modules.tasks.hideCompletedTask')</option>
+                    <select class="form-control select-picker" name="status" id="status"> 
                         <option value="all">@lang('app.all')</option>
                          
                     </select>

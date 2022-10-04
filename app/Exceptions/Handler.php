@@ -2,6 +2,9 @@
 
 namespace App\Exceptions;
 
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -33,6 +36,12 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
+
+    // public function report(Exception $exception)
+    // {
+    //     parent::report($exception);
+    // }
+ 
     public function register()
     {
         $this->reportable(function (Throwable $e) {
@@ -40,21 +49,35 @@ class Handler extends ExceptionHandler
             
         });
         
-        $this->renderable(function (\Exception $e) {
+        $this->renderable(function (\Exception $e,$request) {  
             if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
                 return redirect()->route('login');
-            };
+                // return response()->json([
+                //  'message' => 'Not authenticated'
+                // ],401);
+            };   
         });
+
         $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Not authenticated'
+                    'message' => 'Not authenticated',
+                    'data' => []
                 ], 401);
             }
         });
     }
-    
+//     public function render($request, \Exception $exception)
+// {
+//     if ($exception instanceof AuthorizationException) {
+//         return response()->json([
+//          'message' => 'Not authenticated'
+//         ],401);
+//     }
+
+//     return parent::render($request, $exception);
+// }
     protected function invalidJson($request, ValidationException $exception)
     {
         return response()->json([
