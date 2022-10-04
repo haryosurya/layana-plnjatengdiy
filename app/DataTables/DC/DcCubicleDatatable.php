@@ -82,27 +82,8 @@ class DcCubicleDatatable extends DataTable
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
  
-                        $action .= '<a href="' . route('employees.show', [$row->id]) . '" class="dropdown-item openRightModal"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
-
-                        if ($this->editEmployeePermission == 'all'
-                            || ($this->editEmployeePermission == 'added' && user()->id == $row->added_by)
-                            || ($this->editEmployeePermission == 'owned' && user()->id == $row->id)
-                            || ($this->editEmployeePermission == 'both' && (user()->id == $row->id || user()->id == $row->added_by))
-                        ) {
-                            $action .= '<a class="dropdown-item openRightModal" href="' . route('employees.edit', [$row->id]) . '">
-                                        <i class="fa fa-edit mr-2"></i>
-                                        ' . trans('app.edit') . '
-                                    </a>';
-                        }
-        
-                        if ($this->deleteEmployeePermission == 'all' || ($this->deleteEmployeePermission == 'added' && user()->id == $row->added_by)) {
-                            if (user()->id !== $row->id) {
-                                $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-user-id="' . $row->id . '">
-                                        <i class="fa fa-trash mr-2"></i>
-                                        ' . trans('app.delete') . '
-                                    </a>';
-                            }
-                        }
+                        $action .= '<a href="' . route('cubicle.show', [$row->id]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+ 
         
                 $action .= '</div>
                     </div>
