@@ -150,16 +150,17 @@ class AuthController extends ApiBaseController
   
     public function me()
     {
-        if (auth('sanctum')->check()){
-
+        if (auth('sanctum')->check()){ 
             try{
                 if (auth()->user()){
                     $user = Auth::user();
                     return response()->json([
                         'status' => true, 
                         'message' =>'Authenticated',
-                        'user' => $user,
-                        'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
+                        'data' => array(
+                            'user' => $user,
+                            'employe' => EmployeeDetails::join('users', 'employee_details.user_id', '=', 'users.id')->first(),
+                        )
                     ]);
                 }
                 else{
