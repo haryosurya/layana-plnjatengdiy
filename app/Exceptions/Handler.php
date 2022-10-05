@@ -54,16 +54,7 @@ class Handler extends ExceptionHandler
                 return redirect()->route('login'); 
             };   
         });
-
-        // $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
-        //     if ($request->is('api/*')) {
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'Not authenticated',
-        //             'data' => []
-        //         ], 200);
-        //     }
-        // });
+ 
     }
 //     public function render($request, \Exception $exception)
 // {
@@ -89,7 +80,7 @@ class Handler extends ExceptionHandler
     // }
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return response()->json(['message' => $exception->getMessage()], 401);
+        return response()->json(['status'=>false,'message' => $exception->getMessage()], 200);
     }
     
 }
