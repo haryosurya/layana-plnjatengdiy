@@ -51,22 +51,19 @@ class Handler extends ExceptionHandler
         
         $this->renderable(function (\Exception $e,$request) {  
             if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
-                return redirect()->route('login');
-                // return response()->json([
-                //  'message' => 'Not authenticated'
-                // ],401);
+                return redirect()->route('login'); 
             };   
         });
 
-        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Not authenticated',
-                    'data' => []
-                ], 200);
-            }
-        });
+        // $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+        //     if ($request->is('api/*')) {
+        //         return response()->json([
+        //             'status' => false,
+        //             'message' => 'Not authenticated',
+        //             'data' => []
+        //         ], 200);
+        //     }
+        // });
     }
 //     public function render($request, \Exception $exception)
 // {
@@ -84,6 +81,15 @@ class Handler extends ExceptionHandler
         'message' => __('validation.givenDataInvalid'),
         'errors' => $exception->errors(),
         ], $exception->status);
+    }
+    
+    // protected function shouldReturnJson($request, Throwable $e)
+    // {
+    //     return true;
+    // }
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return response()->json(['message' => $exception->getMessage()], 401);
     }
     
 }

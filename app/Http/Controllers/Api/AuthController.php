@@ -176,7 +176,9 @@ class AuthController extends ApiBaseController
             }
         }        
         else{ 
-            return response()->json(['status'=>false,'Unauthenticated.',200]);
+            return response()->json([
+                'status' => false,
+                'message'=>'Unauthenticated']);
         }
 
     }

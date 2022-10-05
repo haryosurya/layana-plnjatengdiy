@@ -45,7 +45,7 @@ class CubicleController extends AccountBaseController
         // if (!$this->employee->hasRole('employee')) {
         //     abort(404);
         // }
-
+        $cub = $this->cubicle;
 
         abort_403(!(
             $this->viewPermission == 'all'
@@ -53,7 +53,52 @@ class CubicleController extends AccountBaseController
             || ($this->viewPermission == 'owned' )
             || ($this->viewPermission == 'both')
         ));
-
+        if ($cub['SCB'] == 0 && $cub['SCB_INV'] == 0) 
+        {
+            $this->condition = 'open';
+        }
+        elseif ($cub['SCB'] == 1 && $cub['SCB_INV'] == 0) 
+        {
+            $this->condition = 'close';
+        }
+        elseif ($cub['SCB'] == 0 && $cub['SCB_INV'] == 1) 
+        {
+            $this->condition = 'close';
+        }
+        else{
+            $this->condition = 'open';
+        } 
+        if ($cub['SLR'] == 0 && $cub['SLR_INV'] == 0) 
+        {
+            $this->lr = 'LOKAL';
+        }
+        elseif ($cub['SLR'] == 1 && $cub['SLR_INV'] == 0) 
+        {
+            $this->lr = 'REMOTE';
+        }
+        elseif ($cub['SLR'] == 0 && $cub['SLR_INV'] == 1) 
+        {
+            $this->lr = 'REMOTE';
+        }
+        elseif ($cub['SLR'] == 1 && $cub['SLR_INV'] == 1) 
+        {
+            $this->lr = 'LOKAL';
+        }
+        else{
+            $this->lr = '';
+        }
+        if($this->cubicle->PD_LEVEL == 'good'){
+            $this->levelClr = 'green';
+        }
+        elseif($this->cubicle->PD_LEVEL == 'moderate'){
+            $this->levelClr = 'yellow';
+        }
+        elseif($this->cubicle->PD_LEVEL == 'bad'){
+            $this->levelClr = 'red';
+        }
+        else{
+            $this->levelClr = '--';
+        }
 
         $this->pageTitle = ucfirst($this->cubicle->CUBICLE_NAME);
  

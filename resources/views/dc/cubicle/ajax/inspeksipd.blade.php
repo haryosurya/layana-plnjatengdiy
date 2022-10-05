@@ -41,13 +41,7 @@
 
         <!-- Add Task Export Buttons Start -->
         <div class="d-flex justify-content-between action-bar">
-            <div id="table-actions" class="align-items-center"> 
-                    <x-forms.link-primary :link="route('login')"
-                        class="mr-3 openRightModal float-left" data-redirect-url="{{ url()->full() }}" icon="plus">
-                        @lang('app.add')
-                        @lang('app.task')
-                    </x-forms.link-primary> 
-            </div>
+             
 
             <x-datatable.actions>
                 <div class="select-status mr-3 pl-3">

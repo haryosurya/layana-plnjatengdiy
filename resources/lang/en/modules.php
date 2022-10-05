@@ -10,11 +10,21 @@ return array(
     'total-gardu'=> 'Total Gardu',
     'gardu-code'=> 'Kode Gardu',
     'gardu-alias'=> 'Nama Alias Gardu',
+    'apj'=> 'APJ',
     'apj-nama'=> 'APJ Name',
+    'supply-nama'=> 'APJ Supply',
     'feeder-nama'=> 'Feeder Name',
     'cubicle'=> 'Cubicle', 
     'ipd'=> 'Inspeksi PD',
-    'outgoing_id' => 'Outgoing Id'
+    'outgoing_id' => 'Outgoing Id',
+    'ia' => 'IA',
+    'ib' => 'IB',
+    'ic' => 'IC',
+    'vll' => 'VLL',
+    'level' => 'Level',
+    'lr' => 'L/R',
+    'condition' => 'Contidion',
+
   ),
   'dashboard' => array(
     'totalClients' => 'Total Clients',

@@ -124,7 +124,7 @@ class DashController extends Controller
                 ], 500);
             } 
         }else{ 
-            return response()->json(['status'=>false,'Unauthenticated.',200]);
+            return response()->json(['status'=>false,'',200]);
         }
     }
     public function CountingGangguan(){
