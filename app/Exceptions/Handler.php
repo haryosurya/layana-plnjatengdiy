@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
                     'status' => false,
                     'message' => 'Not authenticated',
                     'data' => []
-                ], 401);
+                ], 200);
             }
         });
     }

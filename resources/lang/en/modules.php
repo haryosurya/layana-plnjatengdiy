@@ -3,6 +3,7 @@
 return array(
   'dc'=>array(
     'incoming-name'=> 'Incoming Name',
+    'outgoing-name'=> 'Outgoing Name',
     'gi'=> 'Gardu Induk',
     'dcc'=> 'DCC',
     'gardu'=> 'Gardu',
@@ -10,8 +11,10 @@ return array(
     'gardu-code'=> 'Kode Gardu',
     'gardu-alias'=> 'Nama Alias Gardu',
     'apj-nama'=> 'APJ Name',
-    'cubicle'=> 'Cubicle',
+    'feeder-nama'=> 'Feeder Name',
+    'cubicle'=> 'Cubicle', 
     'ipd'=> 'Inspeksi PD',
+    'outgoing_id' => 'Outgoing Id'
   ),
   'dashboard' => array(
     'totalClients' => 'Total Clients',
