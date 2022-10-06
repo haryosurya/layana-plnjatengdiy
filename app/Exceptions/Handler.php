@@ -53,13 +53,13 @@ class Handler extends ExceptionHandler
             if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
                 return redirect()->route('login'); 
             };   
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'status' => false,
-                    'message' => $e->getMessage(),
-                    'data' => []
-                ], 200);
-            }
+            // if ($request->is('api/*')) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => $e->getMessage(),
+            //         'data' => []
+            //     ], 200);
+            // }
         }); 
     } 
     protected function invalidJson($request, ValidationException $exception)
@@ -74,9 +74,14 @@ class Handler extends ExceptionHandler
     // {
     //     return true;
     // }
-    // protected function unauthenticated($request, AuthenticationException $exception)
-    // {
-    //     return response()->json(['status'=>false,'message' => $exception->getMessage()], 200);
-    // }
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->is('api/*')) { 
+            return response()->json(['status'=>false,'message' => $exception->getMessage()], 200);
+        }
+        else{
+            return redirect()->route('login');
+        }
+    }
     
 }

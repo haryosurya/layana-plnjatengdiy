@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\DcInspeksiPenyulangController;
 use App\Http\Controllers\Api\DcJenisKeadaanPmtController;
 use App\Http\Controllers\Api\DcSpeedjardistCuacaController;
 use App\Http\Controllers\Api\DcTipeGangguanController;
+use App\Http\Controllers\Api\EwsInspeksiAsetController;
 use App\Http\Controllers\Api\RekapGangguanPmtController;
 use App\Http\Controllers\Api\SmMeterGiController;
 use Froiden\RestAPI\Facades\ApiRoute;
@@ -60,17 +61,32 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('bebanRealtime/{id}', [BebanRealtimeController::class,'show']);
     // Route::get('bebanRealtime/{id}', [DcCubicleController::class,'singleRealtime']);
     /* BEBAN REALTIME */
-
+    
     /* REKAP GANGGUAN */
     Route::get('rekapGangguan', [RekapGangguanPmtController::class,'index']);
     Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
     /* REKAP GANGGUAN */
-
-        Route::get('pmt', [DcCubicleController::class,'Pmt']); 
+    
+    Route::get('pmt', [DcCubicleController::class,'Pmt']); 
     /* profile */
-        Route::get('profile',[ AuthController::class,'me']); 
+    Route::get('profile',[ AuthController::class,'me']); 
     /* profile */
     
+    
+    /* POST */
+    
+    Route::get('ewsInspeksiAssetList', [EwsInspeksiAsetController::class,'list']); 
+    Route::post('ewsInspeksiAssetPost', [EwsInspeksiAsetController::class,'FormInput']); 
+    
+    /* POST */
+
+
+
+
+
+
+
+
     Route::get('dccSingleGardu/{id}',[ Dc_apjAPIController::class,'dccSingleGardu']); 
     Route::get('dcGarduInduk', [DcGarduIndukController::class,'index']); /* gardu induk */
     Route::get('DcIncomingFeeder', [DcIncomingFeederController::class,'index']);
