@@ -41,8 +41,10 @@ class DcCubicleController extends Controller
             $total_records=Dc_cubicle::count(); 
             return response()->json(array(    
                 'status'=>true,        
-                'data' => $result,
-                'total_records' => $total_records,
+                'data' => array(
+                    'result' => $result,
+                    'total_records' => $total_records,
+                ),
                 'status_code' => 200
             ));
         }
@@ -102,26 +104,27 @@ class DcCubicleController extends Controller
             $history_asset = Dc_inspeksi_asset::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
             return response()->json(array(    
                 'status'=>true,  
-                'topstatus' => $result['PD_LEVEL'],
-                'condition' => $condition,      
-                'lokal_remote' => $lr,
-                'total_beban' => array(
-                    'phasa_r' => $result['IA'],
-                    'phasa_s' => $result['IB'],
-                    'phasa_t' => $result['IC'],
-                    'tegangan' => $result['VLL'],
-                ),
-                'gi' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'],
-                'incoming_name' => $gi['INCOMING_NAME'],
-                'incoming_alias' => $gi['NAMA_ALIAS_INCOMING'],
-                'combine_gardu_dan_incoming' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'].' '.$gi['NAMA_ALIAS_INCOMING'],
-                'temperatur_a' =>$gi['TEMP_A'],
-                'temperatur_b' =>$gi['TEMP_B'],
-                'temperatur_c' =>$gi['TEMP_C'],
-                'history_pd' => $history_pd,
-                'history_pmt' => $history_pmt,
-                'history_asset' => $history_asset,
-                // 'data' => $result, 
+                'data' => array (
+                    'topstatus' => $result['PD_LEVEL'],
+                    'condition' => $condition,      
+                    'lokal_remote' => $lr,
+                    'total_beban' => array(
+                        'phasa_r' => $result['IA'],
+                        'phasa_s' => $result['IB'],
+                        'phasa_t' => $result['IC'],
+                        'tegangan' => $result['VLL'],
+                    ),
+                    'gi' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'],
+                    'incoming_name' => $gi['INCOMING_NAME'],
+                    'incoming_alias' => $gi['NAMA_ALIAS_INCOMING'],
+                    'combine_gardu_dan_incoming' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'].' '.$gi['NAMA_ALIAS_INCOMING'],
+                    'temperatur_a' =>$gi['TEMP_A'],
+                    'temperatur_b' =>$gi['TEMP_B'],
+                    'temperatur_c' =>$gi['TEMP_C'],
+                    'history_pd' => $history_pd,
+                    'history_pmt' => $history_pmt,
+                    'history_asset' => $history_asset,
+                ), 
                 'status_code' => 200
             ));
         }
@@ -218,25 +221,26 @@ class DcCubicleController extends Controller
             $history_asset = Dc_inspeksi_asset::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
             return response()->json(array(    
                 'status'=>true,  
-                'topstatus' => $result['PD_LEVEL'],
-                'condition' => $condition,      
-                'lokal_remote' => $lr,
-                'total_beban' => array(
-                    'phasa_r' => '',
-                    'phasa_s' => '',
-                    'phasa_t' => '',
-                    'tegangan' => ''
-                ),
-                'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
-                'incoming_name' => $gi['INCOMING_NAME'],
-                'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
-                'temperatur_a' =>$gi['TEMP_A'],
-                'temperatur_b' =>$gi['TEMP_B'],
-                'temperatur_c' =>$gi['TEMP_C'],
-                'history_pd' => $history_pd,
-                'history_pmt' => $history_pmt,
-                'history_asset' => $history_asset,
-                // 'data' => $result, 
+                'data' => array(
+                    'topstatus' => $result['PD_LEVEL'],
+                    'condition' => $condition,      
+                    'lokal_remote' => $lr,
+                    'total_beban' => array(
+                        'phasa_r' => '',
+                        'phasa_s' => '',
+                        'phasa_t' => '',
+                        'tegangan' => ''
+                    ),
+                    'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
+                    'incoming_name' => $gi['INCOMING_NAME'],
+                    'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
+                    'temperatur_a' =>$gi['TEMP_A'],
+                    'temperatur_b' =>$gi['TEMP_B'],
+                    'temperatur_c' =>$gi['TEMP_C'],
+                    'history_pd' => $history_pd,
+                    'history_pmt' => $history_pmt,
+                    'history_asset' => $history_asset,
+                ), 
                 'status_code' => 200
             ));
         }
