@@ -9,6 +9,8 @@ use App\Models\Dc_inspeksi_asset;
 use App\Models\Dc_inspeksi_pd;
 use App\Models\Dc_tipe_gangguan;
 use App\Models\Ews_history_meter;
+use App\Models\ews_inspeksi_aset;
+use App\Models\ews_inspeksi_pd;
 use App\Models\Sm_meter_gi;
 use Froiden\RestAPI\ApiResponse;
 use Illuminate\Http\Request;
@@ -99,9 +101,9 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
-            $history_pd = Dc_inspeksi_pd::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->limit('10')->orderBy('id','DESC')->get();
             $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->limit('10')->get();
-            $history_asset = Dc_inspeksi_asset::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->limit('10')->orderBy('id','DESC')->get();
             return response()->json(array(    
                 'status'=>true,  
                 'data' => array (

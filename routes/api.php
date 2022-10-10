@@ -14,7 +14,9 @@ use App\Http\Controllers\Api\DcInspeksiPenyulangController;
 use App\Http\Controllers\Api\DcJenisKeadaanPmtController;
 use App\Http\Controllers\Api\DcSpeedjardistCuacaController;
 use App\Http\Controllers\Api\DcTipeGangguanController;
+use App\Http\Controllers\Api\EwsHistoryMeterController;
 use App\Http\Controllers\Api\EwsInspeksiAsetController;
+use App\Http\Controllers\Api\EwsInspeksiPdController;
 use App\Http\Controllers\Api\RekapGangguanPmtController;
 use App\Http\Controllers\Api\SmMeterGiController;
 use Froiden\RestAPI\Facades\ApiRoute;
@@ -64,7 +66,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     /* REKAP GANGGUAN */
     Route::get('rekapGangguan', [RekapGangguanPmtController::class,'index']);
-    Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
+    Route::get('rekapGangguanPMTscada', [RekapGangguanPmtController::class,'rekapGangguanPMTscada']);
+    Route::get('rekapGangguanPD', [RekapGangguanPmtController::class,'rekapGangguanPD']);
+    Route::get('rekapInspeksiAset', [RekapGangguanPmtController::class,'rekapInspeksiAset']);
+    // Route::get('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);   
+    // Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
     /* REKAP GANGGUAN */
     
     Route::get('pmt', [DcCubicleController::class,'Pmt']); 
@@ -75,9 +81,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     /* POST */
     
-    Route::get('ewsInspeksiAssetList', [EwsInspeksiAsetController::class,'list']); 
-    Route::post('ewsInspeksiAssetPost', [EwsInspeksiAsetController::class,'FormInput']); 
-    
+    Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
+    Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
     /* POST */
 
 
@@ -97,14 +102,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('DcTipeGangguan', [DcTipeGangguanController::class,'index']);
     Route::get('SmMeterGi', [SmMeterGiController::class,'index']);
 
-    Route::get('inspeksiAsset', [DcInspeksiPenyulangController::class,'index']);
-    Route::post('postinspeksiAsset', [DcInspeksiPenyulangController::class,'store']);
-    Route::get('ListEwsInspeksiPd', [DcInspeksiPenyulangController::class,'ListEwsInspeksiPd']);
-    Route::post('storeEwsInspeksiPd', [DcInspeksiPenyulangController::class,'storeEwsInspeksiPd']);
-    Route::post('updateEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'updateEwsInspeksiPd']);
-    Route::post('destroyEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'destroyEwsInspeksiPd']);
-
+    // Route::get('inspeksiAsset', [DcInspeksiPenyulangController::class,'index']);
+    // Route::post('postinspeksiAsset', [DcInspeksiPenyulangController::class,'store']);
+    // Route::get('ListEwsInspeksiPd', [DcInspeksiPenyulangController::class,'ListEwsInspeksiPd']);
+    // Route::post('storeEwsInspeksiPd', [DcInspeksiPenyulangController::class,'storeEwsInspeksiPd']);
+    // Route::post('updateEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'updateEwsInspeksiPd']);
+    // Route::post('destroyEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'destroyEwsInspeksiPd']);
     
+    Route::get('ListEwsHistoryMeter', [EwsHistoryMeterController::class,'ListEwsHistoryMeter']);
+    Route::post('storeEwsHistoryMeter', [EwsHistoryMeterController::class,'storeEwsHistoryMeter']);
+    Route::post('updateEwsHistoryMeter/{id}', [EwsHistoryMeterController::class,'updateEwsHistoryMeter']);
+    Route::post('destroyEwsHistoryMeter/{id}', [EwsHistoryMeterController::class,'destroyEwsHistoryMeter']);
+    
+    Route::get('InspeksiPd', [EwsInspeksiPdController::class,'indexInspeksiPd']);
+    Route::post('storeInspeksiPd/{id}', [EwsInspeksiPdController::class,'storeInspeksiPd']);
 
     Route::get('indexInspeksiPd', [DcInspeksiPenyulangController::class,'indexInspeksiPd']);
     Route::post('storeInspeksiPd', [DcInspeksiPenyulangController::class,'storeInspeksiPd']); 

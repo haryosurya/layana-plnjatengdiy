@@ -14,7 +14,7 @@ class CreateEwsInspeksiPdTable extends Migration
     public function up()
     {
         Schema::create('ews_inspeksi_pd', function (Blueprint $table) {
-            $table->integer('id_inspeksi_pd')->primary();
+            $table->increments('id_inspeksi_pd',true);
             $table->integer('id_outgoing')->nullable();
             $table->integer('id_user')->nullable();
             $table->integer('id_gardu_induk')->nullable();

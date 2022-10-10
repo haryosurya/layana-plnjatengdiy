@@ -81,6 +81,7 @@ return array(
     'flutterwave' => 'Flutterwave',
     'offline' => 'Offline',
     'menu' => array(
+        'dcc'=>'Dcc',
         'cubicle'=>'Cubicle',
         'incoming-feeder'=>'Incoming Feeder',
         'gardu-induk'=>'Gardu Induk',

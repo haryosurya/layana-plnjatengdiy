@@ -23,6 +23,6 @@ class DccController extends AccountBaseController
     public function index(DccDatatable $dataTable)
     {
         //
-        return $dataTable->render('dc.cubicle.index', $this->data); 
+        return $dataTable->render('dc.dcc.index', $this->data); 
     }
 }

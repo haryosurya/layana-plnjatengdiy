@@ -24,6 +24,7 @@ return array(
     'level' => 'Level',
     'lr' => 'L/R',
     'condition' => 'Contidion',
+    'telegram-id' => 'Telegram ID',
 
   ),
   'dashboard' => array(
@@ -428,6 +429,7 @@ return array(
     'importFromRole' => 'Import from Role'
   ), 
   'module' => array(
+    'dcc'=>'Dcc',
     'cubicle'=>'Cubicle',
     'incoming-feeder'=>'Incoming Feeder',
     'gardu-induk'=>'Gardu Induk',

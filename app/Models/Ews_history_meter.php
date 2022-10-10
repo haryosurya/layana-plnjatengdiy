@@ -37,7 +37,7 @@ class Ews_history_meter extends Model
      * 
      * @var bool
      */
-    public $incrementing = false;
+    // public $incrementing = false;
 public $timestamps = false;
     /**
      * @var array

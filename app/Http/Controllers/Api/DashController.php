@@ -7,6 +7,7 @@ use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
 use App\Models\Dc_incoming_feeder;
 use App\Models\Dc_operasi_pmt_scada;
+use App\Models\ews_freq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class DashController extends Controller
             try{
                 // Total MW didapat dari table dc_cubicle, dengan mengalikan colom VLL x Rata-rata(IA,IB,IC)
                 $vll = Dc_cubicle::sum('VLL'); 
+                $hum = ews_freq::sum('freq'); 
                 $mw = Dc_cubicle::avg('IA','IB','IC');
                 $total_records= Dc_cubicle::count(); 
                 $total_records_all = Dc_cubicle::count(); 
@@ -85,7 +87,7 @@ class DashController extends Controller
                     // 'vll'=>$vll,
                     // 'mw'=>$mw,
                     'beban_sistem'=>round($vll*$mw,0),
-                    'total_frekuensi'=>round('',0),
+                    'total_frekuensi'=>round($hum,0),
                     'pd_level'=> array(
                         'good'=>round($pd_level_good,2),
                         'moderate'=>round($pd_level_mod,2),

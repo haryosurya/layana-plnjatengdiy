@@ -86,7 +86,7 @@ class ews_inspeksi_aset extends Model
      * @var bool
      */
     public $incrementing = false;
-
+    public $timestamps = false;
     /**
      * @var array
      */

@@ -465,6 +465,7 @@ if (!function_exists('sidebar_user_perms')) {
 
             $sidebarPermissionsArray = [ 
                 'view_employees', 
+                'view_dcc',
                 'view_gardu',
                 'view_cubicle',
                 'view_incoming_feeder',

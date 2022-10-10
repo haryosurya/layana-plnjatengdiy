@@ -14,7 +14,7 @@ class CreateSmMaterialPanelTable extends Migration
     public function up()
     {
         Schema::create('sm_material_panel', function (Blueprint $table) {
-            $table->integer('MATERIAL_PANEL_ID', true);
+            $table->increments('MATERIAL_PANEL_ID', true);
             $table->smallInteger('GARDU_INDUK_ID')->nullable();
             $table->string('GEDUNG', 3)->nullable();
             $table->smallInteger('MATERIAL_ID')->nullable();

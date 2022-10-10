@@ -171,6 +171,6 @@ class Dc_incoming_feeder extends BaseModel
      */
     public function dcCubicles()
     {
-        return $this->hasMany( Dc_cubicle::class, 'INCOMING_ID', 'INCOMING_ID');
+        return $this->hasMany( Dc_cubicle::class, 'INCOMING_ID', 'INCOMING_ID') ;
     }
 }

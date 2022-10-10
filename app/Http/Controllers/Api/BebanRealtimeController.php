@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dc_cubicle;
 use App\Models\Dc_incoming_feeder;
 use App\Models\Sm_meter_gi;
+use DB;
 use Illuminate\Http\Request;
 
 class BebanRealtimeController extends Controller
@@ -20,24 +21,27 @@ class BebanRealtimeController extends Controller
         //
         try{
             $result = Dc_incoming_feeder::
-            leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
-            ->orderBy('ID', 'DESC')  
-            // AVG(dc_incoming_feeder.TEG_PRIMER+dc_incoming_feeder.TEG_SEKUNDER) AS TEGANGAN,
-            ->selectRaw(
-                'dc_incoming_feeder.INCOMING_ID AS ID,
-                dc_incoming_feeder.INCOMING_NAME, 
-                dc_incoming_feeder.NAMA_ALIAS_INCOMING, 
-                dc_gardu_induk.GARDU_INDUK_NAMA,
-                dc_gardu_induk.GARDU_INDUK_KODE,
-                dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK'
-                ) 
+            join('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
+            // select([
+            //         'dc_incoming_feeder.INCOMING_ID AS ID',
+            //         'dc_incoming_feeder.INCOMING_NAME', 
+            //         'dc_incoming_feeder.NAMA_ALIAS_INCOMING', 
+            //         'dc_gardu_induk.GARDU_INDUK_NAMA',
+            //         'dc_gardu_induk.GARDU_INDUK_KODE',
+            //         'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK',
+            //     ])
+            ->with(['dcCubicles' => function($q) {
+                $q->select('OUTGOING_ID', 'INCOMING_ID');
+            }])  
+            ->orderBy('dc_incoming_feeder.INCOMING_ID', 'ASC')   
             ;
             if ($request->get('gardu_induk')) 
             {
                 $keyword = $request->get('gardu_induk');    
                 $result =$result->where('dc_gardu_induk.GARDU_INDUK_ID','=', $keyword ) ;  
             } 
-            $result = $result ->paginate(10);
+            $result = $result ->get();
+            // $result = $result ->paginate(10);
              
             return response()->json(array(    
                 'status'=>true,        
@@ -56,28 +60,25 @@ class BebanRealtimeController extends Controller
     public function show($id)
     { 
         try{
-            $result = Dc_incoming_feeder::where('INCOMING_ID',$id)->first();  
+            $result = Dc_cubicle::where('OUTGOING_ID',$id)->first();  
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first(); 
-            $history_pmt = Dc_cubicle::where('INCOMING_ID',$id)
+            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)
             ->orderBy('OUTGOING_ID','DESC')
-            ->select('CUBICLE_NAME','IA','IB','IC','IN','PD_LEVEL')
+            ->select('IA','IB','IC','IN')
             ->limit('10')->get();
             return response()->json(array(    
                 'status'=>true,   
-                'name' => $result['INCOMING_NAME'],       
-                'gardu_induk' => $result->dcGarduInduk['GARDU_INDUK_NAMA'],
-                'tegangan' => '',
-                'frekuensi' => '',
-                'total_beban' => array(
-                    'phasa_r' => $result->IA,
-                    'phasa_s' => $result->IB,
-                    'phasa_t' => $result->IC,
-                    'netral' => $result->IG,
+                'data' => array(
+                    'name' => $result['CUBICLE_NAME'],       
+                    'gardu_induk' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
+                    'daya_tersalur' => $result['KW'],
+                    'power_factor' => $result['PF'],
+     
+                    'incoming_name' => $gi['INCOMING_NAME'],
+                    'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
+                     
+                    'PMT' => $history_pmt,
                 ),
-                'incoming_name' => $gi['INCOMING_NAME'],
-                'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
-                 
-                'PMT' => $history_pmt,
                 // 'data' => $result, 
                 'status_code' => 200
             ));

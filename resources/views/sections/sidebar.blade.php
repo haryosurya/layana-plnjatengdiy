@@ -97,8 +97,8 @@
                 </x-menu-item>
                 @endif
 
-                @if (in_array('cubicle', user_modules()) && $sidebarUserPermissions['view_cubicle'] != 5 && $sidebarUserPermissions['view_cubicle'] != 'none')
-                <x-menu-item icon="building" :link="route('cubicle.index')" :text="__('app.menu.cubicle')" >
+                @if (in_array('dcc', user_modules()) && $sidebarUserPermissions['view_dcc'] != 5 && $sidebarUserPermissions['view_dcc'] != 'none')
+                <x-menu-item icon="building" :link="route('dccUp3.index')" :text="__('app.menu.dcc')" >
                     <x-slot name="iconPath">
                         <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
                         <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
@@ -119,6 +119,15 @@
                 <x-menu-item icon="graph-up" :link="route('incoming-feeder.index')" :text="__('app.menu.incoming-feeder')" >
                     <x-slot name="iconPath">
                         <path d="M7.5 1.018a7 7 0 0 0-4.79 11.566L7.5 7.793V1.018zm1 0V7.5h6.482A7.001 7.001 0 0 0 8.5 1.018zM14.982 8.5H8.207l-4.79 4.79A7 7 0 0 0 14.982 8.5zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                    </x-slot>
+                </x-menu-item>
+                @endif
+
+                @if (in_array('cubicle', user_modules()) && $sidebarUserPermissions['view_cubicle'] != 5 && $sidebarUserPermissions['view_cubicle'] != 'none')
+                <x-menu-item icon="building" :link="route('cubicle.index')" :text="__('app.menu.cubicle')" >
+                    <x-slot name="iconPath">
+                        <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                        <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
                     </x-slot>
                 </x-menu-item>
                 @endif

@@ -38,6 +38,7 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'gardu-induk', 'description' => 'Manage Gardu Induk'], 
             ['module_name' => 'incoming-feeder', 'description' => 'Manage Incoming Feeder'], 
             ['module_name' => 'cubicle', 'description' => 'Manage Cubicle'], 
+            ['module_name' => 'dcc', 'description' => 'Manage DCC'], 
         ]);
 
         ModuleSetting::insert([
@@ -46,14 +47,22 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'dcc', 'status' => 'active', 'type' => 'admin'],  
 
             ['module_name' => 'employees', 'status' => 'active', 'type' => 'employee'], 
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'dcc', 'status' => 'active', 'type' => 'employee'],  
         ]); 
 
         Permission::insert([
+            
+            ['name' => 'add_dcc', 'display_name' => 'Add Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_dcc', 'display_name' => 'View Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_dcc', 'display_name' => 'Edit Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_dcc', 'display_name' => 'Delete Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+            
             ['name' => 'add_cubicle', 'display_name' => 'Add Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'view_cubicle', 'display_name' => 'View Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'edit_cubicle', 'display_name' => 'Edit Cubicle', 'module_id' => 5, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],

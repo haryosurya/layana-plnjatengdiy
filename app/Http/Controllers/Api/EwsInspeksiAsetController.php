@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\ews_inspeksi_aset as AppEws_inspeksi_aset;
 use App\Http\Controllers\Controller;
+use App\Models\Dc_cubicle;
 use App\Models\ews_inspeksi_aset;
 use Auth;
 use Carbon\Carbon;
@@ -14,20 +15,18 @@ class EwsInspeksiAsetController extends Controller
 {
     //
     public function list(Request $request){
-        if (auth('sanctum')->check()){  
-            // $result = Dc_cubicle:: 
-            // orderBy('dc_cubicle.OUTGOING_ID','ASC') 
-            // ->join('Dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
-            // ->join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-            // ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
-            // ->select('dc_cubicle.OUTGOING_ID as ID','dc_apj.APJ_ID as APJ_ID','dc_apj.APJ_NAMA as APJ_NAMA','dc_gardu_induk.GARDU_INDUK_ID as GARDU_ID','dc_gardu_induk.GARDU_INDUK_NAMA','dc_cubicle.CUBICLE_NAME','dc_cubicle.PD_LEVEL','dc_cubicle.PD_CRITICAL') ;
+        if (auth('sanctum')->check()){   
             $result = 
             ews_inspeksi_aset::orderBy('ews_inspeksi_aset.id_inspeksi_aset','DESC')
             ->join('dc_cubicle','dc_cubicle.OUTGOING_ID','ews_inspeksi_aset.id_outgoing')
             ->join('users','users.id','ews_inspeksi_aset.id_user')
-            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_aset.id_gardu_induk') 
+            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_aset.id_gardu_induk')
+            ->select(['ews_inspeksi_aset.*']) 
             ;
-            
+            $m = now()->month;
+            $y = now()->year; 
+            $result = $result->whereMonth('TGL_OPERASI_PMT','=', $m)->whereYear('TGL_OPERASI_PMT','=', $y);
+  
             if($request->id_outgoing){
                 $keyword = $request->get('id_outgoing');    
                 $result = $result->where('ews_inspeksi_aset.id_outgoing', 'LIKE','%' .$keyword . '%') ;
@@ -48,9 +47,8 @@ class EwsInspeksiAsetController extends Controller
             return response()->json(['status'=>false,'Unauthenticated.',200]);
         }
     }
-    public function FormInput(Request $request){
-        try{
-
+    public function FormInput(Request $request, $id){
+        try{ 
             $setting = global_setting();
             $validator = Validator::make($request->all(), [
                 'tgl_inspeksi' => 'nullable|date_format:"' . $setting->date_format . '"|before_or_equal:'.now($setting->timezone)->toDateString(), 
@@ -61,12 +59,13 @@ class EwsInspeksiAsetController extends Controller
                     'message' => $validator->errors()
                 ], 500); 
             } 
-             
+            $cubicle = Dc_cubicle::where('OUTGOING_ID',$id)->first();
+
             $inspectAsset = new ews_inspeksi_aset();
 
-            $inspectAsset->id_outgoing = $request->id_outgoing;
+            $inspectAsset->id_outgoing = $cubicle['OUTGOING_ID'] ;
             $inspectAsset->id_user = Auth::user()->id;
-            $inspectAsset->id_gardu_induk = $request->id_gardu_induk;
+            $inspectAsset->id_gardu_induk = $cubicle->dcIncomingFeeder->GARDU_INDUK_ID;
             $inspectAsset->tgl_entry = Carbon::createFromFormat($this->global->date_format , $request->tgl_entry)->format('Y-m-d H:i:s');   
             $inspectAsset->tgl_inspeksi = Carbon::createFromFormat($this->global->date_format , $request->tgl_inspeksi)->format('Y-m-d H:i:s');
             $inspectAsset->body_cubicle = $request->body_cubicle;
@@ -120,7 +119,7 @@ class EwsInspeksiAsetController extends Controller
             $inspectAsset->ethernet = $request->ethernet;
             $inspectAsset->keterangan = $request->keterangan;
             $inspectAsset->id_update = $request->id_update;
-            $inspectAsset->last_update = $request->last_update; 
+            $inspectAsset->last_update = Carbon::createFromFormat($this->global->date_format , $request->last_update)->format('Y-m-d H:i:s') ; 
     
     
             $inspectAsset->save();

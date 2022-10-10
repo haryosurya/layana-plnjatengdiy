@@ -40,7 +40,8 @@ class ews_inspeksi_pd extends Model
      * 
      * @var bool
      */
-    public $incrementing = false;
+    // public $incrementing = false;
+    public $timestamps = false;
 
     /**
      * @var array

@@ -59,6 +59,7 @@ class DcGarduIndukDatatable extends DataTable
             ->select(
                 'dc_gardu_induk.GARDU_INDUK_ID',
                 'dc_apj.APJ_NAMA AS APJ_NAMA',
+                'dc_apj.APJ_DCC AS DCC',
                 'dc_gardu_induk.GARDU_INDUK_NAMA',
                 'dc_gardu_induk.GARDU_INDUK_KODE',
                 'dc_gardu_induk.GARDU_INDUK_RTU_ID',
@@ -75,7 +76,8 @@ class DcGarduIndukDatatable extends DataTable
             if ($request->searchText != '') {
                 $gardu = $gardu->where(function ($query) {
                     $query->where('APJ_NAMA', 'like', '%' . request('searchText') . '%')
-                        ->orWhere('dc_gardu_induk.GARDU_INDUK_NAMA', 'like', '%' . request('searchText') . '%');
+                        ->orWhere('dc_gardu_induk.GARDU_INDUK_NAMA', 'like', '%' . request('searchText') . '%')
+                        ->orWhere('dc_apj.APJ_DCC', 'like', '%' . request('searchText') . '%');
                 });
             }
         return $gardu->groupBy('dc_gardu_induk.GARDU_INDUK_ID');
@@ -125,8 +127,9 @@ class DcGarduIndukDatatable extends DataTable
             __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
             __('modules.dc.gi') => ['data' => 'GARDU_INDUK_NAMA', 'name' => 'GARDU_INDUK_NAMA', 'title' => __('modules.dc.gi')],
             __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],
+            __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],
             // __('modules.dc.GARDU_INDUK_RTU_ID') => ['data' => 'GARDU_INDUK_RTU_ID', 'name' => 'GARDU_INDUK_RTU_ID', 'title' => __('modules.dc.GARDU_INDUK_RTU_ID')], 
-            __('modules.dc.gardu-alias') => ['data' => 'NAMA_ALIAS_GARDU_INDUK', 'name' => 'NAMA_ALIAS_GARDU_INDUK', 'title' => __('modules.dc.gardu-alias')],
+            __('modules.dc.dcc') => ['data' => 'DCC', 'name' => 'DCC', 'title' => __('modules.dc.dcc')],
             // __('modules.dc.GARDU_INDUK_ALIAS_ROPO') => ['data' => 'GARDU_INDUK_ALIAS_ROPO', 'name' => 'GARDU_INDUK_ALIAS_ROPO', 'title' => __('modules.dc.GARDU_INDUK_ALIAS_ROPO')],
             // __('modules.dc.GARDU_INDUK_ALAMAT') => ['data' => 'GARDU_INDUK_ALAMAT', 'name' => 'GARDU_INDUK_ALAMAT', 'title' => __('modules.dc.GARDU_INDUK_ALAMAT')],
             // __('modules.dc.UPT_ID') => ['data' => 'UPT_ID', 'name' => 'UPT_ID', 'title' => __('modules.dc.UPT_ID')],

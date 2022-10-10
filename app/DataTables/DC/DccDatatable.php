@@ -80,13 +80,14 @@ class DccDatatable extends DataTable
             dc_apj.APJ_NAMA as name,
             dc_apj.APJ_ALIAS as alias,
             dc_apj.APJ_DCC as dcc,
+            dc_apj.TELEGRAM_ID as telegram,
             count(dc_gardu_induk.GARDU_INDUK_NAMA) as total_gardu' 
         ); 
 
         if ($request->searchText != '') {
             $gardu = $gardu->where(function ($query) {
-                $query->where('name', 'like', '%' . request('searchText') . '%')
-                    ->orWhere('name', 'like', '%' . request('searchText') . '%');
+                $query->where('dc_apj.APJ_NAMA', 'like', '%' . request('searchText') . '%')
+                    ->orWhere('dc_apj.APJ_DCC', 'like', '%' . request('searchText') . '%');
             });
         }
         return $gardu->groupBy('id');
@@ -136,6 +137,7 @@ class DccDatatable extends DataTable
             __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
             __('modules.dc.total-gardu') => ['data' => 'total_gardu', 'name' => 'total_gardu', 'title' => __('modules.dc.total-gardu')], 
             __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')], 
+            __('modules.dc.telegram-id') => ['data' => 'telegram', 'name' => 'telegram', 'title' => __('modules.dc.telegram-id')], 
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)
