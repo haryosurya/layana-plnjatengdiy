@@ -101,9 +101,9 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
-            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->limit('10')->orderBy('id_inspeksi_pd','DESC')->get();
             $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->limit('10')->get();
-            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->limit('10')->orderBy('id_inspeksi_aset','DESC')->get();
             return response()->json(array(    
                 'status'=>true,  
                 'data' => array (
