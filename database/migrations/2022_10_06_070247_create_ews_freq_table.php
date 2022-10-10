@@ -14,7 +14,7 @@ class CreateEwsFreqTable extends Migration
     public function up()
     {
         Schema::create('ews_freq', function (Blueprint $table) {
-            $table->increments('freq_id')->primary();
+            $table->increments('freq_id',true);
             $table->integer('outgoing_id')->nullable();
             $table->decimal('freq', 10)->nullable();
             $table->dateTime('freq_time')->nullable();
