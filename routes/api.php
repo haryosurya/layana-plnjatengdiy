@@ -78,12 +78,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('profile',[ AuthController::class,'me']); 
     /* profile */
     
-    
-    /* POST */
-    
-    Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
-    Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
-    /* POST */
 
 
 
@@ -119,8 +113,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('indexInspeksiPd', [DcInspeksiPenyulangController::class,'indexInspeksiPd']);
     Route::post('storeInspeksiPd', [DcInspeksiPenyulangController::class,'storeInspeksiPd']); 
-
-
+ 
+    Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
+    Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
+ 
 }); 
 
 
