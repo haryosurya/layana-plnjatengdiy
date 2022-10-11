@@ -100,8 +100,25 @@ class DcCubicleController extends Controller
             else{
                 $lr = '';
             }
-            $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
-            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->select('ews_inspeksi_pd.*')->orderBy('id_inspeksi_pd','DESC')->first();
+            $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->firstorFail();
+            $history_pd = 
+            ews_inspeksi_pd::where('id_outgoing',$id)
+            ->select( 
+                'id_inspeksi_pd',
+                'id_outgoing' ,
+                'id_user'  ,
+                'id_gardu_induk' ,
+                'tgl_entry' ,
+                'tgl_inspeksi' ,
+                'citicality' ,
+                'level_pd' ,
+                ('foto_pelaksanaan') ,
+                'foto_pengukuran'  ,
+                'keterangan' ,
+                'id_update' ,
+                'last_update'
+            )
+            ->orderBy('id_inspeksi_pd','DESC')->firstorFail();
             $hpd =array(
                 'id_inspeksi_pd'=>  $history_pd->id_inspeksi_pd,
                 'id_outgoing' =>  $history_pd->id_outgoing,
