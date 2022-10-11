@@ -42,7 +42,11 @@ class ews_inspeksi_pd extends Model
      */
     // public $incrementing = false;
     public $timestamps = false;
-
+    protected $casts = [
+        'foto_pelaksanaan' => 'array',
+        'foto_pengukuran' => 'array',
+        // more ...
+    ];
     /**
      * @var array
      */

@@ -123,10 +123,8 @@ class DcCubicleDatatable extends DataTable
                 'dc_cubicle.SCB',
                 'dc_cubicle.SLR',
                 'dc_cubicle.SLR_INV',
-                'dc_cubicle.PD_LEVEL',
-
-                'dc_incoming_feeder.NAMA_ALIAS_INCOMING as incoming_name', 
-                
+                'dc_cubicle.PD_LEVEL', 
+                'dc_incoming_feeder.NAMA_ALIAS_INCOMING as incoming_name',  
                 'dc_apj.APJ_NAMA AS APJ_NAMA',
                 'dc_apj.APJ_DCC AS dcc',
                 'dc_apj.APJ_ALIAS AS dcc_alias', 
