@@ -124,9 +124,9 @@ class DcCubicleController extends Controller
                     'temperatur_b' =>$gi['TEMP_B'],
                     'temperatur_c' =>$gi['TEMP_C'],
                     'humidity' => $gi['HUMIDITY'],
-                    'history_pd' => $history_pd,
-                    'history_pmt' => $history_pmt,
-                    'history_asset' => $history_asset,
+                    'history_pd' => $history_pd[0],
+                    'history_pmt' => $history_pmt[0],
+                    'history_asset' => $history_asset[0],
                 ), 
                 'status_code' => 200
             ));
