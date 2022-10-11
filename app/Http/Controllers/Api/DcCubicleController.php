@@ -21,32 +21,37 @@ class DcCubicleController extends Controller
     public function index(Request $request)
     {
         try{
+            $result = Dc_cubicle::
+            orderBy('dc_cubicle.OUTGOING_ID','ASC') 
+            ->join('dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
+            ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
+            ->leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
+            ->selectRaw(
+                'dc_cubicle.OUTGOING_ID as ID,
+                dc_apj.APJ_ID as APJ_ID,
+                dc_apj.APJ_NAMA as APJ_NAMA,
+                dc_gardu_induk.GARDU_INDUK_ID as GARDU_ID,
+                dc_gardu_induk.GARDU_INDUK_NAMA,
+                dc_cubicle.CUBICLE_NAME,
+                dc_cubicle.INCOMING_ID as INCOMING_ID, 
+                dc_cubicle.PD_LEVEL, 
+                ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
+                dc_cubicle.HUMIDITY,
+                dc_cubicle.PD_CRITICAL'
+                ) ;
             if ($request->get('CUBICLE_NAME')) 
             {
                 $keyword = $request->get('CUBICLE_NAME');    
-                
-                $result = Dc_cubicle::where('CUBICLE_NAME', $keyword ) 
-                ->join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-                ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
-                ->select('dc_cubicle.OUTGOING_ID','dc_cubicle.CUBICLE_NAME','dc_cubicle.PD_CRITICAL','dc_gardu_induk.GARDU_INDUK_NAMA') 
-                
-                ->orderBy('OUTGOING_ID','ASC')->paginate(12);  
+                $result = $result-> where('CUBICLE_NAME', 'LIKE','%' .$keyword . '%' ) ;
             }
-            else
+            if ($request->get('INCOMING_ID')) 
             {
-                $result = Dc_cubicle::orderBy('OUTGOING_ID','ASC')  
-                ->join('Dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
-                ->leftJoin('dc_gardu_induk','Dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
-                ->select('dc_cubicle.OUTGOING_ID','dc_cubicle.CUBICLE_NAME','dc_cubicle.PD_LEVEL','dc_cubicle.PD_CRITICAL','dc_gardu_induk.GARDU_INDUK_NAMA') 
-                ->paginate(12);
+                $keyword = $request->get('INCOMING_ID');    
+                $result = $result->where('dc_cubicle.INCOMING_ID', $keyword ) ;
             } 
-            $total_records=Dc_cubicle::count(); 
             return response()->json(array(    
                 'status'=>true,        
-                'data' => array(
-                    'result' => $result,
-                    'total_records' => $total_records,
-                ),
+                'data' =>  $result->paginate(10),  
                 'status_code' => 200
             ));
         }
@@ -181,6 +186,81 @@ class DcCubicleController extends Controller
         }
     }
     public function singleRealtime($id){ 
+        try{
+            $result = Dc_cubicle::where('OUTGOING_ID',$id)->first(); 
+         
+            if ($result['SCB'] == 0 && $result['SCB_INV'] == 0) 
+            {
+                $condition = 'open';
+            }
+            elseif ($result['SCB'] == 1 && $result['SCB_INV'] == 0) 
+            {
+                $condition = 'close';
+            }
+            elseif ($result['SCB'] == 0 && $result['SCB_INV'] == 1) 
+            {
+                $condition = 'close';
+            }
+            else{
+                $condition = 'open';
+            } 
+            if ($result['SLR'] == 0 && $result['SLR_INV'] == 0) 
+            {
+                $lr = 'LOKAL';
+            }
+            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 0) 
+            {
+                $lr = 'REMOTE';
+            }
+            elseif ($result['SLR'] == 0 && $result['SLR_INV'] == 1) 
+            {
+                $lr = 'REMOTE';
+            }
+            elseif ($result['SLR'] == 1 && $result['SLR_INV'] == 1) 
+            {
+                $lr = 'LOKAL';
+            }
+            else{
+                $lr = '';
+            }
+            $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
+            $history_pd = Dc_inspeksi_pd::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->limit('10')->get();
+            $history_asset = Dc_inspeksi_asset::where('OUTGOING_ID',$id)->limit('10')->orderBy('id','DESC')->get();
+            return response()->json(array(    
+                'status'=>true,  
+                'data' => array(
+                    'topstatus' => $result['PD_LEVEL'],
+                    'condition' => $condition,      
+                    'lokal_remote' => $lr,
+                    'total_beban' => array(
+                        'phasa_r' => '',
+                        'phasa_s' => '',
+                        'phasa_t' => '',
+                        'tegangan' => ''
+                    ),
+                    'gi' => $gi->dcGarduInduk['GARDU_INDUK_NAMA'],
+                    'incoming_name' => $gi['INCOMING_NAME'],
+                    'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
+                    'temperatur_a' =>$gi['TEMP_A'],
+                    'temperatur_b' =>$gi['TEMP_B'],
+                    'temperatur_c' =>$gi['TEMP_C'],
+                    'history_pd' => $history_pd,
+                    'history_pmt' => $history_pmt,
+                    'history_asset' => $history_asset,
+                ), 
+                'status_code' => 200
+            ));
+        }
+        catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+
+    }
+    public function singleSmoke($id){ 
         try{
             $result = Dc_cubicle::where('OUTGOING_ID',$id)->first(); 
          

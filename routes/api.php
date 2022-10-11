@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
 
 
+    Route::get('singleSmoke/{id}',[ DcCubicleController::class,'singleSmoke']);
 
 
 
