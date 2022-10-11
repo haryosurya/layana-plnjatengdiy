@@ -102,9 +102,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     Route::get('InspeksiPd', [EwsInspeksiPdController::class,'indexInspeksiPd']);
     Route::post('storeInspeksiPd/{id}', [EwsInspeksiPdController::class,'storeInspeksiPd']);
-
-    Route::get('indexInspeksiPd', [DcInspeksiPenyulangController::class,'indexInspeksiPd']);
-    Route::post('storeInspeksiPd', [DcInspeksiPenyulangController::class,'storeInspeksiPd']); 
  
     Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
     Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
