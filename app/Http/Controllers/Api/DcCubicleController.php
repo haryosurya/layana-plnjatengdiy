@@ -101,7 +101,7 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->first();
-            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->orderBy('id_inspeksi_pd','DESC')->first();
+            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->select('ews_inspeksi_pd.*')->orderBy('id_inspeksi_pd','DESC')->first();
             $hpd =array(
                 "id_inspeksi_pd"=>  $history_pd->id_inspeksi_pd,
                 "id_outgoing"=>  $history_pd->id_outgoing,
