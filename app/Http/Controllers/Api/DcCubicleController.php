@@ -123,6 +123,7 @@ class DcCubicleController extends Controller
                     'temperatur_a' =>$gi['TEMP_A'],
                     'temperatur_b' =>$gi['TEMP_B'],
                     'temperatur_c' =>$gi['TEMP_C'],
+                    'humidity' => $gi['HUMIDITY'],
                     'history_pd' => $history_pd,
                     'history_pmt' => $history_pmt,
                     'history_asset' => $history_asset,

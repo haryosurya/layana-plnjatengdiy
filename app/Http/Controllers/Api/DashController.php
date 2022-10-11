@@ -8,6 +8,7 @@ use App\Models\Dc_gardu_induk;
 use App\Models\Dc_incoming_feeder;
 use App\Models\Dc_operasi_pmt_scada;
 use App\Models\ews_freq;
+use App\Models\sm_material_panel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ class DashController extends Controller
                 $vll = Dc_cubicle::sum('VLL'); 
                 $hum = ews_freq::sum('freq'); 
                 $mw = Dc_cubicle::avg('IA','IB','IC');
+                
                 $total_records= Dc_cubicle::count(); 
                 $total_records_all = Dc_cubicle::count(); 
                 $total_records_level = Dc_cubicle::
@@ -42,6 +44,7 @@ class DashController extends Controller
                 $totalOutgoing =  Dc_cubicle::count(); 
                 $totalIncoming = Dc_incoming_feeder::count();
                 $totalGardu = Dc_gardu_induk::count();
+                $countSmoke = sm_material_panel::count();
                 // Diganti dengan jumlah penyulang yang posisinya close. Perhitungannya dari table dc_cubicle, colom SCB & SCB_INV. 
                 // Yang di hitung adalah SCB = 1 SCB_INV = 0 dan SCB = 0 SCB_INV = 1.
                 // Tampilannya menjadi “XXX Penyulang Operasi”
