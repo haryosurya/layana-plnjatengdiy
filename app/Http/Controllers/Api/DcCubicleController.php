@@ -101,24 +101,7 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->firstorFail();
-            $history_pd = 
-            ews_inspeksi_pd::where('id_outgoing',$id)
-            ->select( 
-                'id_inspeksi_pd',
-                'id_outgoing' ,
-                'id_user'  ,
-                'id_gardu_induk' ,
-                'tgl_entry' ,
-                'tgl_inspeksi' ,
-                'citicality' ,
-                'level_pd' ,
-                'foto_pelaksanaan' ,
-                'foto_pengukuran'  ,
-                'keterangan' ,
-                'id_update' ,
-                'last_update'
-            ) 
-            ->orderBy('id_inspeksi_pd','DESC')->firstorFail(); 
+            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id) ->orderBy('id_inspeksi_pd','DESC')->firstorFail(); 
             $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->firstorFail();
             $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->firstorFail();
             return response()->json(array(    
@@ -141,7 +124,7 @@ class DcCubicleController extends Controller
                     'temperatur_b' =>$gi['TEMP_B'],
                     'temperatur_c' =>$gi['TEMP_C'],
                     'humidity' => $gi['HUMIDITY'],
-                    'history_pd' => json_decode($history_pd),
+                    'history_pd' => $history_pd,
                     'history_pmt' => $history_pmt,
                     'history_asset' => $history_asset,
                 ), 
