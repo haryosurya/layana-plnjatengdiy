@@ -9,8 +9,7 @@ use App\Http\Controllers\Api\DcCubicleController;
 use App\Http\Controllers\Api\DcGarduIndukController;
 use App\Http\Controllers\Api\DcIncomingFeederController;
 use App\Http\Controllers\Api\DcIndikasiGangguanController;
-use App\Http\Controllers\Api\DcIndikasiGangguanTipeController;
-use App\Http\Controllers\Api\DcInspeksiPenyulangController;
+use App\Http\Controllers\Api\DcIndikasiGangguanTipeController; 
 use App\Http\Controllers\Api\DcJenisKeadaanPmtController;
 use App\Http\Controllers\Api\DcSpeedjardistCuacaController;
 use App\Http\Controllers\Api\DcTipeGangguanController;
@@ -95,14 +94,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('DcSpeedjardist', [DcSpeedjardistCuacaController::class,'index']);
     Route::get('DcTipeGangguan', [DcTipeGangguanController::class,'index']);
     Route::get('SmMeterGi', [SmMeterGiController::class,'index']);
-
-    // Route::get('inspeksiAsset', [DcInspeksiPenyulangController::class,'index']);
-    // Route::post('postinspeksiAsset', [DcInspeksiPenyulangController::class,'store']);
-    // Route::get('ListEwsInspeksiPd', [DcInspeksiPenyulangController::class,'ListEwsInspeksiPd']);
-    // Route::post('storeEwsInspeksiPd', [DcInspeksiPenyulangController::class,'storeEwsInspeksiPd']);
-    // Route::post('updateEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'updateEwsInspeksiPd']);
-    // Route::post('destroyEwsInspeksiPd/{id}', [DcInspeksiPenyulangController::class,'destroyEwsInspeksiPd']);
-    
+ 
     Route::get('ListEwsHistoryMeter', [EwsHistoryMeterController::class,'ListEwsHistoryMeter']);
     Route::post('storeEwsHistoryMeter', [EwsHistoryMeterController::class,'storeEwsHistoryMeter']);
     Route::post('updateEwsHistoryMeter/{id}', [EwsHistoryMeterController::class,'updateEwsHistoryMeter']);
