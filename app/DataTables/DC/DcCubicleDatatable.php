@@ -110,7 +110,7 @@ class DcCubicleDatatable extends DataTable
         $request = $this->request();
  
 
-        $gardu = $model ->with('dcIncomingFeeder')
+        $gardu = $model->with('dcIncomingFeeder')
             ->withoutGlobalScope('active')
             ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID', '=', 'dc_cubicle.INCOMING_ID') 
             ->join('dc_apj', 'dc_apj.APJ_ID', 'dc_cubicle.APJ_ID') 
@@ -224,5 +224,18 @@ class DcCubicleDatatable extends DataTable
     protected function filename()
     {
         return 'DC/DcCubicle_' . date('YmdHis');
+    }
+    public function pdf()
+    {
+        set_time_limit(0);
+
+        if ('snappy' == config('datatables-buttons.pdf_generator', 'snappy')) {
+            return $this->snappyPdf();
+        }
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('datatables::print', ['data' => $this->getDataForPrint()]);
+
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

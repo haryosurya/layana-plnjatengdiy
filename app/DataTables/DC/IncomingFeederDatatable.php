@@ -65,16 +65,30 @@ class IncomingFeederDatatable extends BaseDataTable
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Dc_incoming_feeder $model)
-    {
-        return $model->newQuery();
+    { 
         $request = $this->request();
         $dateRange = null;
         $endDate = null; 
-        $model = $model->with('dc_apj', 'dc_gardu_induk')
-            ->join('dc_apj', 'dc_incoming_feeder.APJ_ID', '=', 'dc_apj.APJ_ID')
-            ->join('dc_gardu_induk', 'dc_incoming_feeder.GARDU_INDUK_ID', '=', 'dc_gardu_induk.GARDU_INDUK_ID')
-            ->select('dc_apj.INCOMING_ID'); 
-        return $model;
+        $model = $model->with('dcCubicles', 'dcGarduInduk')
+            ->withoutGlobalScope('active')
+            ->join('dc_gardu_induk', 'dc_gardu_induk.GARDU_INDUK_ID','=', 'dc_incoming_feeder.GARDU_INDUK_ID')
+            ->leftjoin('dc_apj', 'dc_apj.APJ_ID', '=', 'dc_gardu_induk.APJ_ID')
+            ->select(
+                'dc_incoming_feeder.INCOMING_ID',
+                'dc_incoming_feeder.GARDU_INDUK_ID',
+                'dc_gardu_induk.GARDU_INDUK_NAMA as gardu',
+                'dc_gardu_induk.GARDU_INDUK_ALIAS as alias',
+                'dc_apj.APJ_DCC as DCC',
+                'dc_apj.APJ_NAMA as NAMA_APJ',
+                'dc_incoming_feeder.INCOMING_NAME',
+                'dc_incoming_feeder.MERK_TRAFO',
+                'dc_incoming_feeder.NAMA_ALIAS_INCOMING',
+                'dc_incoming_feeder.DAYA_REAKTIF_TRAFO',
+                'dc_incoming_feeder.RASIO_TEGANGAN'
+            )
+            ; 
+        return $model->groupBy('dc_incoming_feeder.INCOMING_ID');
+
     }
 
     /**
@@ -122,12 +136,23 @@ class IncomingFeederDatatable extends BaseDataTable
             __('app.id') => ['data' => 'INCOMING_ID', 'name' => 'INCOMING_ID', 'visible' => false],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false ], 
             Column::make('INCOMING_ID'),  
+            // Column::make('INCOMING_NAME'),  
+            Column::make('NAMA_ALIAS_INCOMING'),  
+            Column::make('gardu'),   
+            Column::make('NAMA_APJ'),   
+            Column::make('DCC'),   
+            // __('modules.dc.gi') => ['data' => 'gardu', 'name' => 'gardu', 'title' => __('modules.dc.gi')], 
+            // __('modules.dc.gi') => ['data' => 'alias', 'name' => 'alias', 'title' => __('modules.dc.gi')], 
+            // Column::make('alias'),  
+            Column::make('MERK_TRAFO'),  
+            Column::make('DAYA_REAKTIF_TRAFO'),  
+            Column::make('RASIO_TEGANGAN'),  
             Column::computed('action', __('app.action'))
             ->exportable(false)
             ->printable(false)
             ->orderable(false)
             ->searchable(false)
-            ->width(150)
+            // ->width(150)
             ->addClass('text-center')
 
         ];

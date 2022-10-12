@@ -94,7 +94,7 @@ $addOrderPermission = user()->permission('add_order');
             $("#sub_category").selectpicker("refresh");
         });
 
-        $('#incomingfeederdatatable-table').on('preXhr.dt', function(e, settings, data) {
+        $('#bebanrealtimedatatable-table').on('preXhr.dt', function(e, settings, data) {
             var categoryID = $('#category_id').val();
             var subCategoryID = $('#sub_category').val();
             var searchText = $('#search-text-field').val();
@@ -104,7 +104,7 @@ $addOrderPermission = user()->permission('add_order');
             data['searchText'] = searchText;
         });
         const showTable = () => {
-            window.LaravelDataTables["incomingfeederdatatable-table"].draw();
+            window.LaravelDataTables["bebanrealtimedatatable-table"].draw();
         }
  
 

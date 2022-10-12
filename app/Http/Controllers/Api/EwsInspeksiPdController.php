@@ -46,7 +46,7 @@ class EwsInspeksiPdController extends Controller
 
             $setting = global_setting();
             $validator = Validator::make($request->all(), [
-                'tgl_inspeksi' => 'nullable|date_format:"' . $setting->date_format . '"|before_or_equal:'.now($setting->timezone)->toDateString(),
+                'tgl_inspeksi' => 'required|date_format:"' . $setting->date_format . '"', 
                 'foto_pelaksanaan' => 'required|image:jpeg,png,jpg,gif,svg|max:2048',
                 'foto_pengukuran' => 'required|image:jpeg,png,jpg,gif,svg|max:2048',
             ]); 
@@ -84,7 +84,7 @@ class EwsInspeksiPdController extends Controller
             $inspectAsset->level_pd = $request->level_pd;
             $inspectAsset->keterangan = $request->keterangan;
             $inspectAsset->id_update = $request->id_update;
-            $inspectAsset->last_update = $request->last_update;
+            $inspectAsset->last_update = Carbon::createFromFormat($this->global->date_format ,$request->last_update)->format('Y-m-d H:i:s');
             /* image */
             $inspectAsset->foto_pelaksanaan = json_encode($foto_pelaksanaanResponse);
             $inspectAsset->foto_pengukuran = json_encode($foto_pengukuranResponse);
