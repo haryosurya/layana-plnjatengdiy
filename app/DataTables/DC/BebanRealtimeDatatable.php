@@ -102,23 +102,21 @@ class BebanRealtimeDatatable extends DataTable
                     ->setTableId('bebanrealtimedatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax() 
-                    ->destroy(true)
-                    // ->orderBy(2)
+                    ->destroy(true) 
                     ->responsive(true)
-                    ->serverSide(true)
+                    ->serverSide(true) 
                     ->stateSave(false)
                     ->processing(true)
                     ->language(__('app.datatable'))
                     ->parameters([
                         'initComplete' => 'function () {
-                           window.LaravelDataTables["incomingfeederdatatable-table"].buttons().container()
-                            .appendTo( "#table-actions")
-                        }',
+                            window.LaravelDataTables["bebanrealtimedatatable-table"].buttons().container()
+                             .appendTo( "#table-actions")
+                         }',
                         'fnDrawCallback' => 'function( oSettings ) {
-                            $("body").tooltip({
-                                selector: \'[data-toggle="tooltip"]\'
-                            })
-                        }',
+                           //
+                           $(".select-picker").selectpicker();
+                         }',
                     ])
                     ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel'). '&nbsp;<span class="caret"></span>']));
     }

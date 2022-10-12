@@ -76,52 +76,34 @@ $addOrderPermission = user()->permission('add_order');
 @push('scripts')
     @include('sections.datatable_js')
 
-    <script> 
-
-        $('#category_id').change(function(e) {
-            // get projects of selected users
-            var opts = '';
-
-            var subCategory = subCategories.filter(function(item) {
-                return item.category_id == e.target.value
-            });
-
-            subCategory.forEach(project => {
-                opts += `<option value='${project.id}'>${project.category_name}</option>`
-            })
-
-            $('#sub_category').html('<option value="all">@lang("app.all")</option>' + opts)
-            $("#sub_category").selectpicker("refresh");
-        });
+    <script>  
 
         $('#bebanrealtimedatatable-table').on('preXhr.dt', function(e, settings, data) {
-            var categoryID = $('#category_id').val();
-            var subCategoryID = $('#sub_category').val();
-            var searchText = $('#search-text-field').val();
-
-            // data['category_id'] = categoryID;
-            // data['sub_category_id'] = subCategoryID;
+ 
             data['searchText'] = searchText;
         });
         const showTable = () => {
             window.LaravelDataTables["bebanrealtimedatatable-table"].draw();
         }
- 
+        $(' #search-text-field').on('change keyup',
+            function() {
+                if  ($('#search-text-field').val() != "") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else {
+                    $('#reset-filters').addClass('d-none');
+                    showTable();
+                }
+            });
+
 
         $('#reset-filters').click(function() {
-            $('#filter-form')[0].reset();
-
-            $('#category_id').val('all');
-            $('.select-picker').val('all');
-
-            $('#sub_category').html('<option value="all">@lang("app.all")</option>');
-
+            $('#filter-form')[0].reset();  
             $('.select-picker').selectpicker("refresh");
             $('#reset-filters').addClass('d-none');
 
             showTable();
         });
- 
 
     </script>
 @endpush

@@ -106,16 +106,20 @@ $addOrderPermission = user()->permission('add_order');
         const showTable = () => {
             window.LaravelDataTables["incomingfeederdatatable-table"].draw();
         }
- 
+        $(' #search-text-field').on('change keyup',
+            function() {
+                if  ($('#search-text-field').val() != "") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else {
+                    $('#reset-filters').addClass('d-none');
+                    showTable();
+                }
+            });
+
 
         $('#reset-filters').click(function() {
-            $('#filter-form')[0].reset();
-
-            $('#category_id').val('all');
-            $('.select-picker').val('all');
-
-            $('#sub_category').html('<option value="all">@lang("app.all")</option>');
-
+            $('#filter-form')[0].reset();  
             $('.select-picker').selectpicker("refresh");
             $('#reset-filters').addClass('d-none');
 
