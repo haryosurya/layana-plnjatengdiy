@@ -45,8 +45,7 @@ class EwsInspeksiPdController extends Controller
         try{
 
             $setting = global_setting();
-            $validator = Validator::make($request->all(), [
-                'tgl_inspeksi' => 'required', 
+            $validator = Validator::make($request->all(), [ 
                 'foto_pelaksanaan' => 'required|image:jpeg,png,jpg,gif,svg|max:2048',
                 'foto_pengukuran' => 'required|image:jpeg,png,jpg,gif,svg|max:2048',
             ]); 

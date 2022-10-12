@@ -51,7 +51,7 @@ class EwsInspeksiAsetController extends Controller
         try{ 
             $setting = global_setting();
             $validator = Validator::make($request->all(), [
-                'tgl_inspeksi' => 'nullable|date_format:"' . $setting->date_format . '"|before_or_equal:'.now($setting->timezone)->toDateString(), 
+                // 'tgl_inspeksi' => 'nullable|date_format:"' . $setting->date_format . '"|before_or_equal:'.now($setting->timezone)->toDateString(), 
             ]); 
             if ($validator->fails()) {
                 return response()->json([
