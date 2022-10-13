@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\EwsInspeksiAsetController;
 use App\Http\Controllers\Api\EwsInspeksiPdController;
 use App\Http\Controllers\Api\RekapGangguanPmtController;
 use App\Http\Controllers\Api\SmMeterGiController;
+use App\Http\Controllers\Api\SmokeDetectorController;
 use Froiden\RestAPI\Facades\ApiRoute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -72,19 +73,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
     /* REKAP GANGGUAN */
     
+    /* smoke detector */
+    Route::get('listdcc',[SmokeDetectorController::class,'list_dcc']);
+    Route::get('listSmoke/{id}',[SmokeDetectorController::class,'list_smoke']);
+    Route::get('detailSmoke/{id}',[SmokeDetectorController::class,'detail_smoke']);
+/* smoke detector */
     Route::get('pmt', [DcCubicleController::class,'Pmt']); 
     /* profile */
     Route::get('profile',[ AuthController::class,'me']); 
     /* profile */
     
+ 
 
-
-    Route::get('singleSmoke/{id}',[ DcCubicleController::class,'singleSmoke']);
-
-
-
-
-
+ 
 
     Route::get('dccSingleGardu/{id}',[ Dc_apjAPIController::class,'dccSingleGardu']); 
     Route::get('dcGarduInduk', [DcGarduIndukController::class,'index']); /* gardu induk */
