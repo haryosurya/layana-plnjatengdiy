@@ -106,9 +106,9 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->firstorFail();
-            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->limit(1) ->orderBy('id_inspeksi_pd','DESC')->get(); 
-            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->limit(1) ->orderBy('OUTGOING_METER_ID','DESC')->get();
-            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->limit(1) ->orderBy('id_inspeksi_aset','DESC')->get();
+            $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->orderBy('id_inspeksi_pd','DESC')->first(); 
+            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->first();
+            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->first();
             return response()->json(array(    
                 'status'=>true,  
                 'data' => array (
