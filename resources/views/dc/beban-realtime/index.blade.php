@@ -36,35 +36,21 @@
     </x-filters.filter-box>
 
 @endsection
-
-@php
-$addProductPermission = user()->permission('add_product');
-$addOrderPermission = user()->permission('add_order');
-@endphp
+ 
 
 @section('content')
     <!-- CONTENT WRAPPER START -->
     <div class="content-wrapper">
         <!-- Add Task Export Buttons Start -->
 
-        <div class="d-flex justify-content-between action-bar">
-            <div id="table-actions" class="flex-grow-1 align-items-center">
-                @if ($addProductPermission == 'all' || $addProductPermission == 'added')
-                    <x-forms.link-primary :link="route('products.create')" class="mr-3 openRightModal float-left"
-                        icon="plus">
-                        @lang('app.add')
-                        @lang('app.product')
-                    </x-forms.link-primary>
-                @endif
-            </div>
-  
-        </div>
-
+        
         <!-- Add Task Export Buttons End -->
         <!-- Task Box Start -->
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white table-responsive">
 
-            {!! $dataTable->table(['class' => 'table table-hover toggle-circle default table-bordered border-0 w-100 footable-loaded footable']) !!}
+            {{-- {!! $dataTable->table(['class' => 'table table-hover toggle-circle default table-bordered border-0 w-100 footable-loaded footable']) !!} --}}
+
+            {!! $dataTable->table(['class' => 'table table-hover border-0 w-100']) !!}
 
         </div>
         <!-- Task Box End -->
@@ -77,14 +63,16 @@ $addOrderPermission = user()->permission('add_order');
     @include('sections.datatable_js')
 
     <script>  
-
         $('#bebanrealtimedatatable-table').on('preXhr.dt', function(e, settings, data) {
- 
+        
+            var searchText = $('#search-text-field').val();
+
             data['searchText'] = searchText;
-        });
-        const showTable = () => {
+            });
+            const showTable = () => {
             window.LaravelDataTables["bebanrealtimedatatable-table"].draw();
         }
+         
         $(' #search-text-field').on('change keyup',
             function() {
                 if  ($('#search-text-field').val() != "") {

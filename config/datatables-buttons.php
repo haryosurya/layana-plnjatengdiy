@@ -75,7 +75,7 @@ return [
         /*
          * Default columns to generate when not set.
          */
-        'columns' => 'id,add your columns,created_at,updated_at',
+        'columns' => 'id',
 
         /*
          * Default buttons to generate when not set.

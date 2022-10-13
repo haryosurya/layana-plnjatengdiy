@@ -74,33 +74,11 @@ $addOrderPermission = user()->permission('add_order');
 @endsection
 
 @push('scripts')
-    @include('sections.datatable_js')
-
+    @include('sections.datatable_js') 
     <script> 
-
-        $('#category_id').change(function(e) {
-            // get projects of selected users
-            var opts = '';
-
-            var subCategory = subCategories.filter(function(item) {
-                return item.category_id == e.target.value
-            });
-
-            subCategory.forEach(project => {
-                opts += `<option value='${project.id}'>${project.category_name}</option>`
-            })
-
-            $('#sub_category').html('<option value="all">@lang("app.all")</option>' + opts)
-            $("#sub_category").selectpicker("refresh");
-        });
-
-        $('#incomingfeederdatatable-table').on('preXhr.dt', function(e, settings, data) {
-            var categoryID = $('#category_id').val();
-            var subCategoryID = $('#sub_category').val();
-            var searchText = $('#search-text-field').val();
-
-            // data['category_id'] = categoryID;
-            // data['sub_category_id'] = subCategoryID;
+ 
+        $('#incomingfeederdatatable-table').on('preXhr.dt', function(e, settings, data) { 
+            var searchText = $('#search-text-field').val(); 
             data['searchText'] = searchText;
         });
         const showTable = () => {

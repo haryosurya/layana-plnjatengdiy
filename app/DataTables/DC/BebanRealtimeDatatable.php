@@ -53,35 +53,36 @@ class BebanRealtimeDatatable extends DataTable
     public function query(Sm_meter_gi $model)
     {
         $request = $this->request();
-        $smMeter = $model
+        $smMeter = $model 
             ->withoutGlobalScope('active')
             ->join('dc_cubicle', 'dc_cubicle.OUTGOING_ID', '=', 'sm_meter_gi.OUTGOING_ID') 
-            ->select(
-            'sm_meter_gi.OUTGOING_METER_ID as id',
-            'sm_meter_gi.OUTGOING_ID',
-            'sm_meter_gi.IA',
-            'sm_meter_gi.IA_TIME',
-            'sm_meter_gi.IB',
-            'sm_meter_gi.IB_TIME',
-            'sm_meter_gi.IC',
-            'sm_meter_gi.IC_TIME',
-            'sm_meter_gi.IN',
-            'sm_meter_gi.IN_TIME',
-            'sm_meter_gi.VLL',
-            'sm_meter_gi.VLL_TIME',
-            'sm_meter_gi.KW',
-            'sm_meter_gi.KW_TIME',
-            'sm_meter_gi.PF',
-            'sm_meter_gi.PF_TIME',
-            'sm_meter_gi.IFA',
-            'sm_meter_gi.IFA_TIME',
-            'sm_meter_gi.IFB',
-            'sm_meter_gi.IFB_TIME',
-            'sm_meter_gi.IFC',
-            'sm_meter_gi.IFC_TIME',
-            'sm_meter_gi.IFN',
-            'sm_meter_gi.IFN_TIME',
-            'dc_cubicle.CUBICLE_NAME as name' 
+            // ->limit(100000)
+            ->selectRaw(
+            'sm_meter_gi.OUTGOING_METER_ID as id,
+            dc_cubicle.CUBICLE_NAME as name,
+            sm_meter_gi.OUTGOING_ID,
+            sm_meter_gi.IA,
+            sm_meter_gi.IA_TIME,
+            sm_meter_gi.IB,
+            sm_meter_gi.IB_TIME,
+            sm_meter_gi.IC,
+            sm_meter_gi.IC_TIME,
+            sm_meter_gi.IN,
+            sm_meter_gi.IN_TIME,
+            sm_meter_gi.VLL,
+            sm_meter_gi.VLL_TIME,
+            sm_meter_gi.KW,
+            sm_meter_gi.KW_TIME,
+            sm_meter_gi.PF,
+            sm_meter_gi.PF_TIME,
+            sm_meter_gi.IFA,
+            sm_meter_gi.IFA_TIME,
+            sm_meter_gi.IFB,
+            sm_meter_gi.IFB_TIME,
+            sm_meter_gi.IFC,
+            sm_meter_gi.IFC_TIME,
+            sm_meter_gi.IFN,
+            sm_meter_gi.IFN_TIME' 
             ) ;
         if ($request->searchText != '') {
             $smMeter = $smMeter->where(function ($query) {
@@ -107,6 +108,9 @@ class BebanRealtimeDatatable extends DataTable
                     ->serverSide(true) 
                     ->stateSave(false)
                     ->processing(true)
+                    // ->toJson()
+                    ->searchDelay(500)
+                    ->pageLength(10)
                     ->language(__('app.datatable'))
                     ->parameters([
                         'initComplete' => 'function () {
@@ -130,7 +134,35 @@ class BebanRealtimeDatatable extends DataTable
     {
         return [
             //   OUTGOING_METER_ID 	OUTGOING_ID 	IA 	IA_TIME 	IB 	IB_TIME 	IC 	IC_TIME 	IN 	IN_TIME 	VLL 	VLL_TIME 	KW 	KW_TIME 	PF 	PF_TIME 	IFA 	IFA_TIME 	IFB 	IFB_TIME 	IFC 	IFC_TIME 	IFN 	IFN_TIME
-            Column::make('id'), 
+            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
+            Column::make('id'),  
+            Column::make('IA'),  
+            Column::make('IA_TIME'),  
+            Column::make('IB'),  
+            Column::make('IB_TIME'),   
+            Column::make('IC'),   
+            Column::make('IC_TIME'),   
+            Column::make('IN'),    
+            Column::make('IN_TIME'),    
+            Column::make('VLL'),    
+            Column::make('VLL_TIME'),    
+            Column::make('KW'),    
+            Column::make('KW_TIME'),  
+            Column::make('PF'),  
+            Column::make('PF_TIME'),  
+            Column::make('IFA'),    
+            Column::make('IFA_TIME'),    
+            Column::make('IFB'),    
+            Column::make('IFA_TIME'),    
+            Column::make('IFB'),    
+            Column::make('IFA_TIME'),  
+            Column::make('IFC'),    
+            Column::make('IFC_TIME'),  
+            Column::make('IFN'),    
+            Column::make('IFN_TIME'),   
+ 
+
+
             Column::computed('action', __('app.action'))
             ->exportable(false)
             ->printable(false)

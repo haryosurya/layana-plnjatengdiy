@@ -67,6 +67,7 @@
         const showTable = () => {
             window.LaravelDataTables["dccdatatable-table"].draw();
         }
+        
         $(' #search-text-field').on('change keyup',
             function() {
                 if  ($('#search-text-field').val() != "") {

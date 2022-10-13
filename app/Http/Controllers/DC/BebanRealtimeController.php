@@ -14,7 +14,7 @@ class BebanRealtimeController extends AccountBaseController
     public function __construct()
     {
         parent::__construct();
-        $this->pageTitle = 'app.menu.cubicle'; 
+        $this->pageTitle = 'app.menu.beban-realtime'; 
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_cubicle') == 'all'));
             return $next($request);

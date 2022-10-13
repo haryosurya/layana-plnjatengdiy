@@ -2,6 +2,7 @@
 
 return array(
   'dc'=>array(
+    'beban-realtime'=> 'Beban Realtime',
     'incoming-name'=> 'Incoming Name',
     'outgoing-name'=> 'Outgoing Name',
     'gi'=> 'Gardu Induk',

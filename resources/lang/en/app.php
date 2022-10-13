@@ -81,6 +81,7 @@ return array(
     'flutterwave' => 'Flutterwave',
     'offline' => 'Offline',
     'menu' => array(
+        'beban-realtime'=>'Beban Realtime',
         'dcc'=>'Dcc',
         'cubicle'=>'Cubicle',
         'incoming-feeder'=>'Incoming Feeder',
