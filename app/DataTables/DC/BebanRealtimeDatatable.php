@@ -53,10 +53,10 @@ class BebanRealtimeDatatable extends DataTable
     public function query(Sm_meter_gi $model)
     {
         $request = $this->request();
-        $smMeter = $model 
+        $smMeter = $model->with('Dc_cubicle')
             ->withoutGlobalScope('active')
             ->join('dc_cubicle', 'dc_cubicle.OUTGOING_ID', '=', 'sm_meter_gi.OUTGOING_ID') 
-            // ->limit(100000)
+            ->limit(100000)
             ->selectRaw(
             'sm_meter_gi.OUTGOING_METER_ID as id,
             dc_cubicle.CUBICLE_NAME as name,
