@@ -22,7 +22,7 @@ class BebanRealtimeController extends Controller
         try{
             $result = Dc_incoming_feeder::
             join('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
-            // select([
+            // ->select([
             //         'dc_incoming_feeder.INCOMING_ID AS ID',
             //         'dc_incoming_feeder.INCOMING_NAME', 
             //         'dc_incoming_feeder.NAMA_ALIAS_INCOMING', 
@@ -33,6 +33,7 @@ class BebanRealtimeController extends Controller
             ->with(['dcCubicles' => function($q) {
                 $q->select('OUTGOING_ID', 'INCOMING_ID');
             }])  
+            ->groupBy('dc_incoming_feeder.INCOMING_ID')
             ->orderBy('dc_incoming_feeder.INCOMING_ID', 'ASC')   
             ;
             if ($request->get('gardu_induk')) 
@@ -40,7 +41,7 @@ class BebanRealtimeController extends Controller
                 $keyword = $request->get('gardu_induk');    
                 $result =$result->where('dc_gardu_induk.GARDU_INDUK_ID','=', $keyword ) ;  
             } 
-            $result = $result ->get();
+            $result = $result ->paginate(10);
             // $result = $result ->paginate(10);
              
             return response()->json(array(    
