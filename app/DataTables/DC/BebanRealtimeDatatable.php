@@ -84,9 +84,10 @@ class BebanRealtimeDatatable extends DataTable
             sm_meter_gi.IFN,
             sm_meter_gi.IFN_TIME'  
             );
+        $smMeter = $smMeter->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
         if ($request->searchText != '') {
             $smMeter = $smMeter->where(function ($query) {
-                $query->where('name', 'like', '%' . request('searchText') . '%');
+                $query->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
             });
         }
         if ($request->whereDate != '') {

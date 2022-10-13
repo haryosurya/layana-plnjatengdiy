@@ -53,9 +53,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /* DCC APJ */
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
     /* DCC APJ */
+    Route::get('dcCubicle', [DcCubicleController::class,'index']);
     Route::get('dccSinglePMt/{id}',[ Dc_apjAPIController::class,'dccSinglePMt']);
     Route::get('dcCubicle/{id}', [DcCubicleController::class,'single']);
-    Route::get('dcCubicle', [DcCubicleController::class,'index']);
     /* DATA PENYULANG */
     
     /* BEBAN REALTIME */
