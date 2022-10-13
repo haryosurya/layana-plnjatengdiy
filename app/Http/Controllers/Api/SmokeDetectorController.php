@@ -51,21 +51,23 @@ class SmokeDetectorController extends Controller
             ->join('dc_gardu_induk','sm_material_panel.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
             ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
             ->selectRaw( 
-                'dc_apj.APJ_ID,
+                'sm_material_panel.MATERIAL_PANEL_ID,
+                sm_material_panel.KETERANGAN as KETERANGAN,
+                sm_material_panel.TANGGAL_PEMASANGAN as TANGGAL_PEMASANGAN,
+                sm_material_panel.LAST_UPDATE as LAST_UPDATE,
+                dc_apj.APJ_ID,
                 dc_apj.APJ_NAMA,  
-                dc_apj.APJ_DCC,  
+                dc_apj.APJ_DCC as APJ_DCC,  
                 dc_gardu_induk.GARDU_INDUK_NAMA, 
-                sm_material_panel.KETERANGAN,
-                sm_material_panel.TANGGAL_PEMASANGAN,
-                sm_material_panel.LAST_UPDATE,
-                dc_gardu_induk.GARDU_INDUK_ID'
+                dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID'
             )   
             ;
+            $result = $result->where('KETERANGAN', '!=', "" ) ;
 
             if ($request->get('KETERANGAN'))
             {
                 $keyword = $request->get('KETERANGAN');    
-                $result = $result->where('KETERANGAN', $keyword ) ;
+                $result = $result->orWhere('KETERANGAN', $keyword ) ;
             }  
             if ($request->get('TANGGAL_PEMASANGAN'))
             {

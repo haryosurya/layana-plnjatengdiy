@@ -72,12 +72,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);   
     // Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
     /* REKAP GANGGUAN */
-    
+
     /* smoke detector */
     Route::get('listdcc',[SmokeDetectorController::class,'list_dcc']);
     Route::get('listSmoke/{id}',[SmokeDetectorController::class,'list_smoke']);
     Route::get('detailSmoke/{id}',[SmokeDetectorController::class,'detail_smoke']);
-/* smoke detector */
+    /* smoke detector */
+
     Route::get('pmt', [DcCubicleController::class,'Pmt']); 
     /* profile */
     Route::get('profile',[ AuthController::class,'me']); 
