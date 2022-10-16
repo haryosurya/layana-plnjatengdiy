@@ -86,6 +86,11 @@ class DashController extends Controller
                 ->groupBy('APJ_ID')
                 // ->selectRaw('count() as total, APJ_ID')
                 ->count();
+                $smokecount = sm_material_panel::
+                join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','sm_material_panel.GARDU_INDUK_ID')
+                ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')
+                ->distinct()
+                ->count('dc_apj.APJ_ID');
                 $result = array(
                     // 'vll'=>$vll,
                     // 'mw'=>$mw,
@@ -114,6 +119,11 @@ class DashController extends Controller
                     'rekap_gangguan'=>array(
                        'rekap_gangguan' => $rekap_gangguan,
                        'up3_count' => $rekap_gangguan2 
+                    ),
+                    'smoke_detector'=>array(
+                        'smoke' => '',
+                        'non_smoke' => '',
+                        'DCC' => $smokecount,
                     )
                 );
                 return response()->json(array(    

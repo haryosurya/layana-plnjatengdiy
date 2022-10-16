@@ -13,7 +13,14 @@ class DcGarduIndukController extends Controller
     public function index(Request $request)
     {
         try{
-            $result = Dc_gardu_induk::orderBy('GARDU_INDUK_ID','DESC')->join('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID');  
+            $result = Dc_gardu_induk::orderBy('GARDU_INDUK_ID','DESC')
+            ->join('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')
+            ->leftJoin('dc_incoming_feeder','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
+            ->selectRaw(
+                'dc_gardu_induk.*, count(dc_incoming_feeder.INCOMING_ID) as TOTAL_INCOMING'
+            )
+            ->groupBy('dc_gardu_induk.GARDU_INDUK_ID')
+            ;  
             if ($request->get('APJ_ID'))  
             {
                 $keyword = $request->get('APJ_ID');   
@@ -30,12 +37,10 @@ class DcGarduIndukController extends Controller
             {
                 $keyword = $request->get('GARDU_INDUK_NAMA');   
                 $result =$result->where('GARDU_INDUK_NAMA', $keyword ) ;
-            } 
-            $total_records=Dc_gardu_induk::count(); 
+            }  
             return response()->json(array(  
                 'status'=>true,          
-                'data' => $result->paginate(12),
-                'total_records' => $total_records,
+                'data' => $result->paginate(12), 
                 'status_code' => 200
             ));
         }

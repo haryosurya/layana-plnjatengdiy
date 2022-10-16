@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
     /* DCC APJ */
     Route::get('dcCubicle', [DcCubicleController::class,'index']);
-    Route::get('dccSinglePMt/{id}',[ Dc_apjAPIController::class,'dccSinglePMt']);
+    Route::get('dccSinglePMt/{id}',[ DcCubicleController::class,'dccSinglePMt']);
     Route::get('dcCubicle/{id}', [DcCubicleController::class,'single']);
     /* DATA PENYULANG */
     
@@ -84,9 +84,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('profile',[ AuthController::class,'me']); 
     /* profile */
     
- 
-
- 
+    
+    
 
     Route::get('dccSingleGardu/{id}',[ Dc_apjAPIController::class,'dccSingleGardu']); 
     Route::get('dcGarduInduk', [DcGarduIndukController::class,'index']); /* gardu induk */

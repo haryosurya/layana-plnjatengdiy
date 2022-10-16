@@ -13,7 +13,9 @@ class DcIncomingFeederController extends Controller
     public function index(Request $request)
     {
         try{
-            $result =Dc_incoming_feeder::orderBy('INCOMING_ID','DESC');
+            $result =Dc_incoming_feeder::orderBy('INCOMING_ID','DESC')
+            ->leftJoin('dc_cubicle','dc_cubicle.INCOMING_ID','dc_incoming_feeder.INCOMING_ID')
+            ->selectRaw('dc_incoming_feeder.*, count(dc_cubicle.OUTGOING_ID) as TOTAL_PMT');
             if ($request->get('GARDU_INDUK_ID'))
             {
                 $keyword = $request->get('GARDU_INDUK_ID');    

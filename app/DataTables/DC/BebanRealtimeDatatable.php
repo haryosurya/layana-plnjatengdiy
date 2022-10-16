@@ -56,6 +56,7 @@ class BebanRealtimeDatatable extends DataTable
         $request = $this->request();
         $smMeter = $model->with('OUTGOING_ID')
             ->withoutGlobalScope('active')
+            ->limit(1000)
             ->join('dc_cubicle', 'dc_cubicle.OUTGOING_ID', '=', 'sm_meter_gi.OUTGOING_ID')  
             ->selectRaw(
             'sm_meter_gi.OUTGOING_METER_ID as id,
@@ -90,20 +91,22 @@ class BebanRealtimeDatatable extends DataTable
                 $query->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
             });
         }
-        if ($request->whereDate != '') {
-            $smMeter = $smMeter->where(function ($query) { 
-                $m = Carbon::parse(now()->month)->format('Y-m-d');
-                $y = Carbon::parse(now()->year)->format('Y-m-d'); 
-                $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y) ;
-            });
-        }else{
-            $smMeter = $smMeter->where(function ($query) {
-                $query->where('name', 'like', '%' . request('searchText') . '%');
-                $m = Carbon::parse(now()->month)->format('Y-m-d');
-                $y = Carbon::parse(now()->year)->format('Y-m-d'); 
-                $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y) ;
-            }); 
-        }
+        $smMeter = $smMeter->where('sm_meter_gi.OUTGOING_ID',  1);
+        // if ($request->whereDate != '') {
+        //     $smMeter = $smMeter->where(function ($query) { 
+        //         $m = Carbon::parse(now()->month)->format('Y-m-d');
+        //         $y = Carbon::parse(now()->year)->format('Y-m-d'); 
+        //         $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y) ;
+        //     });
+        // }
+        // else{
+        // }
+        $smMeter = $smMeter->where(function ($query) { 
+            $m = Carbon::parse(now()->month)->format('Y-m-d  H:i:s');
+            $y = Carbon::parse(now()->year)->format('Y-m-d  H:i:s'); 
+            $d = Carbon::parse(now()->day)->format('Y-m-d  H:i:s'); 
+            $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y)->whereDate( 'sm_meter_gi.IA_TIME' ,'=', $d) ;
+        }); 
         return $smMeter->groupBy('id');
     }
  

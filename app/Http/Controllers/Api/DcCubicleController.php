@@ -349,4 +349,58 @@ class DcCubicleController extends Controller
         }
 
     }
+    
+    public function dccSinglePMt($id, Request $request){
+        if (auth('sanctum')->check()){  
+            $result = Dc_cubicle::where('dc_cubicle.INCOMING_ID',$id)
+            ->orderBy('dc_cubicle.OUTGOING_ID','ASC') 
+            ->join('dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
+            ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
+            ->leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
+            ->selectRaw(
+                'dc_cubicle.OUTGOING_ID as ID,
+                dc_cubicle.CUBICLE_NAME,
+                dc_cubicle.INCOMING_ID as INCOMING_ID,
+                dc_gardu_induk.GARDU_INDUK_ID as GARDU_ID,
+                dc_gardu_induk.GARDU_INDUK_NAMA,
+                dc_cubicle.PD_LEVEL, 
+                dc_apj.APJ_ID as APJ_ID,
+                dc_apj.APJ_NAMA as APJ_NAMA,
+                ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
+                dc_cubicle.HUMIDITY,
+                dc_cubicle.PD_CRITICAL'
+                ) ;
+
+            if($request->APJ_NAMA){
+                $keyword = $request->get('APJ_NAMA');    
+                $result = $result->where('dc_apj.APJ_NAMA', 'LIKE','%' .$keyword . '%') ;
+            }
+            if($request->APJ_ID){
+                $keyword = $request->get('APJ_ID');    
+                $result = $result->where('dc_apj.APJ_ID', $keyword ) ;
+            }
+            if($request->GARDU_INDUK_ID){
+                $keyword = $request->get('GARDU_ID');    
+                $result = $result->where('GARDU_ID', $keyword ) ;
+            }
+            if($request->GARDU_INDUK_NAMA){
+                $keyword = $request->get('GARDU_INDUK_NAMA');    
+                $result = $result->where('dc_gardu_induk.GARDU_INDUK_NAMA', $keyword ) ;
+            }
+            if($request->PD_CRITICAL){
+                $keyword = $request->get('PD_CRITICAL');    
+                $result = $result->where('dc_cubicle.PD_CRITICAL', $keyword ) ;
+            }
+
+            $result = $result->paginate(10); 
+            return response()->json( [           
+                'status' => true,
+                'data' => $result, 
+                'status_code' => 200
+            ]);
+        } 
+        else{ 
+            return response()->json(['status'=>false,'Unauthenticated.',200]);
+        }
+    }
 }

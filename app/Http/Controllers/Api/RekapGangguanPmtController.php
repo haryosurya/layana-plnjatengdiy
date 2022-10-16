@@ -60,7 +60,7 @@ class RekapGangguanPmtController extends Controller
                 $rekap_gangguan = $rekap_gangguan->where('dc_tipe_gangguan.NAMA_TIPE_GANGGUAN', 'LIKE','%' .$keyword . '%') ;
                 $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
             }  
-            if ($request->startDate && $request->endDate) {
+            if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
                 $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
                 $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
                 $rekap_gangguan = $rekap_gangguan->whereBetween(DB::raw('DATE(Dc_operasi_pmt_scada.`TGL_OPERASI_PMT`)')   , [$startDate, $endDate]);
@@ -104,7 +104,7 @@ class RekapGangguanPmtController extends Controller
             //     $rekap_gangguan = $rekap_gangguan->where('ews_inspeksi_pd.outgoing_id', 'LIKE','%' .$keyword . '%') ;
             //     $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
             // }  
-            if ($request->startDate && $request->endDate) {
+            if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
                 $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
                 $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
                 $rekap_gangguan = $rekap_gangguan->whereBetween(DB::raw('DATE(ews_inspeksi_pd.`tgl_entry`)')   , [$startDate, $endDate]);
@@ -150,7 +150,7 @@ class RekapGangguanPmtController extends Controller
             //     $rekap_gangguan = $rekap_gangguan->where('ews_inspeksi_pd.outgoing_id', 'LIKE','%' .$keyword . '%') ;
             //     $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
             // }  
-            if ($request->startDate && $request->endDate) {
+            if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
                 $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
                 $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
                 $rekap_gangguan = $rekap_gangguan->whereBetween(DB::raw('DATE(ews_inspeksi_aset.`tgl_entry`)')   , [$startDate, $endDate]);
