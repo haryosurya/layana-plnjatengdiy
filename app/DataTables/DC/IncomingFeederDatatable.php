@@ -27,6 +27,7 @@ class IncomingFeederDatatable extends BaseDataTable
         return datatables()
             ->eloquent($query) 
             ->addIndexColumn() 
+          
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view"> 
                             <div class="dropdown">
@@ -55,7 +56,7 @@ class IncomingFeederDatatable extends BaseDataTable
 
                 return $action;
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action' ]);
     }
 
     /**

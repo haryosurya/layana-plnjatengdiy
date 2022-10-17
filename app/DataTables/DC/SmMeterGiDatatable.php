@@ -22,11 +22,10 @@ class SmMeterGiDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query) 
-            ->addIndexColumn() 
-            // ->editColumn()
+            ->addIndexColumn()  
             ->addColumn('cubicle', function($row){
                 $data = Dc_cubicle::where('OUTGOING_ID',$row->OUTGOING_ID)->first();
-                $cubicle = $data->CUBICLE_NAME.'';
+                $cubicle ='<a href="' . route('cubicle.show', [$row->OUTGOING_METER_ID]) . '"><i class="fa fa-circle mr-1 text-light-green f-10"></i> '. $data->CUBICLE_NAME.'</a> ';
                 return $cubicle;
             }
             )
@@ -63,10 +62,16 @@ class SmMeterGiDatatable extends DataTable
         $request = $this->request(); 
         $model = $model->with('OUTGOING_ID')
         ->newQuery();
-        if ($request->searchText != '') {
-            $model = $model-> join('dc_cubicle','dc_cubicle.OUTGOING_ID','sm_meter_gi.OUTGOING_ID');
+        if ( $request->searchText != '' && $request->searchText  !== null &&  $request->searchText  != 'null') {
+            $model = $model->join('dc_cubicle','dc_cubicle.OUTGOING_ID','sm_meter_gi.OUTGOING_ID');
             $model = $model->where(function ($query) {
                 $query->where('CUBICLE_NAME',  'like', '%' . request('searchText') . '%');
+            });
+        }
+        if ($request->OUTGOING_ID != '' && $request->OUTGOING_ID  !== null &&  $request->OUTGOING_ID  != 'null') {
+            $model = $model-> join('dc_cubicle','dc_cubicle.OUTGOING_ID','sm_meter_gi.OUTGOING_ID');
+            $model = $model->where(function ($query) {
+                $query->where('OUTGOING_ID',  request('OUTGOING_ID') );
             });
         }
         return $model;
@@ -110,9 +115,9 @@ class SmMeterGiDatatable extends DataTable
     protected function getColumns()
     {
         return [ 
-            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            
-            Column::make('OUTGOING_METER_ID'),
+            __('app.id') => ['data' => 'OUTGOING_METER_ID', 'name' => 'OUTGOING_METER_ID', 'visible' => false],
+            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false ], 
+            // Column::make('OUTGOING_METER_ID'),
             Column::make('cubicle'),
             // Column::make('OUTGOING_ID'),
             Column::make('IA'),

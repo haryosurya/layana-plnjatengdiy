@@ -23,7 +23,7 @@ class DashController extends Controller
             try{
                 // Total MW didapat dari table dc_cubicle, dengan mengalikan colom VLL x Rata-rata(IA,IB,IC)
                 $vll = Dc_cubicle::sum('VLL'); 
-                $hum = ews_freq::sum('freq'); 
+                $hum = ews_freq::latest('freq_time')->where('freq_time','!=','')->first(); 
                 $mw = Dc_cubicle::avg('IA','IB','IC');
                 
                 $total_records= Dc_cubicle::count(); 
@@ -95,7 +95,7 @@ class DashController extends Controller
                     // 'vll'=>$vll,
                     // 'mw'=>$mw,
                     'beban_sistem'=>round($vll*$mw,0),
-                    'total_frekuensi'=>round($hum,0),
+                    'total_frekuensi'=>round($hum->freq,0),
                     'pd_level'=> array(
                         'good'=>round($pd_level_good,2),
                         'moderate'=>round($pd_level_mod,2),

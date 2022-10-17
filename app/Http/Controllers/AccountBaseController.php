@@ -20,6 +20,7 @@ class AccountBaseController extends Controller
     /**
      * UserBaseController constructor.
      */
+    
     public function __construct()
     {
         parent::__construct();
@@ -130,6 +131,5 @@ class AccountBaseController extends Controller
         }
 
         return $data;
-    }
-
+    } 
 }

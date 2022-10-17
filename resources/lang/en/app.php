@@ -81,6 +81,8 @@ return array(
     'flutterwave' => 'Flutterwave',
     'offline' => 'Offline',
     'menu' => array(
+        'rekap-gangguan-pmt'=>'Rekap Gangguan PMT',
+        'inspeksi-pd'=>'Inspeksi Pd',
         'beban-realtime'=>'Beban Realtime',
         'dcc'=>'Dcc',
         'cubicle'=>'Cubicle',

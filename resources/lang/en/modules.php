@@ -2,6 +2,7 @@
 
 return array(
   'dc'=>array(
+    'inspeksi-pd'=> 'Inspeksi PD', 
     'beban-realtime'=> 'Beban Realtime',
     'incoming-name'=> 'Incoming Name',
     'outgoing-name'=> 'Outgoing Name',
@@ -26,6 +27,11 @@ return array(
     'lr' => 'L/R',
     'condition' => 'Contidion',
     'telegram-id' => 'Telegram ID',
+    'rekap-gangguan' => 'Rekap Gangguan PMT',
+    'tgl-operasi' => 'Tgl Operasi',
+    'tgl-normal' => 'Tgl Normal',
+    'jenis-operasi' => 'Jenis Operasi',
+    'cakupan-kerja' => 'Cakupan Kerja'
 
   ),
   'dashboard' => array(
@@ -430,6 +436,8 @@ return array(
     'importFromRole' => 'Import from Role'
   ), 
   'module' => array(
+    'beban-realtime'=>'Beban Realtime',
+    'inspeksi-pd'=>'Inspeksi PD',
     'dcc'=>'Dcc',
     'cubicle'=>'Cubicle',
     'incoming-feeder'=>'Incoming Feeder',

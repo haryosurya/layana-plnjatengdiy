@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\DcIncomingFeederController;
+use App\Http\Controllers\Api\EwsInspeksiPdController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DC\BebanRealtimeController;
 use App\Http\Controllers\DC\CubicleController;
 use App\Http\Controllers\DC\DccController;
+use App\Http\Controllers\DC\EwsInspeksiPdController as DCEwsInspeksiPdController;
 use App\Http\Controllers\DC\GarduIndukController;
 use App\Http\Controllers\DC\IncomingFeederPMTController;
+use App\Http\Controllers\DC\RekapGangguanPMTscadaController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
@@ -66,6 +69,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('gardu-induk',GarduIndukController::class );
     Route::resource('cubicle',CubicleController::class );
     Route::resource('beban-realtime',BebanRealtimeController::class );
+    Route::resource('inspeksi-pd',DCEwsInspeksiPdController::class )->except(['create','store','edit','update','delete']);
+    Route::get('rekap-gangguan-pmt',[RekapGangguanPMTscadaController::class,'index' ])->name('rekap-gangguan-pmt.index');
+    Route::get('rekap-gangguan-pmt/{id}',[RekapGangguanPMTscadaController::class,'show' ])->name('rekap-gangguan-pmt.show');
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('checklist', [DashboardController::class, 'checklist'])->name('checklist');

@@ -53,7 +53,8 @@
         "nunomaduro/collision": "^5.10",
         "nunomaduro/larastan": "^1.0",
         "phpro/grumphp": "^1.13",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.10",
+        "sven/artisan-view": "^3.4"
     },
     "autoload": {
         "files": [

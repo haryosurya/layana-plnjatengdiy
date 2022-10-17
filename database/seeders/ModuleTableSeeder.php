@@ -39,6 +39,9 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'incoming-feeder', 'description' => 'Manage Incoming Feeder'], 
             ['module_name' => 'cubicle', 'description' => 'Manage Cubicle'], 
             ['module_name' => 'dcc', 'description' => 'Manage DCC'], 
+            ['module_name' => 'beban-realtime', 'description' => 'Manage Beban Realtime'], 
+            ['module_name' => 'inspeksi-pd', 'description' => 'Manage Inspeksi PD'], 
+            ['module_name' => 'rekap-gangguan-pmt', 'description' => 'Manage Gangguan PMT'], 
         ]);
 
         ModuleSetting::insert([
@@ -48,15 +51,36 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'dcc', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'beban-realtime', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'inspeksi-pd', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'rekap-gangguan-pmt', 'status' => 'active', 'type' => 'admin'],  
 
             ['module_name' => 'employees', 'status' => 'active', 'type' => 'employee'], 
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'incoming-feeder', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'cubicle', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'dcc', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'beban-realtime', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'inspeksi-pd', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'rekap-gangguan-pmt', 'status' => 'active', 'type' => 'employee'],  
         ]); 
 
         Permission::insert([
+
+            ['name' => 'add_rekap_gangguan_pmt', 'display_name' => 'Add Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_rekap_gangguan_pmt', 'display_name' => 'View Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_rekap_gangguan_pmt', 'display_name' => 'Edit Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_rekap_gangguan_pmt', 'display_name' => 'Delete Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+            
+            ['name' => 'add_inspeksi_pd', 'display_name' => 'Add Inspeksi PD', 'module_id' => 8, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_inspeksi_pd', 'display_name' => 'View Inspeksi PD', 'module_id' => 8, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_inspeksi_pd', 'display_name' => 'Edit Inspeksi PD', 'module_id' => 8, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_inspeksi_pd', 'display_name' => 'Delete Inspeksi PD', 'module_id' => 8, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+            
+            ['name' => 'add_beban_realtime', 'display_name' => 'Add Beban Realtime', 'module_id' => 7, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_beban_realtime', 'display_name' => 'View Beban Realtime', 'module_id' => 7, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_beban_realtime', 'display_name' => 'Edit Beban Realtime', 'module_id' => 7, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_beban_realtime', 'display_name' => 'Delete Beban Realtime', 'module_id' => 7, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
             
             ['name' => 'add_dcc', 'display_name' => 'Add Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'view_dcc', 'display_name' => 'View Dcc', 'module_id' => 6, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],

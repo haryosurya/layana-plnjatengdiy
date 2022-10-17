@@ -64,7 +64,7 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcSpeedjardistJarakgangguan()
     {
-        return $this->belongsTo('App\DcSpeedjardistJarakgangguan', 'JARAK_GANGGUAN', 'ID_JARAK_GANGGUAN');
+        return $this->belongsTo(Dc_speedjardist_cuaca::class, 'JARAK_GANGGUAN', 'ID_JARAK_GANGGUAN');
     }
 
     /**
@@ -72,7 +72,7 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcUpj()
     {
-        return $this->belongsTo('App\DcUpj', 'UPJ_ID', 'UPJ_ID');
+        return $this->belongsTo(Dc_apj::class, 'UPJ_ID', 'APJ_ID');
     }
 
     /**
@@ -80,7 +80,7 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcApj()
     {
-        return $this->belongsTo('App\DcApj', 'APJ_ID', 'APJ_ID');
+        return $this->belongsTo(Dc_apj::class, 'APJ_ID', 'APJ_ID');
     }
 
     /**
@@ -88,7 +88,7 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcIndikasiGangguan()
     {
-        return $this->belongsTo('App\DcIndikasiGangguan', 'ID_INDIKASI_GANGGUAN', 'ID_INDIKASI_GANGGUAN');
+        return $this->belongsTo(Dc_indikasi_gangguan::class, 'ID_INDIKASI_GANGGUAN', 'ID_INDIKASI_GANGGUAN');
     }
 
     /**
@@ -96,7 +96,7 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcTipeGangguan()
     {
-        return $this->belongsTo('App\DcTipeGangguan', 'ID_TIPE_GANGGUAN', 'ID_TIPE_GANGGUAN');
+        return $this->belongsTo(Dc_tipe_gangguan::class, 'ID_TIPE_GANGGUAN', 'ID_TIPE_GANGGUAN');
     }
 
     /**
@@ -104,6 +104,6 @@ class Dc_operasi_pmt_scada extends Model
      */
     public function dcSpeedjardistCuaca()
     {
-        return $this->belongsTo('App\DcSpeedjardistCuaca', 'CUACA', 'ID_CUACA');
+        return $this->belongsTo(Dc_speedjardist_cuaca::class, 'CUACA', 'ID_CUACA');
     }
 }

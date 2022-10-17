@@ -16,16 +16,15 @@ class BebanRealtimeController extends AccountBaseController
     {
         parent::__construct();
         $this->pageTitle = 'app.menu.beban-realtime'; 
-        // $this->middleware(function ($request, $next) {
-        //     abort_403(!(user()->permission('view_cubicle') == 'all'));
-        //     return $next($request);
-        // });
+        $this->middleware(function ($request, $next) {
+            abort_403(!(user()->permission('view_beban_realtime') == 'all'));
+            return $next($request);
+        });
     }
     public function index(SmMeterGiDatatable $dataTable)
     {
         //
-        return $dataTable->render('dc.beban-realtime.index', $this->data);
-
+        return $dataTable->render('dc.beban-realtime.index', $this->data); 
     }
 
 }
