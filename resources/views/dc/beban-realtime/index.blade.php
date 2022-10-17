@@ -63,14 +63,14 @@
     @include('sections.datatable_js')
 
     <script>  
-        $('#bebanrealtimedatatable-table').on('preXhr.dt', function(e, settings, data) {
+        $('#smmetergidatatable-table').on('preXhr.dt', function(e, settings, data) {
         
             var searchText = $('#search-text-field').val();
 
             data['searchText'] = searchText;
             });
             const showTable = () => {
-            window.LaravelDataTables["bebanrealtimedatatable-table"].draw();
+            window.LaravelDataTables["smmetergidatatable-table"].draw();
         }
          
         $(' #search-text-field').on('change keyup',

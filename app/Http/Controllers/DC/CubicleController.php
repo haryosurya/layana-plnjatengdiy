@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\DC;
 
+use App\DataTables\DC\BebanRealtimeDatatable;
 use App\DataTables\DC\DcCubicleDatatable;
 use App\DataTables\DC\InspeksiPdDatatable;
 use App\Helper\Reply;
@@ -137,6 +138,20 @@ class CubicleController extends AccountBaseController
 
         return $dataTable->render('dc.cubicle.show', $this->data);
     }
+    public function BebanRealtime()
+    {
+        $viewPermission = user()->permission('view_cubicle');
+        abort_403(!in_array($viewPermission, ['all']));
+
+        $tab = request('tab');
+        $this->activeTab = ($tab == '') ? 'profile' : $tab;
+        $this->view = 'dc.cubicle.ajax.beban-realtime';
+
+        $dataTable = new BebanRealtimeDatatable();
+
+        return $dataTable->render('dc.cubicle.show', $this->data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

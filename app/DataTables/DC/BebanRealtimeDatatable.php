@@ -53,60 +53,65 @@ class BebanRealtimeDatatable extends DataTable
      */
     public function query(Sm_meter_gi $model)
     {
-        $request = $this->request();
+        $request = $this->request(); 
         $smMeter = $model->with('OUTGOING_ID')
             ->withoutGlobalScope('active')
-            ->limit(1000)
-            ->join('dc_cubicle', 'dc_cubicle.OUTGOING_ID', '=', 'sm_meter_gi.OUTGOING_ID')  
-            ->selectRaw(
-            'sm_meter_gi.OUTGOING_METER_ID as id,
-            dc_cubicle.CUBICLE_NAME as name,
-            sm_meter_gi.OUTGOING_ID,
-            sm_meter_gi.IA,
-            sm_meter_gi.IA_TIME,
-            sm_meter_gi.IB,
-            sm_meter_gi.IB_TIME,
-            sm_meter_gi.IC,
-            sm_meter_gi.IC_TIME,
-            sm_meter_gi.IN,
-            sm_meter_gi.IN_TIME,
-            sm_meter_gi.VLL,
-            sm_meter_gi.VLL_TIME,
-            sm_meter_gi.KW,
-            sm_meter_gi.KW_TIME,
-            sm_meter_gi.PF,
-            sm_meter_gi.PF_TIME,
-            sm_meter_gi.IFA,
-            sm_meter_gi.IFA_TIME,
-            sm_meter_gi.IFB,
-            sm_meter_gi.IFB_TIME,
-            sm_meter_gi.IFC,
-            sm_meter_gi.IFC_TIME,
-            sm_meter_gi.IFN,
-            sm_meter_gi.IFN_TIME'  
+            ->limit(10)
+            ->leftJoin('dc_cubicle', 'dc_cubicle.OUTGOING_ID', '=', 'sm_meter_gi.OUTGOING_ID')  
+            ->select(
+            'sm_meter_gi.OUTGOING_METER_ID as id',
+            'dc_cubicle.CUBICLE_NAME as name'
+            // 'sm_meter_gi.OUTGOING_ID'
+            // sm_meter_gi.IA,
+            // sm_meter_gi.IA_TIME,
+            // sm_meter_gi.IB,
+            // sm_meter_gi.IB_TIME,
+            // sm_meter_gi.IC,
+            // sm_meter_gi.IC_TIME,
+            // sm_meter_gi.IN,
+            // sm_meter_gi.IN_TIME,
+            // sm_meter_gi.VLL,
+            // sm_meter_gi.VLL_TIME,
+            // sm_meter_gi.KW,
+            // sm_meter_gi.KW_TIME,
+            // sm_meter_gi.PF,
+            // sm_meter_gi.PF_TIME,
+            // sm_meter_gi.IFA,
+            // sm_meter_gi.IFA_TIME,
+            // sm_meter_gi.IFB,
+            // sm_meter_gi.IFB_TIME,
+            // sm_meter_gi.IFC,
+            // sm_meter_gi.IFC_TIME,
+            // sm_meter_gi.IFN,
+            // sm_meter_gi.IFN_TIME'  
             );
-        $smMeter = $smMeter->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
+        $smMeter = $smMeter->where('dc_cubicle.OUTGOING_ID', '1'); 
         if ($request->searchText != '') {
             $smMeter = $smMeter->where(function ($query) {
                 $query->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
             });
         }
-        $smMeter = $smMeter->where('sm_meter_gi.OUTGOING_ID',  1);
-        // if ($request->whereDate != '') {
-        //     $smMeter = $smMeter->where(function ($query) { 
-        //         $m = Carbon::parse(now()->month)->format('Y-m-d');
-        //         $y = Carbon::parse(now()->year)->format('Y-m-d'); 
-        //         $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y) ;
-        //     });
-        // }
-        // else{
-        // }
-        $smMeter = $smMeter->where(function ($query) { 
-            $m = Carbon::parse(now()->month)->format('Y-m-d  H:i:s');
-            $y = Carbon::parse(now()->year)->format('Y-m-d  H:i:s'); 
-            $d = Carbon::parse(now()->day)->format('Y-m-d  H:i:s'); 
-            $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y)->whereDate( 'sm_meter_gi.IA_TIME' ,'=', $d) ;
-        }); 
+        // $smMeter = $smMeter->where('sm_meter_gi.OUTGOING_ID',  1); 
+        // $smMeter = $smMeter->where(function ($query) { 
+        //     $m = Carbon::parse(now()->month)->format('Y-m-d  H:i:s');
+        //     $y = Carbon::parse(now()->year)->format('Y-m-d  H:i:s'); 
+        //     $d = Carbon::parse(now()->day)->format('Y-m-d  H:i:s'); 
+        //     $query = $query->whereMonth( 'sm_meter_gi.IA_TIME' ,'=', $m)->whereYear( 'sm_meter_gi.IA_TIME' ,'=', $y)->whereDate( 'sm_meter_gi.IA_TIME' ,'=', $d) ;
+        // }); 
+        if ($request->date  != '' )
+        {   
+            $smMeter = $smMeter->where(function ($query) {
+                $query->whereDate('sm_meter_gi.IA_TIME', request('date'));
+            });    
+        }
+        else
+        {
+            $smMeter = $smMeter->where(function ($query) {
+                $query->whereDate('sm_meter_gi.IA_TIME', date('Y-m-d', strtotime(
+                    // 'sm_meter_gi.IA_TIME' )));
+                    Sm_meter_gi::max('sm_meter_gi.IA_TIME'))));
+            });   
+        } 
         return $smMeter->groupBy('id');
     }
  
@@ -125,9 +130,7 @@ class BebanRealtimeDatatable extends DataTable
                     ->responsive(true)
                     ->serverSide(true) 
                     ->stateSave(false)
-                    ->processing(true)
-                    // ->toJson()
-                    // ->searchDelay(500) 
+                    ->processing(true) 
                     ->language(__('app.datatable'))
                     ->parameters([
                         'initComplete' => 'function () {
