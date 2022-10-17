@@ -1,7 +1,8 @@
 <?php
 
 namespace App\DataTables\DC;
- 
+
+use App\Models\Dc_cubicle;
 use App\Models\Sm_meter_gi;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -24,7 +25,9 @@ class SmMeterGiDatatable extends DataTable
             ->addIndexColumn() 
             // ->editColumn()
             ->addColumn('cubicle', function($row){
-                
+                $data = Dc_cubicle::where('OUTGOING_ID',$row->OUTGOING_ID)->first();
+                $cubicle = $data->CUBICLE_NAME.'';
+                return $cubicle;
             }
             )
             ->addColumn('action', function ($row) {
@@ -46,7 +49,7 @@ class SmMeterGiDatatable extends DataTable
 
                 return $action;
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action','cubicle']);
     }
 
     /**
@@ -110,7 +113,8 @@ class SmMeterGiDatatable extends DataTable
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
             
             Column::make('OUTGOING_METER_ID'),
-            Column::make('OUTGOING_ID'),
+            Column::make('cubicle'),
+            // Column::make('OUTGOING_ID'),
             Column::make('IA'),
             Column::make('IA_TIME'),
             Column::make('IB'),
@@ -121,6 +125,7 @@ class SmMeterGiDatatable extends DataTable
             Column::make('IN_TIME'),
             Column::make('VLL'),
             Column::make('VLL_TIME'),
+            
             
             Column::computed('action', __('app.action'))
             ->exportable(false)
