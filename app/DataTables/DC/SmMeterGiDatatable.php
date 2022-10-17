@@ -22,6 +22,11 @@ class SmMeterGiDatatable extends DataTable
         return datatables()
             ->eloquent($query) 
             ->addIndexColumn() 
+            // ->editColumn()
+            ->addColumn('cubicle', function($row){
+                
+            }
+            )
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
 
