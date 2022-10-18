@@ -7,6 +7,7 @@ use App\Models\Dc_cubicle;
 use App\Models\Dc_incoming_feeder;
 use App\Models\Dc_inspeksi_asset;
 use App\Models\Dc_inspeksi_pd;
+use App\Models\Dc_operasi_pmt_scada;
 use App\Models\Dc_tipe_gangguan;
 use App\Models\Ews_history_meter;
 use App\Models\ews_inspeksi_aset;
@@ -106,9 +107,25 @@ class DcCubicleController extends Controller
                 $lr = '';
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->firstorFail();
+           
             $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->orderBy('id_inspeksi_pd','DESC')->first(); 
-            $history_pmt[] = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->first();
-            $history_asset[] = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->first();
+            $history_pmt  = Dc_operasi_pmt_scada::where('DETAIL_LOKASI',$result['CUBICLE_NAME'])->orderBy('OPERASI_PMT_ID','DESC')->first();
+            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->first();
+            
+            if (!empty($history_asset))
+            {
+                $pa[] =$history_asset;
+            }else{
+                $pa =[];
+            } 
+            
+            if (!empty($history_pmt))
+            {
+                $pm[] = $history_pmt;
+            }else{
+                $pm =[];
+            } 
+            
             if (!empty($history_pd))
             {
                 $pd[] = array(
@@ -128,7 +145,8 @@ class DcCubicleController extends Controller
                 );
             }else{
                 $pd =[];
-            }
+            } 
+
             return response()->json(array(    
                 'status'=>true,  
                 'data' => array (
@@ -150,8 +168,8 @@ class DcCubicleController extends Controller
                     'temperatur_c' =>$gi['TEMP_C'],
                     'humidity' => $gi['HUMIDITY'],
                     'history_pd' => $pd,
-                    'history_pmt' => $history_pmt  ?? array(),
-                    'history_asset' => $history_asset  ?? array(),
+                    'history_pmt' => $pm,
+                    'history_asset' => $pa,
                 ), 
                 'status_code' => 200
             ));
