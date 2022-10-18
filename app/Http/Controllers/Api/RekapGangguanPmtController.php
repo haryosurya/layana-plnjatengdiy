@@ -49,15 +49,14 @@ class RekapGangguanPmtController extends ApiBaseController
             join('dc_tipe_gangguan','dc_tipe_gangguan.ID_TIPE_GANGGUAN','dc_operasi_pmt_scada.ID_TIPE_GANGGUAN')
             ;  
             $m = now()->format('m');
-            $y = now()->format('Y');  
-
-            // $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y);
-            $r = 'no req';
+            $y = now()->format('Y');   
+            $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y);
+             
             if ($request->nama_tipe_gangguan !== null && $request->nama_tipe_gangguan != 'null' && $request->nama_tipe_gangguan != '') { 
                 $keyword = $request->get('nama_tipe_gangguan'); 
                 $rekap_gangguan = $rekap_gangguan->where('dc_tipe_gangguan.NAMA_TIPE_GANGGUAN', 'LIKE','%' .$keyword . '%') ;
                 $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
-                $r = "nodate";
+                 
             }  
             if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
  
@@ -66,7 +65,7 @@ class RekapGangguanPmtController extends ApiBaseController
                 ->whereDate('dc_operasi_pmt_scada.TGL_OPERASI_PMT', '<=', date('Y-m-d', strtotime( $request->endDate )))
                 ;
             }
-            $reslt = $rekap_gangguan->orderBy('dc_operasi_pmt_scada.OPERASI_PMT_ID','ASC')->paginate(10);
+            $reslt = $rekap_gangguan->orderBy('dc_operasi_pmt_scada.OPERASI_PMT_ID','DESC')->paginate(10);
             return response()->json(array(        
                 'status'=>true,     
                 'data' => $reslt , 
@@ -99,12 +98,7 @@ class RekapGangguanPmtController extends ApiBaseController
                 $m = Carbon::parse(now()->month)->format('Y-m-d');
                 $y = Carbon::parse(now()->year)->format('Y-m-d'); 
                 $rekap_gangguan = $rekap_gangguan->whereMonth( 'ews_inspeksi_pd.tgl_entry' ,'=', $m)->whereYear( 'ews_inspeksi_pd.tgl_entry' ,'=', $y) ;
-            } 
-            // if ($request->outgoing_id !== null && $request->outgoing_id != 'null' && $request->outgoing_id != '') { 
-            //     $keyword = $request->get('nama_tipe_gangguan'); 
-            //     $rekap_gangguan = $rekap_gangguan->where('ews_inspeksi_pd.outgoing_id', 'LIKE','%' .$keyword . '%') ;
-            //     $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
-            // }  
+            }  
             if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
                 $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
                 $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');

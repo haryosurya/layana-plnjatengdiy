@@ -38,12 +38,12 @@ class Dc_apjAPIController extends Controller
             if ($request->get('APJ_DCC'))
             {
                 $keyword = $request->get('APJ_DCC');    
-                $result = $result->where('APJ_DCC', $keyword ) ;
+                $result = $result->where('APJ_DCC', 'LIKE', "%{$keyword}%" ) ;
             } 
             if ($request->get('GARDU_INDUK_ID'))
             {
                 $keyword = $request->get('GARDU_INDUK_ID');    
-                $result = $result->where('GARDU_INDUK_ID', $keyword ) ;
+                $result = $result->where('GARDU_INDUK_ID','LIKE', "%{$keyword}%") ;
             } 
 
             $result = $result->paginate(12); 

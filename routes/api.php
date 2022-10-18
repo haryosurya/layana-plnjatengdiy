@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\DcTipeGangguanController;
 use App\Http\Controllers\Api\EwsHistoryMeterController;
 use App\Http\Controllers\Api\EwsInspeksiAsetController;
 use App\Http\Controllers\Api\EwsInspeksiPdController;
+use App\Http\Controllers\API\FilterController;
 use App\Http\Controllers\Api\RekapGangguanPmtController;
 use App\Http\Controllers\Api\SmMeterGiController;
 use App\Http\Controllers\Api\SmokeDetectorController;
@@ -107,6 +108,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  
     Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
     Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
+    Route::get('DataPenyulangFilter', [FilterController::class,'DataPenyulangFilter']);
  
 }); 
 
