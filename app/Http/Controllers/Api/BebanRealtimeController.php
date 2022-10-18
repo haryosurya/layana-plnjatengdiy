@@ -71,8 +71,7 @@ class BebanRealtimeController extends Controller
             }
             else
             {
-                $history_pmt = $history_pmt->
-                // whereDate('IA_TIME', date('Y-m-d', strtotime($historylastdate)))
+                $history_pmt = $history_pmt-> 
                 latest('IA_TIME')
                 ;
             } 
