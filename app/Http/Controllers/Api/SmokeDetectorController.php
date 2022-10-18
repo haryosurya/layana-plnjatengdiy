@@ -105,10 +105,11 @@ class SmokeDetectorController extends Controller
         }
     }
     public function detail_smoke($id){
-        try{
+        try{ 
+            $result = [];
             $result = sm_material_panel::where('MATERIAL_PANEL_ID',$id)
             ->join('dc_gardu_induk','sm_material_panel.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
-            ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
+            ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')->first(); 
             // ->selectRaw( 
             //     'dc_apj.APJ_ID,
             //     dc_apj.APJ_NAMA,  
@@ -117,11 +118,61 @@ class SmokeDetectorController extends Controller
             //     dc_gardu_induk.GARDU_INDUK_ID'
             // ) 
             // ->select('sm_material_panel.*')  
-            ; 
-            $result = $result->get(); 
+            // ;  
+
+            $r = object_to_array($result);
+            if(
+                 $result['SSD_1'] == '' | $result['SSD_1'] == null |$result['SSD_1'] == "null"|$result['SSD_1'] == "0"|
+                 $result['SSD_3'] == '' | $result['SSD_3'] == null |$result['SSD_3'] == "null"|$result['SSD_3'] == "0"|
+                 $result['SSD_4'] == '' | $result['SSD_4'] == null |$result['SSD_4'] == "null"|$result['SSD_4'] == "0"
+                ){
+                    $s = "No Smoke"; 
+                }else{
+                    $s = "smoke"; 
+                }
+               $res = array(
+                "MATERIAL_PANEL_ID" => $result->MATERIAL_PANEL_ID,
+                "SMOKE_LABEL" => $s,
+                "GARDU_INDUK_ID" => $result->GARDU_INDUK_ID,
+                "GEDUNG" => $result->GEDUNG,
+                "MATERIAL_ID" => $result->MATERIAL_ID,
+                "QTY" => $result->QTY,
+                "MATERIAL_SN" => $result->MATERIAL_SN,
+                "MATERIAL_IP_ADDRESS" => $result->MATERIAL_IP_ADDRESS,
+                "TANGGAL_PEMASANGAN" => $result->TANGGAL_PEMASANGAN,
+                "KETERANGAN" => $result->KETERANGAN,
+                "USER_UPDATE" => $result->USER_UPDATE,
+                "LAST_UPDATE" => $result->LAST_UPDATE,
+                "SSD_1" => $result->SSD_1,
+                "SSD_1_TIME" => $result->SSD_1_TIME,
+                "SSD_2" => $result->SSD_2,
+                "SSD_2_TIME" => $result->SSD_2_TIME,
+                "SSD_3" => $result->SSD_3,
+                "SSD_3_TIME" => $result->SSD_3_TIME,
+                "SSD_4" => $result->SSD_4,
+                "SSD_4_TIME" => $result->SSD_4_TIME,
+                "APJ_ID" => $result->APJ_ID,
+                "GARDU_INDUK_NAMA" => $result->GARDU_INDUK_NAMA,
+                "GARDU_INDUK_KODE" => $result->GARDU_INDUK_KODE,
+                "GARDU_INDUK_RTU_ID" => $result->GARDU_INDUK_RTU_ID,
+                "GARDU_INDUK_ALIAS" => $result->GARDU_INDUK_ALIAS,
+                "GARDU_INDUK_ALIAS_ROPO" => $result->GARDU_INDUK_ALIAS_ROPO,
+                "GARDU_INDUK_ALAMAT" => $result->GARDU_INDUK_ALAMAT,
+                "UPT_ID" => $result->UPT_ID,
+                "NAMA_ALIAS_GARDU_INDUK" => $result->NAMA_ALIAS_GARDU_INDUK,
+                "PEMELIHARAAN_GI" => $result->PEMELIHARAAN_GI,
+                "BATAS_TEGANGAN_BAWAH" => $result->BATAS_TEGANGAN_BAWAH,
+                "BATAS_TEGANGAN_ATAS" => $result->BATAS_TEGANGAN_ATAS,
+                "APJ_NAMA" => $result->APJ_NAMA,
+                "APJ_ALIAS" => $result->APJ_ALIAS,
+                "APJ_DCC" => $result->APJ_DCC,
+                "APJ_ALAMAT" => $result->APJ_ALAMAT,
+                "APJ_KODE" => $result->APJ_KODE,
+                "TELEGRAM_ID" => $result->TELEGRAM_ID, 
+               ) ;
             return response()->json( [           
-                'status' => true,
-                'data' => $result, 
+                'status' => true, 
+                'data' => $res,  
                 'status_code' => 200
             ]);
         }

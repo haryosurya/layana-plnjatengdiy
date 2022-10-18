@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
-class RekapGangguanPmtController extends Controller
+class RekapGangguanPmtController extends ApiBaseController
 { 
     public function index(Request $request){
         try{
@@ -50,6 +50,18 @@ class RekapGangguanPmtController extends Controller
             ;  
             $m = now()->format('m');
             $y = now()->format('Y'); 
+
+            $startDate = null;
+            $endDate = null;
+
+            if ($request->startDate !== null && $request->startDate != 'null' && $request->startDate != '') {
+                $startDate = Carbon::createFromFormat($this->global->date_format, $request->startDate)->toDateString();
+            }
+    
+            if ($request->endDate !== null && $request->endDate != 'null' && $request->endDate != '') {
+                $endDate = Carbon::createFromFormat($this->global->date_format, $request->endDate)->toDateString();
+            }
+
             $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y);
             $r = 'no req';
             if ($request->nama_tipe_gangguan !== null && $request->nama_tipe_gangguan != 'null' && $request->nama_tipe_gangguan != '') { 
@@ -59,14 +71,14 @@ class RekapGangguanPmtController extends Controller
                 $r = "nodate";
             }  
             if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
-                $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
-                $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
+                // $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
+                // $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
                 
-                $r = $startDate .' to '.$endDate;
+                $r = $startDate .' to '.$endDate ;
                 $rekap_gangguan = $rekap_gangguan 
-                ->whereDate(Carbon::createFromFormat('Y-m-d', 'dc_operasi_pmt_scada.OPERASI_PMT_ID'), '>=', $startDate)                                 
-                ->whereDate(Carbon::createFromFormat('Y-m-d', 'dc_operasi_pmt_scada.OPERASI_PMT_ID'), '<=', $endDate) 
-                // ->whereBetween(DB::raw('DATE(dc_operasi_pmt_scada.`TGL_OPERASI_PMT`)')   , [$startDate, $endDate]) 
+                // ->whereDate(Carbon::createFromFormat('mm/dd/yyyy ', 'dc_operasi_pmt_scada.TGL_OPERASI_PMT')->format('Y-m-d'), '>=', $startDate)                                 
+                // ->whereDate( Carbon::createFromFormat('mm/dd/yyyy', 'dc_operasi_pmt_scada.TGL_OPERASI_PMT')->format('Y-m-d'), '<=', $endDate) 
+                ->whereBetween(DB::raw('DATE(dc_operasi_pmt_scada.`TGL_OPERASI_PMT`)')   , [$startDate, $endDate]) 
                 ;
             }
             $reslt = $rekap_gangguan->orderBy(showDateString('dc_operasi_pmt_scada.OPERASI_PMT_ID','ASC'))->paginate(10);

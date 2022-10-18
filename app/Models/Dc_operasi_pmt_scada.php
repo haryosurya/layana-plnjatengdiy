@@ -58,7 +58,7 @@ class Dc_operasi_pmt_scada extends Model
      * @var array
      */
     protected $fillable = ['TGL_OPERASI_PMT', 'TGL_NORMAL_PMT', 'JENIS_OPERASI_PMT', 'APJ_ID', 'CAKUPAN_KERJA', 'DETAIL_LOKASI', 'ALASAN_OPERASI_PMT', 'ID_TIPE_GANGGUAN', 'ID_INDIKASI_GANGGUAN', 'BEBAN_SBLM_PMT_LEPAS', 'TEG_SBLM_PMT_LEPAS', 'BEBAN_SSDH_PMT_LEPAS', 'TEG_SSDH_PMT_LEPAS', 'ARUS_GANGGUAN_PH_A', 'ARUS_GANGGUAN_PH_B', 'ARUS_GANGGUAN_PH_C', 'ARUS_GANGGUAN_PH_N', 'KET_ARUS_GANGGUAN', 'ASAL_ID', 'CUACA', 'LOKASI_GANGGUAN', 'JARAK_GANGGUAN', 'NO_POLE_TIANG', 'UPJ_ID'];
-    protected $dates = ['TGL_OPERASI_PMT', 'TGL_NORMAL_PMT', ];
+    protected $dates = ['TGL_OPERASI_PMT', 'TGL_NORMAL_PMT' ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

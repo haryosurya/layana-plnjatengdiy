@@ -22,8 +22,7 @@ class BebanRealtimeController extends Controller
         //
         try{
             $result = Dc_incoming_feeder::
-            join('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')
-            
+            join('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID') 
             ->with(['dcCubicles' => function($q) {
                 $q->select('OUTGOING_ID', 'INCOMING_ID');
             }])  
