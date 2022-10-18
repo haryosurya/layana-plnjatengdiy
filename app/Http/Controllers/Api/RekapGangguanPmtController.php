@@ -16,14 +16,16 @@ class RekapGangguanPmtController extends Controller
     public function index(Request $request){
         try{
             
-            $m = now()->month;
-            $y = now()->year; 
-            $rekap_gangguan_pmt = Dc_operasi_pmt_scada:: whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT','=', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT','=', $y)->count();
+            $m = now()->format('m');
+            $y = now()->format('Y'); 
+            $rekap_gangguan_pmt = Dc_operasi_pmt_scada:: whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y)->count();
             $gangguan_inspeksi_pd = ews_inspeksi_pd:: whereMonth('tgl_entry','=', $m)->whereYear('tgl_entry','=', $y)->count();
             $gangguan_inspeksi_aset = ews_inspeksi_aset:: whereMonth('tgl_entry','=', $m)->whereYear('tgl_entry','=', $y)->count();
             return response()->json(array(        
                 'status'=>true,    
                 'data' => array(
+                    'm' =>$m .'-'.$y,
+                    // 'n' =>now()->format('m'),
                     'rekap_gangguan_pmt' => $rekap_gangguan_pmt , 
                     'gangguan_inspeksi_pd' => $gangguan_inspeksi_pd , 
                     'gangguan_inspeksi_aset' => $gangguan_inspeksi_aset , 
@@ -46,28 +48,31 @@ class RekapGangguanPmtController extends Controller
             Dc_operasi_pmt_scada:: 
             join('dc_tipe_gangguan','dc_tipe_gangguan.ID_TIPE_GANGGUAN','dc_operasi_pmt_scada.ID_TIPE_GANGGUAN')
             ;  
-            $m = now()->month;
-            $y = now()->year; 
-            $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT','=', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT','=', $y);
-  
-            if ($request->this_month !== null && $request->this_month != 'null' && $request->this_month != '' && $request->this_month == 1) { 
-                $m = Carbon::parse(now()->month)->format('Y-m-d');
-                $y = Carbon::parse(now()->year)->format('Y-m-d'); 
-                $rekap_gangguan = $rekap_gangguan->whereMonth( 'dc_operasi_pmt_scada.TGL_OPERASI_PMT' ,'=', $m)->whereYear( 'dc_operasi_pmt_scada.TGL_OPERASI_PMT' ,'=', $y) ;
-            } 
+            $m = now()->format('m');
+            $y = now()->format('Y'); 
+            $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y);
+            $r = 'no req';
             if ($request->nama_tipe_gangguan !== null && $request->nama_tipe_gangguan != 'null' && $request->nama_tipe_gangguan != '') { 
                 $keyword = $request->get('nama_tipe_gangguan'); 
                 $rekap_gangguan = $rekap_gangguan->where('dc_tipe_gangguan.NAMA_TIPE_GANGGUAN', 'LIKE','%' .$keyword . '%') ;
                 $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
+                $r = "nodate";
             }  
             if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
                 $startDate =  Carbon::parse($request->startDate)->format('Y-m-d');
                 $endDate =  Carbon::parse($request->endDate)->format('Y-m-d');
-                $rekap_gangguan = $rekap_gangguan->whereBetween(DB::raw('DATE(Dc_operasi_pmt_scada.`TGL_OPERASI_PMT`)')   , [$startDate, $endDate]);
+                
+                $r = $startDate .' to '.$endDate;
+                $rekap_gangguan = $rekap_gangguan 
+                ->whereDate(Carbon::createFromFormat('Y-m-d', 'dc_operasi_pmt_scada.OPERASI_PMT_ID'), '>=', $startDate)                                 
+                ->whereDate(Carbon::createFromFormat('Y-m-d', 'dc_operasi_pmt_scada.OPERASI_PMT_ID'), '<=', $endDate) 
+                // ->whereBetween(DB::raw('DATE(dc_operasi_pmt_scada.`TGL_OPERASI_PMT`)')   , [$startDate, $endDate]) 
+                ;
             }
-            $reslt = $rekap_gangguan->orderBy('dc_operasi_pmt_scada.OPERASI_PMT_ID','ASC')->paginate(10);
+            $reslt = $rekap_gangguan->orderBy(showDateString('dc_operasi_pmt_scada.OPERASI_PMT_ID','ASC'))->paginate(10);
             return response()->json(array(        
                 'status'=>true,    
+                'r' => $m .'.'.$y .' ---'.$r, 
                 'data' => $reslt , 
                 'status_code' => 200
             ));

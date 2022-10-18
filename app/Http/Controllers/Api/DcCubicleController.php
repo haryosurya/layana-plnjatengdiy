@@ -107,11 +107,11 @@ class DcCubicleController extends Controller
             }
             $gi = Dc_incoming_feeder::where('INCOMING_ID',$result['INCOMING_ID'])->firstorFail();
             $history_pd = ews_inspeksi_pd::where('id_outgoing',$id)->orderBy('id_inspeksi_pd','DESC')->first(); 
-            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->first();
-            $history_asset = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->first();
+            $history_pmt[] = Sm_meter_gi::where('OUTGOING_ID',$id)->orderBy('OUTGOING_METER_ID','DESC')->first();
+            $history_asset[] = ews_inspeksi_aset::where('id_outgoing',$id)->orderBy('id_inspeksi_aset','DESC')->first();
             if (!empty($history_pd))
             {
-                $pd = array(
+                $pd[] = array(
                     "id_inspeksi_pd"=>  $history_pd->id_inspeksi_pd ?? '',
                     "id_outgoing"=>  $history_pd->id_outgoing ?? '',
                     "id_user"=>  $history_pd->id_user  ?? '',
@@ -127,7 +127,7 @@ class DcCubicleController extends Controller
                     "last_update"=>  $history_pd->last_update ?? ''
                 );
             }else{
-                $pd = array();
+                $pd =[];
             }
             return response()->json(array(    
                 'status'=>true,  

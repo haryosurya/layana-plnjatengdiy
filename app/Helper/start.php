@@ -396,6 +396,23 @@ if (!function_exists('api_user')) {
     }
 
 }
+if (!function_exists('showDateString')) {
+
+    /**
+     * @return \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Http\Response|null
+     * @throws UnauthorizedException
+     */
+ function showDateString($timestamp)
+    {
+      if ($timestamp !== NULL) {
+        $date = new DateTime();
+        $date->setTimestamp(intval($timestamp));
+        return $date->format("d-m-Y");
+      }
+      return '';
+    }
+
+}
 
 if (!function_exists('isRunningInBrowser')) {
 
