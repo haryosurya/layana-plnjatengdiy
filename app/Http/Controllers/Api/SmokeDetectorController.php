@@ -81,7 +81,7 @@ class SmokeDetectorController extends Controller
                         
                         END) AS STATUS
                         '
-                        ) ; 
+                ) ; 
                         
 
             $result = $result->where('KETERANGAN', '!=', "" ) ;
@@ -110,6 +110,11 @@ class SmokeDetectorController extends Controller
             {
                 $keyword = $request->get('GARDU_INDUK_ID');    
                 $result = $result->where('GARDU_INDUK_ID', $keyword ) ;
+            } 
+            if ($request->get('STATUS'))
+            {
+                $keyword = $request->get('STATUS');    
+                $result = $result->where('STATUS', $keyword ) ;
             } 
 
                 $result = $result->paginate(12); 
