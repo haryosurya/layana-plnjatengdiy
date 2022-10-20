@@ -114,7 +114,7 @@ class SmokeDetectorController extends Controller
             if ($request->get('STATUS'))
             {
                 $keyword = $request->get('STATUS');    
-                $result = $result->where('STATUS', $keyword ) ;
+                $result = $result->HAVING('STATUS', $keyword ) ;
             } 
 
                 $result = $result->paginate(12); 
