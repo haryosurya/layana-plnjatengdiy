@@ -357,6 +357,7 @@ class EmployeeController extends AccountBaseController
         ));
 
         $this->pageTitle = ucfirst($this->employee->name);
+        $this->view = 'employees.ajax.profile';
  
         if (request()->ajax()) {
             $html = view('employees.ajax.profile', $this->data)->render();
@@ -372,39 +373,14 @@ class EmployeeController extends AccountBaseController
      *
      * @return array
      */
-    public function taskChartData($id)
-    {
-        $taskStatus = TaskboardColumn::all();
-        $data['labels'] = $taskStatus->pluck('column_name');
-        $data['colors'] = $taskStatus->pluck('label_color');
-        $data['values'] = [];
-
-        foreach ($taskStatus as $label) {
-            $data['values'][] = Task::join('task_users', 'task_users.task_id', '=', 'tasks.id')
-                ->where('task_users.user_id', $id)->where('tasks.board_column_id', $label->id)->count();
-        }
-
-        return $data;
-    }
+     
 
     /**
      * XXXXXXXXXXX
      *
      * @return array
      */
-    public function ticketChartData($id)
-    {
-        $labels = ['open', 'pending', 'resolved', 'closed'];
-        $data['labels'] = [__('app.open'), __('app.pending'), __('app.resolved'), __('app.closed')];
-        $data['colors'] = ['#D30000', '#FCBD01', '#2CB100', '#1d82f5'];
-        $data['values'] = [];
-
-        foreach ($labels as $label) {
-            $data['values'][] = Ticket::where('agent_id', $id)->where('status', $label)->count();
-        }
-
-        return $data;
-    }
+    
 
     public function byDepartment($id)
     {
@@ -431,17 +407,7 @@ class EmployeeController extends AccountBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function createLink(CreateInviteLinkRequest $request)
-    {
-        $invite = new UserInvitation();
-        $invite->user_id = user()->id;
-        $invite->invitation_type = 'link';
-        $invite->invitation_code = sha1(time() . user()->id);
-        $invite->email_restriction = (($request->allow_email == 'selected') ? $request->email_domain : null);
-        $invite->save();
-
-        return Reply::successWithData(__('messages.inviteLinkSuccess'), ['link' => route('invitation', $invite->invitation_code)]);
-    }
+     
 
     /**
      * @param mixed $request
