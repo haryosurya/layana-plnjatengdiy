@@ -59,9 +59,31 @@ class SmokeDetectorController extends Controller
                 dc_apj.APJ_NAMA,  
                 dc_apj.APJ_DCC as APJ_DCC,  
                 dc_gardu_induk.GARDU_INDUK_NAMA, 
-                dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID'
-            )   
-            ;
+                dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID,
+                (CASE 
+
+                        WHEN sm_material_panel.SSD_1 IS NULL OR (
+                            sm_material_panel.SSD_1 = NULL OR
+                            sm_material_panel.SSD_1 = "0" )
+                        OR sm_material_panel.SSD_2 IS NULL OR (
+                            sm_material_panel.SSD_2 = NULL OR
+                            sm_material_panel.SSD_2 = "0" )
+                        OR sm_material_panel.SSD_3 IS NULL OR (
+                            sm_material_panel.SSD_3 = NULL OR
+                            sm_material_panel.SSD_3 = "0" )
+                        OR sm_material_panel.SSD_4 IS NULL OR (
+                            sm_material_panel.SSD_4 = NULL OR
+                            sm_material_panel.SSD_4 = "0" ) 
+                             
+                        THEN "NO SMOKE" 
+                        
+                        ELSE "SMOKE" 
+                        
+                        END) AS STATUS
+                        '
+                        ) ; 
+                        
+
             $result = $result->where('KETERANGAN', '!=', "" ) ;
 
             if ($request->get('KETERANGAN'))
@@ -72,12 +94,12 @@ class SmokeDetectorController extends Controller
             if ($request->get('TANGGAL_PEMASANGAN'))
             {
                 $keyword = $request->get('TANGGAL_PEMASANGAN');    
-                $result = $result->where('TANGGAL_PEMASANGAN', $keyword ) ;
+                $result = $result->where('TANGGAL_PEMASANGAN', date('Y-m-d', strtotime( $request->get('TANGGAL_PEMASANGAN')  )) ) ;
             } 
             if ($request->get('LAST_UPDATE'))
             {
                 $keyword = $request->get('LAST_UPDATE');    
-                $result = $result->where('LAST_UPDATE', $keyword ) ;
+                $result = $result->where('LAST_UPDATE', date('Y-m-d', strtotime( $request->get('LAST_UPDATE')  ))  ) ;
             } 
             if ($request->get('APJ_DCC'))
             {
@@ -90,7 +112,9 @@ class SmokeDetectorController extends Controller
                 $result = $result->where('GARDU_INDUK_ID', $keyword ) ;
             } 
 
-            $result = $result->paginate(12); 
+                $result = $result->paginate(12); 
+
+                
             return response()->json( [           
                 'status' => true,
                 'data' => $result, 
@@ -119,9 +143,8 @@ class SmokeDetectorController extends Controller
             // ) 
             // ->select('sm_material_panel.*')  
             // ;  
-
-            $r = object_to_array($result);
-            if(
+ 
+                if(
                  $result['SSD_1'] == '' | $result['SSD_1'] == null |$result['SSD_1'] == "null"|$result['SSD_1'] == "0"|
                  $result['SSD_3'] == '' | $result['SSD_3'] == null |$result['SSD_3'] == "null"|$result['SSD_3'] == "0"|
                  $result['SSD_4'] == '' | $result['SSD_4'] == null |$result['SSD_4'] == "null"|$result['SSD_4'] == "0"

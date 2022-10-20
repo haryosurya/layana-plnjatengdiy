@@ -83,19 +83,21 @@ class RekapGangguanPMTscadaDatatable extends DataTable
     {
         return $model
         ->join('dc_apj','dc_apj.APJ_ID','dc_operasi_pmt_scada.APJ_ID')
+        ->join('dc_cubicle','dc_cubicle.CUBICLE_NAME','dc_operasi_pmt_scada.DETAIL_LOKASI')
         ->join('dc_tipe_gangguan','dc_tipe_gangguan.ID_TIPE_GANGGUAN','dc_operasi_pmt_scada.ID_TIPE_GANGGUAN')
         ->join('dc_indikasi_gangguan','dc_indikasi_gangguan.ID_INDIKASI_GANGGUAN','dc_operasi_pmt_scada.ID_INDIKASI_GANGGUAN')
         ->join('dc_speedjardist_cuaca','dc_speedjardist_cuaca.ID_CUACA','dc_operasi_pmt_scada.CUACA') 
+        ->join('dc_jenis_keadaan_pmt','dc_jenis_keadaan_pmt.JENIS_KEADAAN_PMT_ID','dc_operasi_pmt_scada.JENIS_OPERASI_PMT') 
         ->select(
             'OPERASI_PMT_ID as id',
+            'dc_apj.APJ_DCC as APJ_DCC',
+            'DETAIL_LOKASI',
             'TGL_OPERASI_PMT',
             'TGL_NORMAL_PMT',
-            'JENIS_OPERASI_PMT',
+            'dc_jenis_keadaan_pmt.JENIS_KEADAAN_PMT AS JENIS_KEADAAN_PMT',
             'dc_apj.APJ_ID as APJ_ID',
-            'dc_apj.APJ_DCC as APJ_DCC',
             'dc_apj.APJ_NAMA as APJ_NAMA',
             'CAKUPAN_KERJA',
-            'DETAIL_LOKASI',
             'ALASAN_OPERASI_PMT',
             'dc_tipe_gangguan.NAMA_TIPE_GANGGUAN as TIPE_GANGGUAN',
             'dc_indikasi_gangguan.NAMA_INDIKASI_GANGGUAN as INDIKASI_GANGGUAN',
@@ -112,8 +114,8 @@ class RekapGangguanPMTscadaDatatable extends DataTable
             'dc_speedjardist_cuaca.CUACA_NAME as CUACA_NAME',
             'LOKASI_GANGGUAN',
             'JARAK_GANGGUAN',
-            'NO_POLE_TIANG',
-            'UPJ_ID' 	
+            'NO_POLE_TIANG'
+            // 'UPJ_ID' 	
         )
         ->newQuery();
     }
@@ -130,6 +132,17 @@ class RekapGangguanPMTscadaDatatable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax() 
                     ->destroy(true) 
+                    ->scrollY("500px")
+                    ->scrollX('100%')
+                    ->fixedColumns(true)
+                    ->scrollCollapse(true)
+                    ->fixedColumns( 
+                            [
+                                'left'=>'4',
+                                'right'=>'0'
+                            ]
+                    ) 
+                    ->dom('Bfrtip')
                     ->responsive(true)
                     ->serverSide(true)
                     ->stateSave(false)
@@ -159,33 +172,36 @@ class RekapGangguanPMTscadaDatatable extends DataTable
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
                 __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
                 // _ID','TGL_OPERASI_PMT','TGL_NORMAL_PMT','JENIS_OPERASI_PMT','APJ_ID','CAKUPAN_KERJA','DETAIL_LOKASI','ALASAN_OPERASI_PMT','ID_TIPE_GANGGUAN','ID_INDIKASI_GANGGUAN','BEBAN_SBLM_PMT_LEPAS','TEG_SBLM_PMT_LEPAS','BEBAN_SSDH_PMT_LEPAS','TEG_SSDH_PMT_LEPAS','ARUS_GANGGUAN_PH_A','ARUS_GANGGUAN_PH_B','ARUS_GANGGUAN_PH_C','ARUS_GANGGUAN_PH_N','KET_ARUS_GANGGUAN','ASAL_ID','CUACA','LOKASI_GANGGUAN','JARAK_GANGGUAN','NO_POLE_TIANG','UPJ_ID' 	
-                Column::make('TGL_OPERASI_PMT'),
-                Column::make('TGL_NORMAL_PMT'),
-                Column::make('JENIS_OPERASI_PMT'),
+                Column::make('DETAIL_LOKASI'),
+                Column::make('APJ_ID'),
                 Column::make('APJ_DCC'),
                 Column::make('APJ_NAMA'),
-                Column::make('CAKUPAN_KERJA'),
+                Column::make('TGL_OPERASI_PMT'),
+                Column::make('TGL_NORMAL_PMT'),
+                Column::make('JENIS_KEADAAN_PMT'),
                 Column::make('TIPE_GANGGUAN'),
                 Column::make('INDIKASI_GANGGUAN'),
+                Column::make('CAKUPAN_KERJA'),
                 Column::make('ARUS_GANGGUAN_PH_A'),
                 Column::make('ARUS_GANGGUAN_PH_B'),
                 Column::make('ARUS_GANGGUAN_PH_C'),
                 Column::make('ARUS_GANGGUAN_PH_N'),
                 Column::make('CUACA_NAME'),
+                Column::make('ALASAN_OPERASI_PMT'), 
+                Column::make('BEBAN_SBLM_PMT_LEPAS'),
+                Column::make('TEG_SBLM_PMT_LEPAS'),
+                Column::make('TEG_SSDH_PMT_LEPAS'),
+                Column::make('KET_ARUS_GANGGUAN'),
+                Column::make('ASAL_ID'),
+                Column::make('LOKASI_GANGGUAN'),
+                Column::make('NO_POLE_TIANG'),
+                // Column::make('UPJ_ID'),
                 
                 // '',
                 // '',
                 // '',
                 // '',
-
-            // 'OPERASI_PMT_ID as id',
-            // 'TGL_OPERASI_PMT',
-            // 'TGL_NORMAL_PMT',
-            // 'JENIS_OPERASI_PMT',
-            // 'dc_apj.APJ_ID as APJ_ID',
-            // 'dc_apj.APJ_DCC as APJ_DCC',
-            // 'dc_apj.APJ_NAMA as APJ_NAMA',
-            // 'CAKUPAN_KERJA',
+    
             // 'DETAIL_LOKASI',
             // 'ALASAN_OPERASI_PMT',
             // 'dc_tipe_gangguan.NAMA_TIPE_GANGGUAN as TIPE_GANGGUAN',

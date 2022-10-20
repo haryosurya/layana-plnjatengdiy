@@ -154,6 +154,20 @@ class EwsInspeksiPdDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'DC/EwsInspeksiPd_' . date('YmdHis');
+        return 'EwsInspeksiPd_' . date('YmdHis');
+    }
+    
+    public function pdf()
+    {
+        set_time_limit(0);
+
+        if ('snappy' == config('datatables-buttons.pdf_generator', 'snappy')) {
+            return $this->snappyPdf();
+        }
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('datatables::print', ['data' => $this->getDataForPrint()]);
+
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

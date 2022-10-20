@@ -76,7 +76,6 @@ $addOrderPermission = user()->permission('add_order');
 @push('scripts')
     @include('sections.datatable_js') 
     <script> 
- 
         $('#rekapgangguanpmtscadadatatable-table').on('preXhr.dt', function(e, settings, data) { 
             var searchText = $('#search-text-field').val(); 
             data['searchText'] = searchText;

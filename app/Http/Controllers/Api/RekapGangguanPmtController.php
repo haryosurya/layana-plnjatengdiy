@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
-class RekapGangguanPmtController extends ApiBaseController
+class RekapGangguanPmtController extends Controller
 { 
     public function index(Request $request){
         try{
@@ -45,12 +45,14 @@ class RekapGangguanPmtController extends ApiBaseController
         
         try{ 
             $rekap_gangguan = 
-            Dc_operasi_pmt_scada:: 
-            join('dc_tipe_gangguan','dc_tipe_gangguan.ID_TIPE_GANGGUAN','dc_operasi_pmt_scada.ID_TIPE_GANGGUAN')
+            Dc_operasi_pmt_scada::join('dc_apj','dc_apj.APJ_ID','dc_operasi_pmt_scada.APJ_ID')
+            ->join('dc_cubicle','dc_cubicle.CUBICLE_NAME','dc_operasi_pmt_scada.DETAIL_LOKASI')
+            ->join('dc_tipe_gangguan','dc_tipe_gangguan.ID_TIPE_GANGGUAN','dc_operasi_pmt_scada.ID_TIPE_GANGGUAN')
+            ->join('dc_indikasi_gangguan','dc_indikasi_gangguan.ID_INDIKASI_GANGGUAN','dc_operasi_pmt_scada.ID_INDIKASI_GANGGUAN')
+            ->join('dc_speedjardist_cuaca','dc_speedjardist_cuaca.ID_CUACA','dc_operasi_pmt_scada.CUACA') 
+            ->join('dc_jenis_keadaan_pmt','dc_jenis_keadaan_pmt.JENIS_KEADAAN_PMT_ID','dc_operasi_pmt_scada.JENIS_OPERASI_PMT') 
             ;  
-            $m = now()->format('m');
-            $y = now()->format('Y');   
-            $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y);
+ 
              
             if ($request->nama_tipe_gangguan !== null && $request->nama_tipe_gangguan != 'null' && $request->nama_tipe_gangguan != '') { 
                 $keyword = $request->get('nama_tipe_gangguan'); 
@@ -58,17 +60,34 @@ class RekapGangguanPmtController extends ApiBaseController
                 $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
                  
             }  
-            if ($request->startDate !== null && $request->endDate !== null && $request->startDate != '' && $request->endDate != ''  ) {
+            if ($request->get('startDate') && $request->get('endDate')   ) {
  
                 $rekap_gangguan = $rekap_gangguan  
-                ->whereDate('dc_operasi_pmt_scada.TGL_OPERASI_PMT', '>=', date('Y-m-d', strtotime( $request->startDate )))
-                ->whereDate('dc_operasi_pmt_scada.TGL_OPERASI_PMT', '<=', date('Y-m-d', strtotime( $request->endDate )))
+                ->whereBetween('dc_operasi_pmt_scada.TGL_OPERASI_PMT',[date('Y-m-d', strtotime( $request->get('startDate')  )),date('Y-m-d', strtotime( $request->get('endDate') ))])
                 ;
+                // ->whereDate('dc_operasi_pmt_scada.TGL_OPERASI_PMT', '>=', date('Y-m-d', strtotime( $request->startDate )))
+                // ->whereDate('dc_operasi_pmt_scada.TGL_OPERASI_PMT', '<=', date('Y-m-d', strtotime( $request->endDate )))
+            }else{
+
+                $m = now()->format('m');
+                $y = now()->format('Y');  
+                $rekap_gangguan = $rekap_gangguan->whereMonth('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $m)->whereYear('dc_operasi_pmt_scada.TGL_OPERASI_PMT', $y); 
             }
+            
             $reslt = $rekap_gangguan->orderBy('dc_operasi_pmt_scada.OPERASI_PMT_ID','DESC')->paginate(10);
+            if ($request->get('startDate') && $request->get('endDate')   ) {
+                return response()->json(array(        
+                    'status'=>true,     
+                    'data' => $reslt , 
+                    'req' => $request->startDate , 
+                    'req2' => $request->endDate , 
+                    'status_code' => 200
+                ));
+            }
             return response()->json(array(        
                 'status'=>true,     
                 'data' => $reslt , 
+                're'=>'',
                 'status_code' => 200
             ));
         } 
@@ -90,6 +109,9 @@ class RekapGangguanPmtController extends ApiBaseController
             ;  
             $m = now()->month;
             $y = now()->year; 
+            if($request->this_month == null && $request->this_month == 'null' && $request->this_month == '' && $request->this_month == 0){
+                $rekap_gangguan = $rekap_gangguan->whereMonth('ews_inspeksi_pd.tgl_entry','=', $m)->whereYear('ews_inspeksi_pd.tgl_entry','=', $y);
+            }
             if($request->this_month == null && $request->this_month == 'null' && $request->this_month == '' && $request->this_month == 0){
                 $rekap_gangguan = $rekap_gangguan->whereMonth('ews_inspeksi_pd.tgl_entry','=', $m)->whereYear('ews_inspeksi_pd.tgl_entry','=', $y);
             }
