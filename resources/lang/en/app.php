@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'aliases' => 'Aliases',
     'local' => 'Local',
     'remote' => 'Remote',
     'good' => 'Good',

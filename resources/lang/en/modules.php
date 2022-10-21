@@ -31,7 +31,9 @@ return array(
     'tgl-operasi' => 'Tgl Operasi',
     'tgl-normal' => 'Tgl Normal',
     'jenis-operasi' => 'Jenis Operasi',
-    'cakupan-kerja' => 'Cakupan Kerja'
+    'cakupan-kerja' => 'Cakupan Kerja', 
+    'total-trafo' => 'Total Trafo',
+    'total-pmt' => 'Total PMT'
 
   ),
   'dashboard' => array(

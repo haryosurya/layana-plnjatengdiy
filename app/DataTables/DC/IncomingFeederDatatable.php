@@ -148,13 +148,12 @@ class IncomingFeederDatatable extends BaseDataTable
             Column::make('MERK_TRAFO'),  
             Column::make('DAYA_REAKTIF_TRAFO'),  
             Column::make('RASIO_TEGANGAN'),  
-            Column::computed('action', __('app.action'))
-            ->exportable(false)
-            ->printable(false)
-            ->orderable(false)
-            ->searchable(false)
-            // ->width(150)
-            ->addClass('text-center')
+            // Column::computed('action', __('app.action'))
+            // ->exportable(false)
+            // ->printable(false)
+            // ->orderable(false)
+            // ->searchable(false) 
+            // ->addClass('text-center')
 
         ];
     }

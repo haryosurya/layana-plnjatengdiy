@@ -2,7 +2,9 @@
 
 namespace App\DataTables\DC;
 
+use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
+use App\Models\Dc_incoming_feeder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -21,7 +23,20 @@ class DcGarduIndukDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addIndexColumn()  
+            ->addIndexColumn() 
+            ->addColumn('total_trafo', function($row){
+                    $result = Dc_incoming_feeder::where('GARDU_INDUK_ID',$row->GARDU_INDUK_ID)->count();
+                    return $result;
+                } 
+            )
+            ->addColumn('total_pmt', function($row){
+                    $result = Dc_cubicle::
+                    join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID')
+                    ->leftJoin('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','dc_incoming_feeder.GARDU_INDUK_ID') 
+                    ->where('dc_gardu_induk.GARDU_INDUK_ID',$row->GARDU_INDUK_ID)->count('OUTGOING_ID');
+                    return $result;
+                } 
+            ) 
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
 
@@ -39,7 +54,7 @@ class DcGarduIndukDatatable extends DataTable
 
                 return $action;
             })
-            ->rawColumns(['action' ]);
+            ->rawColumns(['action','total_trafo','total_pmt']);
     }
 
     /**
@@ -53,7 +68,7 @@ class DcGarduIndukDatatable extends DataTable
         $request = $this->request();
  
 
-        $gardu = $model->with('dc_apj')
+        $gardu = $model
             ->withoutGlobalScope('active')
             ->join('dc_apj', 'dc_apj.APJ_ID', '=', 'dc_gardu_induk.APJ_ID') 
             ->select(
@@ -96,6 +111,17 @@ class DcGarduIndukDatatable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax() 
             ->destroy(true) 
+            ->scrollY("500px")
+            ->scrollX('100%')
+            ->fixedColumns(true)
+            ->scrollCollapse(true)
+            ->fixedColumns( 
+                    [
+                        'left'=>'4',
+                        'right'=>'0'
+                    ]
+            ) 
+            ->dom('Bfrtip')
             ->responsive(true)
             ->serverSide(true)
             ->stateSave(false)
@@ -123,35 +149,22 @@ class DcGarduIndukDatatable extends DataTable
     {
         return [ 
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'GARDU_INDUK_ID', 'name' => 'APJ_NAMA', 'title' => __('app.id')],
-            __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
+            __('app.id') => ['data' => 'GARDU_INDUK_ID', 'name' => 'GARDU_INDUK_ID', 'title' => __('app.id')],
             __('modules.dc.gi') => ['data' => 'GARDU_INDUK_NAMA', 'name' => 'GARDU_INDUK_NAMA', 'title' => __('modules.dc.gi')],
-            __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],
-            __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],
-            // __('modules.dc.GARDU_INDUK_RTU_ID') => ['data' => 'GARDU_INDUK_RTU_ID', 'name' => 'GARDU_INDUK_RTU_ID', 'title' => __('modules.dc.GARDU_INDUK_RTU_ID')], 
+            __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
+            __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],  
             __('modules.dc.dcc') => ['data' => 'DCC', 'name' => 'DCC', 'title' => __('modules.dc.dcc')],
-            // __('modules.dc.GARDU_INDUK_ALIAS_ROPO') => ['data' => 'GARDU_INDUK_ALIAS_ROPO', 'name' => 'GARDU_INDUK_ALIAS_ROPO', 'title' => __('modules.dc.GARDU_INDUK_ALIAS_ROPO')],
-            // __('modules.dc.GARDU_INDUK_ALAMAT') => ['data' => 'GARDU_INDUK_ALAMAT', 'name' => 'GARDU_INDUK_ALAMAT', 'title' => __('modules.dc.GARDU_INDUK_ALAMAT')],
-            // __('modules.dc.UPT_ID') => ['data' => 'UPT_ID', 'name' => 'UPT_ID', 'title' => __('modules.dc.UPT_ID')],
-                // 'dc_apj.APJ_NAMA AS APJ_NAMA',
-                // 'dc_gardu_induk.GARDU_INDUK_NAMA',
-                // 'dc_gardu_induk.GARDU_INDUK_KODE',
-                // 'dc_gardu_induk.GARDU_INDUK_RTU_ID',
-                // 'dc_gardu_induk.GARDU_INDUK_ALIAS',
-                // 'dc_gardu_induk.GARDU_INDUK_ALIAS_ROPO',
-                // 'dc_gardu_induk.GARDU_INDUK_ALAMAT',
-                /* 
-                'dc_gardu_induk.UPT_ID',
-                'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK',
-                'dc_gardu_induk.PEMELIHARAAN_GI',
-                'dc_gardu_induk.BATAS_TEGANGAN_BAWAH',
-                'dc_gardu_induk.BATAS_TEGANGAN_ATAS' */  
-            Column::computed('action', __('app.action'))
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ->addClass('text-right pr-20')
+            Column::make('UPT_ID'),
+            Column::make('GARDU_INDUK_RTU_ID'),
+            Column::make('GARDU_INDUK_ALIAS'),
+            Column::make('GARDU_INDUK_ALIAS_ROPO'),
+            Column::make('GARDU_INDUK_ALAMAT'),
+            Column::make('NAMA_ALIAS_GARDU_INDUK'),
+            Column::make('PEMELIHARAAN_GI'),
+            Column::make('BATAS_TEGANGAN_BAWAH'),
+            Column::make('BATAS_TEGANGAN_ATAS'), 
+            __('modules.dc.total-trafo') => ['data' => 'total_trafo', 'name' => 'total_trafo', 'title' => __('modules.dc.total-trafo')], 
+            __('modules.dc.total-pmt') => ['data' => 'total_pmt', 'name' => 'total_pmt', 'title' => __('modules.dc.total-pmt')],  
         ];
     }
 

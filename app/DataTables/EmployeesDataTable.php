@@ -257,8 +257,7 @@ class EmployeesDataTable extends BaseDataTable
         return $this->builder()
             ->setTableId('employees-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
-
+            ->minifiedAjax() 
             ->destroy(true)
             ->orderBy(2)
             ->responsive(true)

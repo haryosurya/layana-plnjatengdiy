@@ -3,6 +3,9 @@
 namespace App\DataTables\DC;
 
 use App\Models\Dc_apj;
+use App\Models\Dc_cubicle;
+use App\Models\Dc_gardu_induk;
+use App\Models\Dc_incoming_feeder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -22,6 +25,27 @@ class DccDatatable extends DataTable
         return datatables()
             ->eloquent($query) 
             ->addIndexColumn() 
+            ->addColumn('total_gardu', function($row){
+                    $result = Dc_gardu_induk::where('APJ_ID',$row->id)->count();
+                    return $result;
+                } 
+            )
+            ->addColumn('total_trafo', function($row){
+                    $result = Dc_incoming_feeder::where('APJ_ID',$row->id)->count();
+                    return $result;
+                } 
+            )
+            ->addColumn('total_pmt', function($row){
+                    $result = Dc_cubicle::where('APJ_ID',$row->id)->count();
+                    return $result;
+                } 
+            )
+            // ->addColumn('total_pmt', function($row){
+            //         $result = Dc_cubicle::join('dc_incoming_feeder','dc_incoming_feeder.incoming_id','dc_incoming_feeder.incoming_id')
+            //         ->where('dc_incoming_feeder.GARDU_INDUK_ID',$row->id)->count();
+            //         return $result;
+            //     } 
+            // )
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
 
@@ -60,7 +84,7 @@ class DccDatatable extends DataTable
 
                 return $action;
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action','total_gardu','total_trafo','total_pmt']);
     }
 
     /**
@@ -75,13 +99,14 @@ class DccDatatable extends DataTable
         $gardu = $model 
             ->withoutGlobalScope('active')  
             ->join('dc_gardu_induk','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
+            ->leftJoin('dc_cubicle','dc_apj.APJ_ID','dc_cubicle.APJ_ID')  
+            ->leftJoin('dc_incoming_feeder','dc_apj.APJ_ID','dc_incoming_feeder.APJ_ID')  
             ->selectRaw(
             'dc_apj.APJ_ID as id,
             dc_apj.APJ_NAMA as name,
             dc_apj.APJ_ALIAS as alias,
             dc_apj.APJ_DCC as dcc,
-            dc_apj.TELEGRAM_ID as telegram,
-            count(dc_gardu_induk.GARDU_INDUK_NAMA) as total_gardu' 
+            dc_apj.TELEGRAM_ID as telegram' 
         ); 
 
         if ($request->searchText != '') {
@@ -105,23 +130,30 @@ class DccDatatable extends DataTable
                     ->setTableId('dccdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax() 
-            ->destroy(true) 
-            ->responsive(true)
-            ->serverSide(true)
-            ->stateSave(false)
-            ->processing(true)
-            ->language(__('app.datatable'))
-            ->parameters([
-                'initComplete' => 'function () {
-                    window.LaravelDataTables["dccdatatable-table"].buttons().container()
-                     .appendTo( "#table-actions")
-                 }',
-                'fnDrawCallback' => 'function( oSettings ) {
-                   //
-                   $(".select-picker").selectpicker();
-                 }',
-            ])
-            ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel')]));
+                    ->destroy(true) 
+                    ->responsive(true)
+                    ->serverSide(true)
+                    ->stateSave(false)
+                    ->processing(true)
+                    
+                    ->fixedColumns( 
+                        [
+                            'left'=>'2',
+                            'right'=>'0'
+                        ]
+                    ) 
+                    ->language(__('app.datatable'))
+                    ->parameters([
+                        'initComplete' => 'function () {
+                            window.LaravelDataTables["dccdatatable-table"].buttons().container()
+                            .appendTo( "#table-actions")
+                        }',
+                        'fnDrawCallback' => 'function( oSettings ) {
+                        //
+                        $(".select-picker").selectpicker();
+                        }',
+                    ])
+                    ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel')]));
     }
 
     /**
@@ -133,17 +165,20 @@ class DccDatatable extends DataTable
     {
         return [ 
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
-            __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
-            __('modules.dc.total-gardu') => ['data' => 'total_gardu', 'name' => 'total_gardu', 'title' => __('modules.dc.total-gardu')], 
+                __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
             __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')], 
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
+            __('app.aliases') => ['data' => 'alias', 'name' => 'alias', 'title' => __('app.aliases')],
             __('modules.dc.telegram-id') => ['data' => 'telegram', 'name' => 'telegram', 'title' => __('modules.dc.telegram-id')], 
-            Column::computed('action', __('app.action'))
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ->addClass('text-right pr-20')
+            __('modules.dc.total-gardu') => ['data' => 'total_gardu', 'name' => 'total_gardu', 'title' => __('modules.dc.total-gardu')], 
+            __('modules.dc.total-trafo') => ['data' => 'total_trafo', 'name' => 'total_trafo', 'title' => __('modules.dc.total-trafo')], 
+            __('modules.dc.total-pmt') => ['data' => 'total_pmt', 'name' => 'total_pmt', 'title' => __('modules.dc.total-pmt')], 
+            // Column::computed('action', __('app.action'))
+            //     ->exportable(false)
+            //     ->printable(false)
+            //     ->orderable(false)
+            //     ->searchable(false)
+            //     ->addClass('text-right pr-20')
         ]; 
     }
 
