@@ -124,6 +124,7 @@ class ModuleTableSeeder extends Seeder
             ['name' => 'manage_theme_setting', 'display_name' => 'Manage Theme Settings', 'module_id' => 1, 'is_custom' => 1,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'manage_storage_setting', 'display_name' => 'Manage Storage Settings', 'module_id' => 1, 'is_custom' => 1,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'manage_module_setting', 'display_name' => 'Manage Module Setting', 'module_id'  => 1, 'is_custom' => 1,'allowed_permissions' => '{"all":4, "none":5}'], 
+            ['name' => 'manage_notification_setting', 'display_name' => 'Manage Notification Setting', 'module_id'  => 1, 'is_custom' => 1,'allowed_permissions' => '{"all":4, "none":5}'], 
 
         ]);
 

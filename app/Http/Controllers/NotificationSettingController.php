@@ -27,15 +27,7 @@ class NotificationSettingController extends AccountBaseController
 
         $this->emailSettings = email_notification_setting();
 
-        switch ($tab) {
-        case 'slack-setting':
-            $this->slackSettings = SlackSetting::setting();
-            $this->view = 'notification-settings.ajax.slack-setting';
-                break;
-        case 'push-notification-setting':
-            $this->pushSettings = push_setting();
-            $this->view = 'notification-settings.ajax.push-notification-setting';
-                break;
+        switch ($tab) {  
         case 'pusher-setting':
             $this->pusherSettings = PusherSetting::first();
             $this->view = 'notification-settings.ajax.pusher-setting';

@@ -43,6 +43,13 @@
     <div class="content-wrapper">
         <!-- Add Task Export Buttons Start -->
 
+
+        <div class="d-flex justify-content-between action-bar">
+            <div id="table-actions" class="flex-grow-1 align-items-center">
+              
+            </div>
+  
+        </div>
         
         <!-- Add Task Export Buttons End -->
         <!-- Task Box Start -->

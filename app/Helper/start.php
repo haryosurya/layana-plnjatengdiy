@@ -112,6 +112,24 @@ if (!function_exists('global_setting')) {
 
 }
 
+if (!function_exists('email_notification_setting')) {
+
+    // @codingStandardsIgnoreLine
+    function email_notification_setting()
+    {
+
+        if (in_array('client', user_roles()) || in_array('employee', user_roles())) {
+            return \App\Models\EmailNotificationSetting::all();
+        }
+
+        if (!session()->has('email_notification_setting')) {
+            session(['email_notification_setting' => \App\Models\EmailNotificationSetting::all()]);
+        }
+
+        return session('email_notification_setting');
+    }
+
+}
 if (!function_exists('push_setting')) {
 
     // @codingStandardsIgnoreLine

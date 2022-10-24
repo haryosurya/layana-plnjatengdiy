@@ -104,20 +104,32 @@ class EwsInspeksiPdDatatable extends DataTable
      * @return \Yajra\DataTables\Html\Builder
      */
     public function html()
+     
     {
         return $this->builder()
                     ->setTableId('ewsinspeksipddatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+                    ->orderBy(2)
+                    ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>") 
+                    ->destroy(true)
+                    ->responsive(true)
+                    ->serverSide(true)
+                    ->stateSave(true)
+                    ->processing(true)
+                    ->language(__('app.datatable'))
+                    ->parameters([
+                        'initComplete' => 'function () {
+                           window.LaravelDataTables["ewsinspeksipddatatable-table"].buttons().container()
+                            .appendTo( "#table-actions")
+                        }',
+                        'fnDrawCallback' => 'function( oSettings ) {
+                            $("body").tooltip({
+                                selector: \'[data-toggle="tooltip"]\'
+                            })
+                        }',
+                    ])
+                    ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel'). '&nbsp;<span class="caret"></span>']));
     }
 
     /**

@@ -4,12 +4,7 @@
         @if(view()->exists('notifications.'.$userType.'.'.\Illuminate\Support\Str::snake(class_basename($notification->type))))
             @include('notifications.'.$userType.'.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))
         @endif
-
-        @foreach ($worksuitePlugins as $item)
-            @if(View::exists(strtolower($item).'::notifications.'.\Illuminate\Support\Str::snake(class_basename($notification->type))))
-                @include(strtolower($item).'::notifications.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))
-            @endif
-        @endforeach
+ 
     @endif
 
 @empty

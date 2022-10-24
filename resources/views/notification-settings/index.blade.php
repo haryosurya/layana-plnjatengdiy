@@ -16,16 +16,7 @@
                             <a class="nav-item nav-link f-15 active email-setting"
                                 href="{{ route('notifications.index') }}" role="tab" aria-controls="nav-ticketAgents"
                                 aria-selected="true">@lang('app.email')
-                            </a>
-                            <a class="nav-item nav-link f-15 slack-setting"
-                                href="{{ route('notifications.index') }}?tab=slack-setting" role="tab"
-                                aria-controls="nav-ticketTypes" aria-selected="true" ajax="false">@lang('app.slack')
-                            </a>
-                            <a class="nav-item nav-link f-15 push-notification-setting"
-                                href="{{ route('notifications.index') }}?tab=push-notification-setting" role="tab"
-                                aria-controls="nav-ticketTypes" aria-selected="true"
-                                ajax="false">@lang('app.pushNotification')
-                            </a>
+                            </a> 
                             <a class="nav-item nav-link f-15 pusher-setting"
                                 href="{{ route('notifications.index') }}?tab=pusher-setting" role="tab"
                                 aria-controls="nav-ticketTypes" aria-selected="true"

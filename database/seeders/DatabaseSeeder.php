@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ThemeSettingsTableSeeder::class);
         $this->call(ModuleTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(SmtpSettingsSeeder::class);
         
     }
 }

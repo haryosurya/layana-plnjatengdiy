@@ -26,8 +26,7 @@ class IncomingFeederDatatable extends BaseDataTable
     {
         return datatables()
             ->eloquent($query) 
-            ->addIndexColumn() 
-          
+            ->addIndexColumn()  
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view"> 
                             <div class="dropdown">
@@ -103,7 +102,7 @@ class IncomingFeederDatatable extends BaseDataTable
                     ->setTableId('incomingfeederdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(2)
+                    // ->orderBy(2)
                     ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>") 
                     ->destroy(true)
                     ->responsive(true)

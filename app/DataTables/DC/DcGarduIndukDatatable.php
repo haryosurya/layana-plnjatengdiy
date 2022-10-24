@@ -2,6 +2,7 @@
 
 namespace App\DataTables\DC;
 
+use App\DataTables\BaseDataTable;
 use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
 use App\Models\Dc_incoming_feeder;
@@ -11,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class DcGarduIndukDatatable extends DataTable
+class DcGarduIndukDatatable extends BaseDataTable
 {
     /**
      * Build DataTable class.
@@ -109,35 +110,33 @@ class DcGarduIndukDatatable extends DataTable
         return $this->builder()
             ->setTableId('dcgarduindukdatatable-table') 
             ->columns($this->getColumns())
-            ->minifiedAjax() 
-            ->destroy(true) 
-            ->scrollY("500px")
-            ->scrollX('100%')
-            ->fixedColumns(true)
-            ->scrollCollapse(true)
-            ->fixedColumns( 
-                    [
-                        'left'=>'4',
-                        'right'=>'0'
-                    ]
-            ) 
-            ->dom('Bfrtip')
+            ->minifiedAjax()
+            // ->orderBy(2)
+            ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>") 
+            ->destroy(true)
             ->responsive(true)
             ->serverSide(true)
-            ->stateSave(false)
+            ->stateSave(true)
             ->processing(true)
+            ->fixedColumns( 
+                        [
+                            'left'=>'2',
+                            'right'=>'0'
+                        ]
+                ) 
             ->language(__('app.datatable'))
             ->parameters([
                 'initComplete' => 'function () {
                     window.LaravelDataTables["dcgarduindukdatatable-table"].buttons().container()
-                     .appendTo( "#table-actions")
-                 }',
+                    .appendTo( "#table-actions")
+                }',
                 'fnDrawCallback' => 'function( oSettings ) {
-                   //
-                   $(".select-picker").selectpicker();
-                 }',
+                    $("body").tooltip({
+                        selector: \'[data-toggle="tooltip"]\'
+                    })
+                }',
             ])
-            ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel')]));
+            ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel'). '&nbsp;<span class="caret"></span>']));
     }
 
     /**
@@ -148,8 +147,8 @@ class DcGarduIndukDatatable extends DataTable
     protected function getColumns()
     {
         return [ 
-            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
             __('app.id') => ['data' => 'GARDU_INDUK_ID', 'name' => 'GARDU_INDUK_ID', 'title' => __('app.id')],
+            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
             __('modules.dc.gi') => ['data' => 'GARDU_INDUK_NAMA', 'name' => 'GARDU_INDUK_NAMA', 'title' => __('modules.dc.gi')],
             __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
             __('modules.dc.gardu-code') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.gardu-code')],  

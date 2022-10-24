@@ -69,8 +69,7 @@ class EwsHistoryMeterController extends Controller
                 'status_code' => 200
             )); 
         }
-        catch (\Throwable $th) {
-            DB::rollback();
+        catch (\Throwable $th) { 
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
@@ -143,8 +142,7 @@ class EwsHistoryMeterController extends Controller
                 'status_code' => 500
             ));  
         }
-        catch (\Throwable $th) {
-            DB::rollback();
+        catch (\Throwable $th) { 
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()

@@ -22,6 +22,7 @@ use App\Http\Controllers\LanguageSettingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModuleSettingController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSettingController;
 use App\Http\Controllers\RegisterController;
@@ -131,16 +132,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::resource('social-auth-settings', SocialAuthSettingController::class, ['only' => ['index', 'update']]);
         
         /* notification */
-        // Route::get('smtp-settings/show-send-test-mail-modal', [SmtpSettingController::class, 'showTestEmailModal'])->name('smtp_settings.show_send_test_mail_modal');
-        // Route::get('smtp-settings/send-test-mail', [SmtpSettingController::class, 'sendTestEmail'])->name('smtp_settings.send_test_mail');
+        Route::get('smtp-settings/show-send-test-mail-modal', [SmtpSettingController::class, 'showTestEmailModal'])->name('smtp_settings.show_send_test_mail_modal');
+        Route::get('smtp-settings/send-test-mail', [SmtpSettingController::class, 'sendTestEmail'])->name('smtp_settings.send_test_mail');
     
-        // Route::get('push-notification-settings/send-test-notification', [PushNotificationController::class, 'sendTestNotification'])->name('push_notification_settings.send_test_notification');
+        Route::get('push-notification-settings/send-test-notification', [PushNotificationController::class, 'sendTestNotification'])->name('push_notification_settings.send_test_notification');
 
-        // Route::resource('smtp-settings', SmtpSettingController::class);
-        // Route::resource('notifications', NotificationSettingController::class);
-        // Route::resource('slack-settings', SlackSettingController::class);
-        // Route::resource('push-notification-settings', PushNotificationController::class);
-        // Route::resource('pusher-settings', PusherSettingsController::class);
+        Route::resource('smtp-settings', SmtpSettingController::class);
+        Route::resource('notifications', NotificationSettingController::class); 
+        Route::resource('pusher-settings', PusherSettingsController::class);
                     
         // Security Settings
         // Route::get('verify-google-recaptcha-v3', [SecuritySettingController::class, 'verify'])->name('verify_google_recaptcha_v3');

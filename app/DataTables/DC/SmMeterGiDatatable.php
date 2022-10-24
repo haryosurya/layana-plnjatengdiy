@@ -87,12 +87,21 @@ class SmMeterGiDatatable extends DataTable
         return $this->builder()
         ->setTableId('smmetergidatatable-table')
         ->columns($this->getColumns())
-        ->minifiedAjax() 
-        ->destroy(true) 
+        ->columns($this->getColumns())
+        ->minifiedAjax()
+        ->orderBy(2)
+        ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>") 
+        ->destroy(true)
         ->responsive(true)
-        ->serverSide(true) 
-        ->stateSave(false)
-        ->processing(true) 
+        ->serverSide(true)
+        ->stateSave(true)
+        ->processing(true)
+        ->fixedColumns( 
+                [
+                    'left'=>'2',
+                    'right'=>'0'
+                ]
+        ) 
         ->language(__('app.datatable'))
         ->parameters([
             'initComplete' => 'function () {
@@ -100,8 +109,9 @@ class SmMeterGiDatatable extends DataTable
                  .appendTo( "#table-actions")
              }',
             'fnDrawCallback' => 'function( oSettings ) {
-               //
-               $(".select-picker").selectpicker();
+                $("body").tooltip({
+                    selector: \'[data-toggle="tooltip"]\'
+                })
              }',
         ])
         ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel'). '&nbsp;<span class="caret"></span>']));
@@ -130,14 +140,26 @@ class SmMeterGiDatatable extends DataTable
             Column::make('IN_TIME'),
             Column::make('VLL'),
             Column::make('VLL_TIME'),
+            Column::make('KW'),
+            Column::make('KW_TIME'),
+            Column::make('PF'),
+            Column::make('PF_TIME'),
+            Column::make('IFA'),
+            Column::make('IFA_TIME'),
+            Column::make('IFB'),
+            Column::make('IFB_TIME'),
+            Column::make('IFC'),
+            Column::make('IFC_TIME'),
+            Column::make('IFN'),
+            Column::make('IFN_TIME'),
             
             
-            Column::computed('action', __('app.action'))
-            ->exportable(false)
-            ->printable(false)
-            ->orderable(false)
-            ->searchable(false)
-            ->addClass('text-right pr-20')
+            // Column::computed('action', __('app.action'))
+            // ->exportable(false)
+            // ->printable(false)
+            // ->orderable(false)
+            // ->searchable(false)
+            // ->addClass('text-right pr-20')
         ];
     }
 

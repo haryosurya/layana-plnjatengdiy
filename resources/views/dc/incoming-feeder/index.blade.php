@@ -49,13 +49,7 @@ $addOrderPermission = user()->permission('add_order');
 
         <div class="d-flex justify-content-between action-bar">
             <div id="table-actions" class="flex-grow-1 align-items-center">
-                @if ($addProductPermission == 'all' || $addProductPermission == 'added')
-                    <x-forms.link-primary :link="route('products.create')" class="mr-3 openRightModal float-left"
-                        icon="plus">
-                        @lang('app.add')
-                        @lang('app.product')
-                    </x-forms.link-primary>
-                @endif
+              
             </div>
   
         </div>
@@ -99,11 +93,8 @@ $addOrderPermission = user()->permission('add_order');
         $('#reset-filters').click(function() {
             $('#filter-form')[0].reset();  
             $('.select-picker').selectpicker("refresh");
-            $('#reset-filters').addClass('d-none');
-
+            $('#reset-filters').addClass('d-none'); 
             showTable();
-        });
- 
-
+        }); 
     </script>
 @endpush

@@ -40,6 +40,12 @@
         <!-- Add Task Export Buttons Start -->
  
 
+        <div class="d-flex justify-content-between action-bar">
+            <div id="table-actions" class="flex-grow-1 align-items-center">
+              
+            </div>
+  
+        </div>
         <!-- Add Task Export Buttons End -->
         <!-- Task Box Start -->
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
@@ -53,11 +59,8 @@
 
 @endsection 
 @push('scripts')
-    @include('sections.datatable_js')
-
-    <script> 
- 
-
+    @include('sections.datatable_js') 
+    <script>  
         $('#dcgarduindukdatatable-table').on('preXhr.dt', function(e, settings, data) {
  
             var searchText = $('#search-text-field').val();

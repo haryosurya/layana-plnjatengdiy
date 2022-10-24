@@ -216,11 +216,11 @@ class RekapGangguanPMTscadaDatatable extends DataTable
             // 'JARAK_GANGGUAN',
             // 'NO_POLE_TIANG',
             // 'UPJ_ID' 	
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'), 
+            // Column::computed('action')
+            //       ->exportable(false)
+            //       ->printable(false)
+            //       ->width(60)
+            //       ->addClass('text-center'), 
         ];
     }
 
