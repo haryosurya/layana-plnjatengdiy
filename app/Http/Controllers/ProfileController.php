@@ -58,7 +58,7 @@ class ProfileController extends AccountBaseController
         $this->addEmployeeDetail($request, $user);
         session()->forget('user');
 
-        $this->logUserActivity($user->id, 'messages.updatedProfile');
+        // $this->logUserActivity($user->id, 'messages.updatedProfile');
 
         $redirectUrl = urldecode($request->redirect_url);
 

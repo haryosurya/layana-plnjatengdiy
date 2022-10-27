@@ -170,7 +170,7 @@ class SmMeterGiDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'DC/SmMeterGi_' . date('YmdHis');
+        return 'SmMeterGi_' . date('YmdHis');
     } 
     public function pdf()
     {

@@ -42,15 +42,7 @@ class SmtpConfigProvider extends ServiceProvider
                 else {
                     Config::set('app.logo', asset_url('app-logo/' . $settings->logo));
                 }
-
-                $pushSetting = DB::table('push_notification_settings')->first();
-
-                if ($pushSetting) {
-                    Config::set('services.onesignal.app_id', $pushSetting->onesignal_app_id);
-                    Config::set('services.onesignal.rest_api_key', $pushSetting->onesignal_rest_api_key);
-                    Config::set('onesignal.app_id', $pushSetting->onesignal_app_id);
-                    Config::set('onesignal.rest_api_key', $pushSetting->onesignal_rest_api_key);
-                }
+ 
             }
         } catch (\Exception $e) {
 

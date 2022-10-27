@@ -231,6 +231,19 @@ class RekapGangguanPMTscadaDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'DC/RekapGangguanPMTscada_' . date('YmdHis');
+        return 'RekapGangguanPMTscada_' . date('YmdHis');
+    }
+    public function pdf()
+    {
+        set_time_limit(0);
+
+        if ('snappy' == config('datatables-buttons.pdf_generator', 'snappy')) {
+            return $this->snappyPdf();
+        }
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('datatables::print', ['data' => $this->getDataForPrint()]);
+
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

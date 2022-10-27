@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PusherSetting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,6 +26,8 @@ class CreatePusherSettingsTable extends Migration
             $table->boolean('taskboard')->default(true);
             $table->boolean('messages')->default(false);
         });
+        $pusherSetting = new PusherSetting();
+        $pusherSetting->save();
     }
 
     /**

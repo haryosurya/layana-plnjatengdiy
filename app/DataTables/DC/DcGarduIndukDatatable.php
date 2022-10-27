@@ -110,21 +110,24 @@ class DcGarduIndukDatatable extends BaseDataTable
         return $this->builder()
             ->setTableId('dcgarduindukdatatable-table') 
             ->columns($this->getColumns())
-            ->minifiedAjax()
-            // ->orderBy(2)
-            ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>") 
-            ->destroy(true)
-            ->responsive(true)
-            ->serverSide(true)
-            ->stateSave(true)
-            ->processing(true)
-            ->fixedColumns( 
-                        [
-                            'left'=>'2',
-                            'right'=>'0'
-                        ]
-                ) 
-            ->language(__('app.datatable'))
+                    ->minifiedAjax() 
+                    ->destroy(true) 
+                    ->scrollY("500px")
+                    ->scrollX('100%')
+                    ->fixedColumns(true)
+                    ->scrollCollapse(true)
+                    ->fixedColumns( 
+                            [
+                                'left'=>'2',
+                                'right'=>'0'
+                            ]
+                    ) 
+                    ->dom('Bfrtip')
+                    ->responsive(true)
+                    ->serverSide(true)
+                    ->stateSave(false)
+                    ->processing(true)
+                    ->language(__('app.datatable'))
             ->parameters([
                 'initComplete' => 'function () {
                     window.LaravelDataTables["dcgarduindukdatatable-table"].buttons().container()

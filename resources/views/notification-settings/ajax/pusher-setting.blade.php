@@ -63,18 +63,7 @@
         </div>
 
     </div>
-</div>
-<div class="col-xl-4 col-lg-12 col-md-12 ntfcn-tab-content-right border-left-grey p-4">
-    <h4 class="f-16 text-capitalize f-w-500 text-dark-grey">@lang("modules.pusher.notificationTitle")</h4>
-    <div class="mb-3 d-flex">
-        <x-forms.checkbox :checked="$pusherSettings->taskboard" :fieldLabel="__('modules.tasks.taskBoard')"
-            fieldName="taskboard" fieldId="taskboard_broadcast" fieldValue="1" />
-    </div>
-    <div class="mb-3 d-flex">
-        <x-forms.checkbox :checked="$pusherSettings->messages" :fieldLabel="__('app.menu.messages')"
-            fieldName="messages" fieldId="messages_broadcast" fieldValue="1" />
-    </div>
-</div>
+</div> 
 
 <!-- Buttons Start -->
 <div class="w-100 border-top-grey set-btns">

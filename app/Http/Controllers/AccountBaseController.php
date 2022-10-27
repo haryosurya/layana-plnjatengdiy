@@ -42,7 +42,7 @@ class AccountBaseController extends Controller
             $this->adminTheme = admin_theme();
             // $this->pushSetting = push_setting();
             // $this->smtpSetting = smtp_setting();
-            // $this->pusherSettings = pusher_settings();
+            $this->pusherSettings = pusher_settings();
  
             App::setLocale(user()->locale);
             Carbon::setLocale(user()->locale);
@@ -101,13 +101,13 @@ class AccountBaseController extends Controller
         $activity->save();
     } 
 
-    // public function triggerPusher($channel, $event, $data)
-    // {
-    //     if ($this->pusherSettings->status) {
-    //         $pusher = new Pusher($this->pusherSettings->pusher_app_key, $this->pusherSettings->pusher_app_secret, $this->pusherSettings->pusher_app_id, array('cluster' => $this->pusherSettings->pusher_cluster, 'useTLS' => $this->pusherSettings->force_tls));
-    //         $pusher->trigger($channel, $event, $data);
-    //     }
-    // }
+    public function triggerPusher($channel, $event, $data)
+    {
+        if ($this->pusherSettings->status) {
+            $pusher = new Pusher($this->pusherSettings->pusher_app_key, $this->pusherSettings->pusher_app_secret, $this->pusherSettings->pusher_app_id, array('cluster' => $this->pusherSettings->pusher_cluster, 'useTLS' => $this->pusherSettings->force_tls));
+            $pusher->trigger($channel, $event, $data);
+        }
+    }
 
     public function innerSettingMenu()
     {

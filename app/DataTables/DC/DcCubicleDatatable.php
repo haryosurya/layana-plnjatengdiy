@@ -133,8 +133,8 @@ class DcCubicleDatatable extends DataTable
             ;
             if ($request->searchText != '') {
                 $gardu = $gardu->where(function ($query) {
-                    $query->where('name', 'like', '%' . request('searchText') . '%')
-                        ->orWhere('name', 'like', '%' . request('searchText') . '%');
+                    $query->where('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%')
+                        ->orWhere('dc_cubicle.CUBICLE_NAME', 'like', '%' . request('searchText') . '%');
                 });
             }
         return $gardu->groupBy('id');
@@ -222,7 +222,7 @@ class DcCubicleDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'DC/DcCubicle_' . date('YmdHis');
+        return 'DcCubicle_' . date('YmdHis');
     }
     public function pdf()
     {

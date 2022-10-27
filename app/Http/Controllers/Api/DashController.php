@@ -52,11 +52,20 @@ class DashController extends Controller
                         where(function($query){
                             return $query
                             ->where('SCB','=','1')
-                            ->where('SCB_INV', '=', '0');
+                            ->where(function($query){
+                                return $query
+                                ->where('SCB_INV','=', null)
+                                ->orWhere('SCB_INV', '=', '0');
+                            }) 
+                            ;
                         })
                        ->orWhere(function($query){
-                            return $query
-                            ->where('SCB','=','0')
+                            return $query 
+                            ->where(function($query){
+                                return $query
+                                ->where('SCB','=', null)
+                                ->orWhere('SCB', '=', '0');
+                            })
                             ->where('SCB_INV', '=', '1');
                         })->count()
                     ; 

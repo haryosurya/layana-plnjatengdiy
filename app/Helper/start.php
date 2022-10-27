@@ -129,20 +129,7 @@ if (!function_exists('email_notification_setting')) {
         return session('email_notification_setting');
     }
 
-}
-if (!function_exists('push_setting')) {
-
-    // @codingStandardsIgnoreLine
-    function push_setting()
-    {
-        if (!session()->has('push_setting')) {
-            session(['push_setting' => \App\Models\PushNotificationSetting::first()]);
-        }
-
-        return session('push_setting');
-    }
-
-}
+} 
 
 if (!function_exists('language_setting')) {
 
@@ -227,6 +214,19 @@ if (!function_exists('user_modules')) {
 
 }
   
+if (!function_exists('pusher_settings')) {
+
+    // @codingStandardsIgnoreLine
+    function pusher_settings()
+    {
+        if (!session()->has('pusher_settings')) {
+            session(['pusher_settings' => \App\Models\PusherSetting::first()]);
+        }
+
+        return session('pusher_settings');
+    }
+
+}
 
 // if (!function_exists('main_menu_settings')) {
 

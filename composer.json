@@ -30,6 +30,7 @@
         "macellan/laravel-zip": "^1.0",
         "nwidart/laravel-modules": "^8.3",
         "paragonie/random_compat": "^9.99",
+        "pusher/pusher-php-server": "^4.1", 
         "sentry/sentry-laravel": "^2.13",
         "spatie/laravel-backup": "^6.16",
         "spatie/laravel-feed": "^3.2",

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
 use App\Models\Setting;
+use DB;
 use Froiden\RestAPI\ApiResponse;
 use Froiden\RestAPI\Exceptions\ApiException;
 use Illuminate\Support\Facades\App;
@@ -31,8 +32,10 @@ class Dc_apjAPIController extends Controller
         if (auth('sanctum')->check()){ 
             $result = Dc_apj::orderBy('APJ_ID','ASC')
             ->leftJoin('dc_gardu_induk','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
-            ->selectRaw('dc_apj.APJ_ID,dc_apj.APJ_NAMA,dc_apj.APJ_ALIAS,dc_apj.APJ_DCC,count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU
-            ,dc_gardu_induk.GARDU_INDUK_ID' )  
+            ->selectRaw('dc_apj.APJ_ID,dc_apj.APJ_NAMA,dc_apj.APJ_ALIAS,dc_apj.APJ_DCC,count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU ' )  
+            
+            ->where('dc_apj.APJ_ID','!=','12')
+            ->where('dc_apj.APJ_ID','!=','13')
             ->groupBy('dc_apj.APJ_ID');
 
             if ($request->get('APJ_DCC'))

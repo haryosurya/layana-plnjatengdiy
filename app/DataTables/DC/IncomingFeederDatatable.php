@@ -27,35 +27,7 @@ class IncomingFeederDatatable extends BaseDataTable
         return datatables()
             ->eloquent($query) 
             ->addIndexColumn()  
-            ->addColumn('action', function ($row) {
-                $action = '<div class="task_view"> 
-                            <div class="dropdown">
-                                <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
-                                    id="dropdownMenuLink-' . $row->INCOMING_ID . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-options-vertical icons"></i>
-                                </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->INCOMING_ID . '" tabindex="0">'; 
-                $action .= '<a href=" " class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
-
-                
-                $action .= '<a class="dropdown-item openRightModal" href=" ">
-                            <i class="fa fa-edit mr-2"></i>
-                            ' . trans('app.edit') . '
-                        </a>'; 
- 
-                $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-user-id="' . $row->INCOMING_ID . '">
-                        <i class="fa fa-trash mr-2"></i>
-                        ' . trans('app.delete') . '
-                    </a>';
-               
-
-                $action .= '</div>
-                    </div>
-                </div>';
-
-                return $action;
-            })
-            ->rawColumns(['action' ]);
+             ;
     }
 
     /**
@@ -87,6 +59,12 @@ class IncomingFeederDatatable extends BaseDataTable
                 'dc_incoming_feeder.RASIO_TEGANGAN'
             )
             ; 
+        if ($request->searchText != '') {
+            $model = $model->where(function ($query) {
+                $query->where('dc_incoming_feeder.INCOMING_NAME', 'like', '%' . request('searchText') . '%')
+                    ->orWhere('dc_incoming_feeder.NAMA_ALIAS_INCOMING', 'like', '%' . request('searchText') . '%');
+            });
+        }
         return $model->groupBy('dc_incoming_feeder.INCOMING_ID');
 
     }
@@ -136,7 +114,7 @@ class IncomingFeederDatatable extends BaseDataTable
             __('app.id') => ['data' => 'INCOMING_ID', 'name' => 'INCOMING_ID', 'visible' => false],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false ], 
             Column::make('INCOMING_ID'),  
-            // Column::make('INCOMING_NAME'),  
+            Column::make('INCOMING_NAME'),  
             Column::make('NAMA_ALIAS_INCOMING'),  
             Column::make('gardu'),   
             Column::make('NAMA_APJ'),   

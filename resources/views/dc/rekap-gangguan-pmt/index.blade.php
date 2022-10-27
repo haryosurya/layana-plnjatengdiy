@@ -48,16 +48,8 @@ $addOrderPermission = user()->permission('add_order');
         <!-- Add Task Export Buttons Start -->
 
         <div class="d-flex justify-content-between action-bar">
-            <div id="table-actions" class="flex-grow-1 align-items-center">
-                @if ($addProductPermission == 'all' || $addProductPermission == 'added')
-                    <x-forms.link-primary :link="route('products.create')" class="mr-3 openRightModal float-left"
-                        icon="plus">
-                        @lang('app.add')
-                        @lang('app.product')
-                    </x-forms.link-primary>
-                @endif
-            </div>
-  
+            <div id="table-actions" class="flex-grow-1 align-items-center"> 
+            </div> 
         </div>
 
         <!-- Add Task Export Buttons End -->

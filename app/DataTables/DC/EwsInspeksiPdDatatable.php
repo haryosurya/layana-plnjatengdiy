@@ -2,14 +2,17 @@
 
 namespace App\DataTables\DC;
 
+use App\DataTables\BaseDataTable;
 use App\Models\ews_inspeksi_pd;
+use Carbon\Carbon;
+use DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class EwsInspeksiPdDatatable extends DataTable
+class EwsInspeksiPdDatatable extends BaseDataTable
 {
     /**
      * Build DataTable class.
@@ -89,11 +92,26 @@ class EwsInspeksiPdDatatable extends DataTable
                 'users.name as operator'
                 )
             ;
+            
+            $outgoing = $request->outgoing;
+            if ($outgoing != 0 && $outgoing != null) {
+                $model->where('ews_inspeksi_pd.id_outgoing', '=', $outgoing);
+            } 
             if ($request->searchText != '') {
                 $inspeksi = $inspeksi->where(function ($query) {
                     $query->where('name', 'like', '%' . request('searchText') . '%')
                         ->orWhere('name', 'like', '%' . request('searchText') . '%');
                 });
+            }
+            if ($this->request()->startDate !== null && $this->request()->startDate != 'null' && $this->request()->startDate != '') {
+                $startDate = Carbon::createFromFormat($this->global->date_format, $this->request()->startDate)->toDateString();
+    
+                $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_pd.`tgl_entry`)'), '>=', $startDate);
+            }
+    
+            if ($this->request()->endDate !== null && $this->request()->endDate != 'null' && $this->request()->endDate != '') {
+                $endDate = Carbon::createFromFormat($this->global->date_format, $this->request()->endDate)->toDateString();
+                $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_pd.`tgl_entry`)'), '<=', $endDate);
             }
         return $inspeksi->groupBy('id_inspeksi_pd');
     }
@@ -148,14 +166,7 @@ class EwsInspeksiPdDatatable extends DataTable
             Column::make('operator'),
             Column::make('level_pd'),
             Column::make('tgl_entry'),
-            Column::make('tgl_inspeksi'),
-            Column::computed('action', __('app.action'))
-            ->exportable(false)
-            ->printable(false)
-            ->orderable(false)
-            ->searchable(false)
-            // ->width(150)
-            ->addClass('text-center')
+            Column::make('tgl_inspeksi')
         ];
     }
 

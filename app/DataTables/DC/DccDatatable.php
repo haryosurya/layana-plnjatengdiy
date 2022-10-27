@@ -189,7 +189,7 @@ class DccDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'DC/Dcc_' . date('YmdHis');
+        return 'Dcc_' . date('YmdHis');
     }
     public function pdf()
     {

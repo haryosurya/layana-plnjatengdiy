@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DC;
 
 use App\DataTables\DC\BebanRealtimeDatatable;
 use App\DataTables\DC\DcCubicleDatatable;
+use App\DataTables\DC\EwsInspeksiPdDatatable;
 use App\DataTables\DC\InspeksiPdDatatable;
 use App\Helper\Reply;
 use App\Http\Controllers\AccountBaseController;
@@ -104,7 +105,7 @@ class CubicleController extends AccountBaseController
         $this->pageTitle = ucfirst($this->cubicle->CUBICLE_NAME);
  
         $this->countIndspeksiPd = Dc_inspeksi_pd::where('OUTGOING_ID',$id)->count(); 
-
+        $this->id = $id;
         $tab = request('tab');
 
         switch ($tab) {
@@ -134,7 +135,7 @@ class CubicleController extends AccountBaseController
         $this->activeTab = ($tab == '') ? 'profile' : $tab;
         $this->view = 'dc.cubicle.ajax.inspeksipd';
 
-        $dataTable = new InspeksiPdDatatable();
+        $dataTable = new EwsInspeksiPdDatatable();
 
         return $dataTable->render('dc.cubicle.show', $this->data);
     }

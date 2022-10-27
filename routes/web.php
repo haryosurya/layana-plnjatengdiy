@@ -28,6 +28,7 @@ use App\Http\Controllers\ProfileSettingController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SmtpSettingController;
 use App\Http\Controllers\SocialAuthSettingController;
 use App\Http\Controllers\StorageSettingController;
 use App\Http\Controllers\ThemeSettingController;
@@ -134,9 +135,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         /* notification */
         Route::get('smtp-settings/show-send-test-mail-modal', [SmtpSettingController::class, 'showTestEmailModal'])->name('smtp_settings.show_send_test_mail_modal');
         Route::get('smtp-settings/send-test-mail', [SmtpSettingController::class, 'sendTestEmail'])->name('smtp_settings.send_test_mail');
-    
-        Route::get('push-notification-settings/send-test-notification', [PushNotificationController::class, 'sendTestNotification'])->name('push_notification_settings.send_test_notification');
-
+     
         Route::resource('smtp-settings', SmtpSettingController::class);
         Route::resource('notifications', NotificationSettingController::class); 
         Route::resource('pusher-settings', PusherSettingsController::class);
