@@ -2,14 +2,17 @@
 
 namespace App\DataTables\DC;
 
+use App\DataTables\BaseDataTable;
 use App\Models\ews_inspeksi_aset;
+use Carbon\Carbon;
+use DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class EwsInspeksiAsetDatatable extends DataTable
+class EwsInspeksiAsetDatatable extends BaseDataTable
 {
     /**
      * Build DataTable class.
@@ -20,7 +23,8 @@ class EwsInspeksiAsetDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
+            ->eloquent($query) 
+            ->addIndexColumn() 
             ->addColumn('action', 'ewsinspeksiasetdatatable.action');
     }
 
@@ -35,9 +39,9 @@ class EwsInspeksiAsetDatatable extends DataTable
         $request = $this->request(); 
         $inspeksi = $model 
             ->withoutGlobalScope('active')
-            ->join('dc_cubicle','dc_cubicle.OUTGOING_ID', 'ews_inspeksi_pd.id_outgoing')   
-            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID', 'ews_inspeksi_pd.id_gardu_induk')
-            ->join('users','users.id', 'ews_inspeksi_pd.id_user')
+            ->join('dc_cubicle','dc_cubicle.OUTGOING_ID', 'ews_inspeksi_aset.id_outgoing')   
+            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID', 'ews_inspeksi_aset.id_gardu_induk')
+            ->join('users','users.id', 'ews_inspeksi_aset.id_user')
 
             ->select(
                 'ews_inspeksi_aset.*',
@@ -53,6 +57,17 @@ class EwsInspeksiAsetDatatable extends DataTable
                         ->orWhere('name', 'like', '%' . request('searchText') . '%');
                 });
             }
+            if ($this->request()->startDate !== null && $this->request()->startDate != 'null' && $this->request()->startDate != '') {
+                $startDate = Carbon::createFromFormat($this->global->date_format, $this->request()->startDate)->toDateString();
+    
+                $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_aset.`tgl_entry`)'), '>=', $startDate);
+            }
+    
+            if ($this->request()->endDate !== null && $this->request()->endDate != 'null' && $this->request()->endDate != '') {
+                $endDate = Carbon::createFromFormat($this->global->date_format, $this->request()->endDate)->toDateString();
+                $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_aset.`tgl_entry`)'), '<=', $endDate);
+            }
+
             /*  */
         return $inspeksi->groupBy('id_inspeksi_aset'); 
     }
@@ -67,16 +82,36 @@ class EwsInspeksiAsetDatatable extends DataTable
         return $this->builder()
                     ->setTableId('ewsinspeksiasetdatatable-table')
                     ->columns($this->getColumns())
-                    ->minifiedAjax()
+                    ->minifiedAjax() 
+                    ->destroy(true) 
+                    ->scrollY("500px")
+                    ->scrollX('100%')
+                    ->fixedColumns(true)
+                    ->scrollCollapse(true)
+                    ->fixedColumns( 
+                            [
+                                'left'=>'4',
+                                'right'=>'0'
+                            ]
+                    ) 
                     ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+                    ->responsive(true)
+                    ->serverSide(true)
+                    ->stateSave(false)
+                    ->processing(true)
+                    ->language(__('app.datatable'))
+                    ->parameters([
+                        'initComplete' => 'function () {
+                           window.LaravelDataTables["ewsinspeksiasetdatatable-table"].buttons().container()
+                            .appendTo( "#table-actions")
+                        }',
+                        'fnDrawCallback' => 'function( oSettings ) {
+                            $("body").tooltip({
+                                selector: \'[data-toggle="tooltip"]\'
+                            })
+                        }',
+                    ])
+                    ->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel'). '&nbsp;<span class="caret"></span>']));
     }
 
     /**
@@ -86,21 +121,68 @@ class EwsInspeksiAsetDatatable extends DataTable
      */
     protected function getColumns()
     {
-        return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id_inspeksi_aset'),
-            Column::make('gardu_name'),
-            Column::make('name'),
+        return [ 
+            __('app.id') => ['data' => 'id_inspeksi_aset', 'name' => 'id_inspeksi_aset', 'visible' => false],
+            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false ],  
+            Column::make('name')->title('Cubicle'),
+            Column::make('gardu_name')->title('Nama Gardu'),
             Column::make('operator'),
-            // 'dc_cubicle.OUTGOING_ID as OUTGOING_ID',
-            //     'dc_cubicle.CUBICLE_NAME as name',
-            //     'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK as gardu_name',
-            //     'users.name as operator'
-            //  	id_outgoing 	id_user 	id_gardu_induk 	tgl_entry 	tgl_inspeksi 	body_cubicle 	lv 	cb 	busbar 	power_cable 	pmt_cb 	announ 	ind_lamp 	ind_volt 	ac220 	dc110 	desis 	dengung 	ngeter 	flash 	sangit 	amis 	feeder 	kubikel 	pmt 	grounding 	sangit2 	slr 	sar 	body_alat 	wiring 	w_prot 	w_meter 	w_acc 	relay_ready 	relay_display 	relay_mr 	relay_ms 	relay_mt 	pm_display 	pm_mr 	pm_ms 	pm_mt 	kwh_meter 	panel_rtu 	door 	fan 	lampu_panel 	grounding_rtu 	temp_panel 	kebersihan 	power_on 	led_txrx 	ethernet 	keterangan 	id_update 	last_update
+            Column::make('tgl_entry'), 
+            Column::make('tgl_entry'), 
+            Column::make('tgl_inspeksi'), 
+            Column::make('body_cubicle'), 
+            Column::make('lv'), 
+            Column::make('cb'), 
+            Column::make('busbar'), 
+            Column::make('power_cable'), 
+            Column::make('pmt_cb'), 
+            Column::make('announ'), 
+            Column::make('ind_lamp'), 
+            Column::make('ind_volt'), 
+            Column::make('ac220'), 
+            Column::make('dc110'), 
+            Column::make('desis'), 
+            Column::make('dengung'), 
+            Column::make('ngeter'), 
+            Column::make('flash'), 
+            Column::make('sangit'), 
+            Column::make('amis'), 
+            Column::make('feeder'), 
+            Column::make('kubikel'), 
+            Column::make('pmt'), 
+            Column::make('grounding'), 
+            Column::make('sangit2'), 
+            Column::make('slr'), 
+            Column::make('sar'), 
+            Column::make('body_alat'), 
+            Column::make('wiring'), 
+            Column::make('w_prot'), 
+            Column::make('w_meter'), 
+            Column::make('w_acc'), 
+            Column::make('relay_ready'), 
+            Column::make('relay_display'), 
+            Column::make('relay_mr'), 
+            Column::make('relay_ms'), 
+            Column::make('relay_mt'), 
+            Column::make('pm_display'), 
+            Column::make('pm_mr'), 
+            Column::make('pm_ms'), 
+            Column::make('pm_mt'), 
+            Column::make('kwh_meter')->name('ks'), 
+            Column::make('panel_rtu'), 
+            Column::make('door'), 
+            Column::make('fan'), 
+            Column::make('lampu_panel'), 
+            Column::make('grounding_rtu'), 
+            Column::make('temp_panel'), 
+            Column::make('kebersihan'), 
+            Column::make('power_on'), 
+            Column::make('ethernet'), 
+            Column::make('power_on'), 
+            Column::make('keterangan'), 
+            Column::make('id_update'), 
+            Column::make('last_update'), 
+            
         ];
     }
 

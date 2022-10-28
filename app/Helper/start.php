@@ -501,6 +501,7 @@ if (!function_exists('sidebar_user_perms')) {
             $sidebarPermissionsArray = [ 
                 'view_rekap_gangguan_pmt', 
                 'view_inspeksi_pd', 
+                'view_inspeksi_aset', 
                 'view_beban_realtime', 
                 'view_employees', 
                 'view_employees', 

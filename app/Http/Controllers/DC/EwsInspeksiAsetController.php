@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\DC;
 
 use App\DataTables\DC\EwsInspeksiAsetDatatable;
+use App\Http\Controllers\AccountBaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EwsInspeksiAsetController extends Controller
+class EwsInspeksiAsetController extends AccountBaseController
 {
     //
      //

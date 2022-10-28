@@ -84,6 +84,7 @@ return array(
     'menu' => array(
         'rekap-gangguan-pmt'=>'Rekap Gangguan PMT',
         'inspeksi-pd'=>'Inspeksi Pd',
+        'inspeksi-aset'=>'Inspeksi Aset',
         'beban-realtime'=>'Beban Realtime',
         'dcc'=>'Dcc',
         'cubicle'=>'Cubicle',

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DC\BebanRealtimeController;
 use App\Http\Controllers\DC\CubicleController;
 use App\Http\Controllers\DC\DccController;
+use App\Http\Controllers\DC\EwsInspeksiAsetController;
 use App\Http\Controllers\DC\EwsInspeksiPdController as DCEwsInspeksiPdController;
 use App\Http\Controllers\DC\GarduIndukController;
 use App\Http\Controllers\DC\IncomingFeederPMTController;
@@ -72,6 +73,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('cubicle',CubicleController::class );
     Route::resource('beban-realtime',BebanRealtimeController::class );
     Route::resource('inspeksi-pd',DCEwsInspeksiPdController::class )->except(['create','store','edit','update','delete']);
+    Route::resource('inspeksi-aset',EwsInspeksiAsetController::class )->except(['create','store','edit','update','delete']);
     Route::get('rekap-gangguan-pmt',[RekapGangguanPMTscadaController::class,'index' ])->name('rekap-gangguan-pmt.index');
     Route::get('rekap-gangguan-pmt/{id}',[RekapGangguanPMTscadaController::class,'show' ])->name('rekap-gangguan-pmt.show');
 

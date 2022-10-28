@@ -42,6 +42,7 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'beban-realtime', 'description' => 'Manage Beban Realtime'], 
             ['module_name' => 'inspeksi-pd', 'description' => 'Manage Inspeksi PD'], 
             ['module_name' => 'rekap-gangguan-pmt', 'description' => 'Manage Gangguan PMT'], 
+            ['module_name' => 'inspeksi-aset', 'description' => 'Manage Inspeksi Aset'], 
         ]);
 
         ModuleSetting::insert([
@@ -54,6 +55,7 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'beban-realtime', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'inspeksi-pd', 'status' => 'active', 'type' => 'admin'],  
             ['module_name' => 'rekap-gangguan-pmt', 'status' => 'active', 'type' => 'admin'],  
+            ['module_name' => 'inspeksi-aset', 'status' => 'active', 'type' => 'admin'],  
 
             ['module_name' => 'employees', 'status' => 'active', 'type' => 'employee'], 
             ['module_name' => 'gardu-induk', 'status' => 'active', 'type' => 'employee'],  
@@ -63,10 +65,17 @@ class ModuleTableSeeder extends Seeder
             ['module_name' => 'beban-realtime', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'inspeksi-pd', 'status' => 'active', 'type' => 'employee'],  
             ['module_name' => 'rekap-gangguan-pmt', 'status' => 'active', 'type' => 'employee'],  
+            ['module_name' => 'inspeksi-aset', 'status' => 'active', 'type' => 'employee'],  
         ]); 
 
         Permission::insert([
 
+            
+            ['name' => 'add_inspeksi_aset', 'display_name' => 'Add Inspeksi Aset', 'module_id' => 10, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'view_inspeksi_aset', 'display_name' => 'View Inspeksi Aset', 'module_id' => 10, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'edit_inspeksi_aset', 'display_name' => 'Edit Inspeksi Aset', 'module_id' => 10, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
+            ['name' => 'delete_inspeksi_aset', 'display_name' => 'Delete Inspeksi Aset', 'module_id' => 10, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'], 
+            
             ['name' => 'add_rekap_gangguan_pmt', 'display_name' => 'Add Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'view_rekap_gangguan_pmt', 'display_name' => 'View Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
             ['name' => 'edit_rekap_gangguan_pmt', 'display_name' => 'Edit Gangguan PMT', 'module_id' => 9, 'is_custom' => 0,'allowed_permissions' => '{"all":4, "none":5}'],
