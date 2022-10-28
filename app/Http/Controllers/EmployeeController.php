@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\DataTables\EmployeesDataTable;
 use App\Helper\Files;
 use App\Helper\Reply;
+use App\Http\Requests\Admin\Employee\ImportProcessRequest;
+use App\Http\Requests\Admin\Employee\ImportRequest;
 use App\Http\Requests\Admin\Employee\StoreRequest;
 use App\Http\Requests\Admin\Employee\UpdateRequest;
+use App\Imports\EmployeeImport;
+use App\Jobs\ImportEmployeeJob;
 use App\Models\Designation;
 use App\Models\EmployeeDetails;
 use App\Models\Role;
@@ -16,8 +20,11 @@ use App\Models\User;
 use Artisan;
 use Carbon\Carbon;
 use DB;
+use Excel;
 // use Request;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+
 class EmployeeController extends AccountBaseController
 {
 

@@ -110,11 +110,11 @@ $addEmployeePermission = user()->permission('add_employees');
                     </x-forms.link-primary> 
                 @endif  
 
-                @if ($addEmployeePermission == 'all')
+                {{-- @if ($addEmployeePermission == 'all')
                     <x-forms.link-secondary :link="route('employees.import')" class="mr-3 openRightModal mb-2 mb-lg-0" icon="file-upload">
                         @lang('app.importExcel')
                     </x-forms.link-secondary>
-                @endif
+                @endif --}}
             </div>
 
             <x-datatable.actions>
