@@ -62,6 +62,16 @@ class RekapGangguanPmtController extends Controller
                 $rekap_gangguan = $rekap_gangguan->orWhere('dc_operasi_pmt_scada.ALASAN_OPERASI_PMT', 'LIKE','%' .$keyword . '%') ;
                  
             }  
+            if ($request->ID_INDIKASI_GANGGUAN !== null && $request->ID_INDIKASI_GANGGUAN != 'null' && $request->ID_INDIKASI_GANGGUAN != '') { 
+                $keyword = $request->get('ID_INDIKASI_GANGGUAN'); 
+                $rekap_gangguan = $rekap_gangguan->where('dc_operasi_pmt_scada.ID_INDIKASI_GANGGUAN', '=',$keyword) ; 
+                 
+            }  
+            if ($request->GARDU_INDUK_ID !== null && $request->GARDU_INDUK_ID != 'null' && $request->GARDU_INDUK_ID != '') { 
+                $keyword = $request->get('GARDU_INDUK_ID'); 
+                $rekap_gangguan = $rekap_gangguan->where('dc_gardu_induk.GARDU_INDUK_ID', '=',$keyword) ; 
+                 
+            }  
             if ($request->get('startDate') && $request->get('endDate')   ) {
  
                 $rekap_gangguan = $rekap_gangguan  
@@ -76,6 +86,7 @@ class RekapGangguanPmtController extends Controller
             $rekap_gangguan = $rekap_gangguan->groupBy('dc_operasi_pmt_scada.OPERASI_PMT_ID')
             ->selectRaw(
                 '
+
                 dc_operasi_pmt_scada.OPERASI_PMT_ID,
                 concat( date_format( dc_operasi_pmt_scada.TGL_OPERASI_PMT, _utf8 "%d-%m-%Y %H:%i" ), ":00" ) AS TGL_OPERASI,
                 concat( date_format( dc_operasi_pmt_scada.TGL_NORMAL_PMT, _utf8 "%d-%m-%Y %H:%i" ), ":00" ) AS TGL_PENORMALAN_PMT,
