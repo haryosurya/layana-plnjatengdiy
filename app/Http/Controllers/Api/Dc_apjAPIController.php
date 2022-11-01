@@ -32,10 +32,10 @@ class Dc_apjAPIController extends Controller
         if (auth('sanctum')->check()){ 
             $result = Dc_apj::orderBy('APJ_ID','ASC')
             ->leftJoin('dc_gardu_induk','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
-            // dc_apj.APJ_ID,
-            // dc_apj.APJ_NAMA,
-            // dc_apj.APJ_ALIAS,
             ->selectRaw('
+            dc_apj.APJ_ID,
+            dc_apj.APJ_NAMA,
+            dc_apj.APJ_ALIAS,
             dc_apj.APJ_DCC,
             count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU '
              )  
