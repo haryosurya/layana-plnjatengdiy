@@ -49,25 +49,28 @@ class DashController extends Controller
                 // Yang di hitung adalah SCB = 1 SCB_INV = 0 dan SCB = 0 SCB_INV = 1.
                 // Tampilannya menjadi “XXX Penyulang Operasi”
                 $bebanRealtime = Dc_cubicle::
-                        where(function($query){
-                            return $query
-                            ->where('SCB','=','1')
-                            ->where(function($query){
-                                return $query
-                                ->where('SCB_INV','=', null)
-                                ->orWhere('SCB_INV', '=', '0');
-                            }) 
-                            ;
-                        })
-                       ->orWhere(function($query){
-                            return $query 
-                            ->where(function($query){
-                                return $query
-                                ->where('SCB','=', null)
-                                ->orWhere('SCB', '=', '0');
-                            })
-                            ->where('SCB_INV', '=', '1');
-                        })->count()
+                where('OPERATION_TYPE', '=', '1')
+                    //     where(function($query){
+                    //         return $query
+                    //         ->where('SCB','=','1')
+                    //         ->where(function($query){
+                    //             return $query
+                    //             ->where('SCB_INV','=', null)
+                    //             ->orWhere('SCB_INV', '=', '0');
+                    //         }) 
+                    //         ;
+                    //     })
+                    //    ->orWhere(function($query){
+                    //         return $query 
+                    //         ->where(function($query){
+                    //             return $query
+                    //             ->where('SCB','=', null)
+                    //             ->orWhere('SCB', '=', '0');
+                    //         })
+                    //         ->where('SCB_INV', '=', '1');
+                    //     })
+                        ->groupBy('OUTGOING_ID')
+                        ->count()
                     ; 
                 $bebanRealtimeGardu = Dc_cubicle:: 
                 where(function($query){

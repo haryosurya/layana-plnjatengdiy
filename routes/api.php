@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /* DATA PENYULANG */ 
     /* DCC APJ */
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
+    Route::get('dcUpjLists',[ Dc_apjAPIController::class,'upjList']);
     /* DCC APJ */
     Route::get('dcCubicle', [DcCubicleController::class,'index']);
     Route::get('dccSinglePMt/{id}',[ DcCubicleController::class,'dccSinglePMt']);
@@ -109,6 +110,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);
     Route::post('rekapInspeksiAset/{id}', [EwsInspeksiAsetController::class,'FormInput']);
     Route::get('DataPenyulangFilter', [FilterController::class,'DataPenyulangFilter']);
+    Route::get('RekapGangguanFilter', [FilterController::class,'RekapGangguanFilter']);
  
 }); 
 

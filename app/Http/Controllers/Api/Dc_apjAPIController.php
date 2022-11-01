@@ -37,6 +37,7 @@ class Dc_apjAPIController extends Controller
             dc_apj.APJ_NAMA,
             dc_apj.APJ_ALIAS,
             dc_apj.APJ_DCC,
+            count(dc_apj.APJ_NAMA) as APJ,
             count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU '
              )  
             
@@ -56,6 +57,42 @@ class Dc_apjAPIController extends Controller
             } 
 
             $result = $result->paginate(12); 
+            return response()->json( [           
+                'status' => true,
+                'data' => $result, 
+                'status_code' => 200
+            ]);
+        } 
+        else{ 
+            return response()->json(['status'=>false,'Unauthenticated.',200]);
+        }
+    }
+    public function upjList(Request $request){
+        if (auth('sanctum')->check()){  
+            $result = Dc_apj::orderBy('APJ_ID','ASC')
+            ->leftJoin('dc_gardu_induk','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
+            ->selectRaw('
+            dc_apj.APJ_ID,
+            dc_apj.APJ_NAMA,
+            dc_apj.APJ_ALIAS,
+            dc_apj.APJ_DCC,
+            count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU '
+            )   
+            ->where('dc_apj.APJ_ID','!=','12')
+            ->where('dc_apj.APJ_ID','!=','13')
+            ->groupBy('dc_apj.APJ_ID');
+
+            $keyword = $request->get('APJ_DCC');    
+            $result = $result->where('APJ_DCC', 'LIKE', "%{$keyword}%" ) ; 
+
+
+            if ($request->get('GARDU_INDUK_ID'))
+            {
+                $keyword = $request->get('GARDU_INDUK_ID');    
+                $result = $result->where('GARDU_INDUK_ID','LIKE', "%{$keyword}%") ;
+            } 
+
+            $result = $result->paginate(10); 
             return response()->json( [           
                 'status' => true,
                 'data' => $result, 
