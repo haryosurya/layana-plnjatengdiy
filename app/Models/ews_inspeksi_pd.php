@@ -45,10 +45,20 @@ class ews_inspeksi_pd extends Model
     protected $casts = [
         'foto_pelaksanaan' => 'array',
         'foto_pengukuran' => 'array',
+        'tgl_entry' => 'datetime',
+        
         // more ...
     ];
     /**
      * @var array
      */
     protected $fillable = ['id_outgoing', 'id_user', 'id_gardu_induk', 'tgl_entry', 'tgl_inspeksi', 'citicality', 'level_pd', 'foto_pelaksanaan', 'foto_pengukuran', 'keterangan', 'id_update', 'last_update'];
+    public function Cubicle()
+    {
+        return $this->belongsTo(Dc_cubicle::class, 'id_outgoing','OUTGOING_ID');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user','id');
+    }
 }

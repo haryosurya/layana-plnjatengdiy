@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helper\Reply;
+use App\Traits\OverviewDashboard;
 use Illuminate\Http\Request;
 
 class DashboardController extends AccountBaseController
 { 
+    use  OverviewDashboard;
     public function __construct()
     {
         parent::__construct();
@@ -34,7 +36,11 @@ class DashboardController extends AccountBaseController
             // }
 
             // $this->activeTab = ($tab == '') ? 'overview' : $tab;
-
+            $this->overviewDashboard(); 
+            if (request()->ajax()) {
+                $html = view($this->view, $this->data)->render();
+                return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+            }
             return view('dashboard.admin', $this->data);
         }
 
