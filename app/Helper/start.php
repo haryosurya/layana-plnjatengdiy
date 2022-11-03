@@ -400,7 +400,21 @@ if (!function_exists('parseUser')) {
 
 }
 
+if (!function_exists('objetToArray')) {
 
+    function objetToArray($adminBar){
+        $reflector = new ReflectionObject($adminBar);
+        $nodes = $reflector->getProperties();
+        $out = [];
+        foreach ($nodes as $node) {
+            $nod = $reflector->getProperty($node->getName());
+            $nod->setAccessible(true);
+            $out[$node->getName()] = $nod->getValue($adminBar);
+        }
+        return $out;
+    }
+
+} 
 if (!function_exists('api_user')) {
 
     /**

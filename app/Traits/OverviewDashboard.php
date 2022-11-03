@@ -23,6 +23,7 @@ use App\Models\UserActivity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Rainwater\Active\Active;
+use Stevebauman\Location\Facades\Location;
 /**
  *
  */

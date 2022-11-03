@@ -58,11 +58,17 @@
     </div> 
     <div class="row">  
         <div class="col-sm-12 col-lg-6 mt-3">
-            <x-cards.data :title="__('app.menu.inspeksi-pd')" >
+            <x-cards.data :title="__('modules.dashboard.recentLoginActivities')" >
                 <x-table> 
+                    <th>
+                        <td>Name</td>
+                        <td>Login</td>
+                        <td>location</td>
+                        <td>Browser</td>
+                    </th>
                     @forelse($activeUser as $activity) 
                         <tr> 
-                            <td class="pl-20"> 
+                            <td> 
                                 <div class="taskEmployeeImg rounded-circle mr-1">
                                     <img data-toggle="tooltip"
                                         data-original-title="{{ ucwords($activity->user->name) }}"
@@ -75,9 +81,20 @@
                                 </span>
                             </td> 
                             <td >@if(!is_null($activity->last_activity)) {{date("Y-m-d H:i:s", $activity->last_activity) }} @else -- @endif</td>
-                            <td >@if(!is_null($activity->ip_address)) {{ $activity->ip_address}} @else -- @endif</td>
-                            <td >@if(!is_null($activity->last_activity)) {{  $activity->user_agent }} @else -- @endif</td>
-                             
+                                @if ($activity->ip_address != '127.0.0.1')
+                                    @php 
+                                        $location =  objetToArray(\Location::get($activity->ip_address));  
+                                        $city = $location['cityName'];
+                                        $city = implode($location); 
+                                    @endphp 
+                                @else
+                                    @php                                   
+                                        $city = '';
+                                    @endphp 
+                                @endif
+                            <td >@if(!is_null($activity->ip_address)) {{ $activity->ip_address}} -> {{ $city }} @else -- @endif
+                            </td>
+                            <td >@if(!is_null($activity->last_activity)) {{  $activity->user_agent }} @else -- @endif</td> 
                         </tr><!-- card end -->
                     @empty
                         <tr>

@@ -37,6 +37,7 @@
         "spatie/laravel-feed": "^3.2",
         "spatie/laravel-sitemap": "^5.8",
         "sqlmigration/migrations-seedings": "dev-master",
+        "stevebauman/location": "^6.5",
         "trebol/entrust": "^2.0",
         "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables-buttons": "^4.13",
