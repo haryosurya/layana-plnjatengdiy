@@ -67,6 +67,11 @@ class CreateDcIncomingFeederTable extends Migration
             $table->decimal('IG')->nullable();
             $table->decimal('KW')->nullable();
         });
+        Schema::table('dc_incoming_feeder', function (Blueprint $table) {
+            $table->foreign(['APJ_ID'], 'FK_APJ_ID_INC_FDR')->references(['APJ_ID'])->on('dc_apj');
+            // $table->foreign(['INCOMING_NAME'], 'FK_TRF_INC_FDR')->references(['TRAFO_ID'])->on('dc_trafo');
+            $table->foreign(['GARDU_INDUK_ID'], 'FK_GI_ID_INCOMING_FEE')->references(['GARDU_INDUK_ID'])->on('dc_gardu_induk');
+        });
     }
 
     /**

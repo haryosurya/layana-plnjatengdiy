@@ -28,4 +28,10 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     use HasFactory;
+    protected $casts = [ 
+        'last_activity' => 'datetime',
+        
+        // more ...
+    ]; 
+
 }

@@ -7,7 +7,7 @@
         </div>  
         <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
             <a href="{{ route('employees.index') }}">
-                <x-cards.widget :title="__('modules.dashboard.LoggedIn')" :value="$counts->totalEmployees"
+                <x-cards.widget :title="__('modules.dashboard.LoggedIn')" :value="$activeUserCount"
                     icon="user" />
             </a>
         </div>   
@@ -22,11 +22,7 @@
         <div class="col-xl-3 col-lg-6 col-md-6 mb-3"> 
                 <x-cards.widget :title="__('modules.dashboard.totalCubicle')" :value="$total_records_all"
                     icon="layer-group" /> 
-        </div>  
-        <div class="col-xl-3 col-lg-6 col-md-6 mb-3"> 
-                <x-cards.widget :title="__('modules.dashboard.totalCubicle')" :value="$total_records_all"
-                    icon="layer-group" /> 
-        </div>  
+        </div>   
         <div class="col-xl-3 col-lg-6 col-md-6 mb-3"> 
                 <x-cards.widget :title="__('modules.dashboard.vll')" :value="round($vll*$mw,0)"
                     icon="layer-group" /> 
@@ -59,34 +55,46 @@
                 </div> 
             </div>
         </div>    
-    </div>
+    </div> 
     <div class="row">  
+        <div class="col-sm-12 col-lg-6 mt-3">
+            <x-cards.data :title="__('app.menu.inspeksi-pd')" >
+                <x-table> 
+                    @forelse($activeUser as $activity) 
+                        <tr> 
+                            <td class="pl-20"> 
+                                <div class="taskEmployeeImg rounded-circle mr-1">
+                                    <img data-toggle="tooltip"
+                                        data-original-title="{{ ucwords($activity->user->name) }}"
+                                        src="{{ $activity->user->image_url }}">
+                                </div> 
+                                <span>
+                                    <h5 class="f-13 text-darkest-grey"><a href="{{ route('employees.show', [$activity->user->id]) }}"
+                                        class="openRightModal">{{$activity->user->name}}</a></h5>
+                                            <div class="text-muted">{{$activity->user->employeeDetails->designation->name ?? '' }}</div>
+                                </span>
+                            </td> 
+                            <td >@if(!is_null($activity->last_activity)) {{date("Y-m-d H:i:s", $activity->last_activity) }} @else -- @endif</td>
+                            <td >@if(!is_null($activity->ip_address)) {{ $activity->ip_address}} @else -- @endif</td>
+                            <td >@if(!is_null($activity->last_activity)) {{  $activity->user_agent }} @else -- @endif</td>
+                             
+                        </tr><!-- card end -->
+                    @empty
+                        <tr>
+                            <td colspan="3" class="shadow-none">
+                                <x-cards.no-record icon="users" :message="__('messages.noRecordFound')" />
+                            </td>
+                        </tr>
+                    @endforelse
+                </x-table>
+            </x-cards.data>
+        </div> 
     </div>
     <div class="row"> 
         <div class="col-sm-12 col-lg-6 mt-3">
             <x-cards.data :title="__('app.menu.inspeksi-pd')" >
                 <x-table>
-                    @forelse($EwsInspeksiPD as $key=>$inspeksi)
-                        {{-- <div class="card border-0 b-shadow-4 p-20 rounded-0">
-                            <div class="card-horizontal">
-                                <div class="card-header m-0 p-0 bg-white rounded">
-                                    <x-date-badge :month="$inspeksi->tgl_entry->format('M')"
-                                        :date=" Carbon\Carbon::parse($inspeksi->tgl_entry)->timezone($global->timezone)->format('d')" />
-                                </div>
-                                <div class="card-body border-0 p-0 ml-3">
-                                    <h4 class="card-title f-14 font-weight-normal text-capitalize mb-0">
-                                        {!! __($inspeksi->name) !!}
-                                    </h4>
-                                    <p class="card-text f-12 text-dark-grey">
-                                        <a href="{{ route('cubicle.show', $inspeksi->id_outgoing) }}"
-                                            class="text-lightest font-weight-normal text-capitalize f-12">{{ ucwords($inspeksi->name) }}
-                                        </a>
-                                        <br>
-                                        {{ $inspeksi->gardu_name }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div> --}}
+                    @forelse($EwsInspeksiPD as $key=>$inspeksi) 
                         <tr>
                             <td class="pl-20">
                                 <h5 class="f-13 text-darkest-grey"><a href="{{ route('cubicle.show', [$inspeksi->id_outgoing]) }}"

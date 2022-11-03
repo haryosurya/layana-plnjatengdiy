@@ -127,6 +127,11 @@ class CreateDcCubicleTable extends Migration
 
             $table->unique(['INCOMING_ID', 'CUBICLE_NAME'], 'IDX_CUB_INC_UNIQUE');
         });
+        Schema::table('dc_cubicle', function (Blueprint $table) {
+            $table->foreign(['APJ_ID'], 'FK_APJ_ID_CUBICLE')->references(['APJ_ID'])->on('dc_apj');
+            $table->foreign(['SUPPLY_APJ'], 'FK_SUPPLY_APJ_CUBICLE')->references(['APJ_ID'])->on('dc_apj');
+            $table->foreign(['INCOMING_ID'], 'FK_INCOMING_ID_CUBICLE')->references(['INCOMING_ID'])->on('dc_incoming_feeder');
+        });
         DB::statement('SET FOREIGN_KEY_CHECKS=1'); 
 
     }
@@ -139,5 +144,10 @@ class CreateDcCubicleTable extends Migration
     public function down()
     {
         Schema::dropIfExists('dc_cubicle');
+        // Schema::table('dc_cubicle', function (Blueprint $table) {
+        //     $table->dropForeign('FK_APJ_ID_CUBICLE');
+        //     $table->dropForeign('FK_SUPPLY_APJ_CUBICLE');
+        //     $table->dropForeign('FK_INCOMING_ID_CUBICLE');
+        // });
     }
 }

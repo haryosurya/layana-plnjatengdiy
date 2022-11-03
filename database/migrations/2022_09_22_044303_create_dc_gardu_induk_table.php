@@ -28,6 +28,9 @@ class CreateDcGarduIndukTable extends Migration
             $table->smallInteger('BATAS_TEGANGAN_BAWAH')->nullable();
             $table->smallInteger('BATAS_TEGANGAN_ATAS')->nullable();
         });
+        Schema::table('dc_gardu_induk', function (Blueprint $table) {
+            $table->foreign(['APJ_ID'], 'FK_APJ_ID_GARDU_INDUK')->references(['APJ_ID'])->on('dc_apj');
+        });
     }
 
     /**

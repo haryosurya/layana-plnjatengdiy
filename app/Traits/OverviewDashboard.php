@@ -22,7 +22,7 @@ use App\Models\User;
 use App\Models\UserActivity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Rainwater\Active\Active;
 /**
  *
  */
@@ -35,6 +35,8 @@ trait OverviewDashboard
      */
     public function overviewDashboard()
     { 
+        $this->activeUserCount = Active::users()->count();
+        $this->activeUser = Active::users()->get();
         $this->startDate  = (request('startDate') != '') ? Carbon::createFromFormat($this->global->date_format, request('startDate')) : now($this->global->timezone)->startOfMonth();
         $this->endDate = (request('endDate') != '') ? Carbon::createFromFormat($this->global->date_format, request('endDate')) : now($this->global->timezone);
         $startDate = $this->startDate->toDateString();
