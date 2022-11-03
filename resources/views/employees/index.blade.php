@@ -70,6 +70,20 @@
                     </div>
                 </div>
             </div>
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('modules.dc.apj')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="designation" id="designation" data-container="body">
+                            <option value="all">@lang('app.all')</option>
+                            @foreach ($designations as $designation)
+                                
+                                    <option value="{{ $designation->APJ_ID }}">{{ ucfirst($designation->APJ_NAMA) }}</option> 
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             <div class="more-filter-items">
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.status')</label>
@@ -171,10 +185,12 @@ $addEmployeePermission = user()->permission('add_employees');
             var status = $('#status').val();
             var employee = $('#employee').val();
             var role = $('#role').val();  
+            var designation = $('#designation').val();  
             var searchText = $('#search-text-field').val();
             data['status'] = status;
             data['employee'] = employee;
             data['role'] = role;  
+            data['designation'] = designation;  
             data['searchText'] = searchText;
 
             /* If any of these following filters are applied, then dashboard conditions will not work  */
@@ -200,6 +216,9 @@ $addEmployeePermission = user()->permission('add_employees');
                     $('#reset-filters').removeClass('d-none');
                     showTable();
                 } else if ($('#role').val() != "all") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable(); 
+                } else if ($('#designation').val() != "all") {
                     $('#reset-filters').removeClass('d-none');
                     showTable(); 
                 } else if ($('#search-text-field').val() != "") {

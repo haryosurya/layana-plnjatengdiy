@@ -70,8 +70,8 @@ $addDepartmentPermission = user()->permission('add_department');
                                         id="employee_designation" data-live-search="true">
                                         <option value="">--</option>
                                         @foreach ($designations as $designation)
-                                            <option @if ($employee->employeeDetail->designation_id == $designation->id) selected @endif value="{{ $designation->id }}">
-                                                {{ $designation->name }}</option>
+                                            <option @if ($employee->employeeDetail->designation_id == $designation->APJ_ID) selected @endif value="{{ $designation->APJ_ID }}">
+                                                {{ $designation->APJ_NAMA }}</option>
                                         @endforeach
                                     </select>
 

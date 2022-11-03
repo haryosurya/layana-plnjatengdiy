@@ -25,7 +25,35 @@ class EwsInspeksiAsetDatatable extends BaseDataTable
         return datatables()
             ->eloquent($query) 
             ->addIndexColumn() 
-            ->addColumn('action', 'ewsinspeksiasetdatatable.action');
+            ->addColumn('action', function ($row) {
+                $action = '<div class="task_view">
+
+                    <div class="dropdown">
+                        <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
+                            id="dropdownMenuLink-' . $row->id_inspeksi_aset . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-options-vertical icons"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id_inspeksi_aset . '" tabindex="0">';
+ 
+                        // $action .= '<a href="' . route('cubicle.show', [$row->id_inspeksi_pd]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                        $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-aset.edit', [$row->id_inspeksi_aset]) . '">
+                            <i class="fa fa-edit mr-2"></i>
+                            ' . trans('app.edit') . '
+                        </a>';
+                        $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-user-id="' . $row->id_inspeksi_aset . '">
+                            <i class="fa fa-trash mr-2"></i>
+                            ' . trans('app.delete') . '
+                        </a>';
+        
+                $action .= '</div>
+                    </div>
+                </div>';
+
+                return $action;
+            }) 
+            ->rawColumns(['action','level_pd','name']);
+            // ->addColumn('action', 'ewsinspeksiasetdatatable.action')
+            ;
     }
 
     /**
@@ -41,6 +69,7 @@ class EwsInspeksiAsetDatatable extends BaseDataTable
             ->withoutGlobalScope('active')
             ->join('dc_cubicle','dc_cubicle.OUTGOING_ID', 'ews_inspeksi_aset.id_outgoing')   
             ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID', 'ews_inspeksi_aset.id_gardu_induk')
+            ->leftJoin('dc_apj','dc_apj.APJ_ID', 'dc_gardu_induk.APJ_ID')   
             ->join('users','users.id', 'ews_inspeksi_aset.id_user')
 
             ->select(
@@ -67,9 +96,15 @@ class EwsInspeksiAsetDatatable extends BaseDataTable
                 $endDate = Carbon::createFromFormat($this->global->date_format, $this->request()->endDate)->toDateString();
                 $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_aset.`tgl_entry`)'), '<=', $endDate);
             }
+            if ($request->gi != 'all' && $request->gi != '' ) { 
+                $inspeksi = $inspeksi->where('ews_inspeksi_aset.id_gardu_induk', $request->gi) ; 
+            }
+            if ($request->apj != 'all' && $request->apj != '' ) {  
+                $inspeksi = $inspeksi->where('dc_apj.APJ_ID', $request->apj) ; 
+            }
 
             /*  */
-        return $inspeksi->groupBy('id_inspeksi_aset'); 
+        return $inspeksi->groupBy('ews_inspeksi_aset.id_inspeksi_aset'); 
     }
 
     /**
@@ -182,7 +217,12 @@ class EwsInspeksiAsetDatatable extends BaseDataTable
             Column::make('keterangan'), 
             Column::make('id_update'), 
             Column::make('last_update'), 
-            
+            Column::computed('action', __('app.action'))
+            ->exportable(false)
+            ->printable(false)
+            ->orderable(false)
+            ->searchable(false)
+            ->addClass('text-right pr-20')
         ];
     }
 

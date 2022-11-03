@@ -72,8 +72,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('gardu-induk',GarduIndukController::class );
     Route::resource('cubicle',CubicleController::class );
     Route::resource('beban-realtime',BebanRealtimeController::class );
-    Route::resource('inspeksi-pd',DCEwsInspeksiPdController::class )->except(['create','store','edit','update','delete']);
-    Route::resource('inspeksi-aset',EwsInspeksiAsetController::class )->except(['create','store','edit','update','delete']);
+    Route::resource('inspeksi-pd',DCEwsInspeksiPdController::class );
+    Route::resource('inspeksi-aset',EwsInspeksiAsetController::class );
     Route::get('rekap-gangguan-pmt',[RekapGangguanPMTscadaController::class,'index' ])->name('rekap-gangguan-pmt.index');
     Route::get('rekap-gangguan-pmt/{id}',[RekapGangguanPMTscadaController::class,'show' ])->name('rekap-gangguan-pmt.show');
 

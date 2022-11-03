@@ -192,8 +192,9 @@ class EmployeesDataTable extends BaseDataTable
             ->join('role_user', 'role_user.user_id', '=', 'users.id')
             ->leftJoin('employee_details', 'employee_details.user_id', '=', 'users.id')
             ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
+            ->leftJoin('dc_apj', 'employee_details.designation_id', '=', 'dc_apj.APJ_ID')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
-            ->select('users.id', 'employee_details.added_by', 'users.name', 'users.email', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', DB::raw('(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`'), DB::raw('(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`'), 'designations.name as designation_name', 'employee_details.employee_id')
+            ->select('users.id', 'employee_details.added_by', 'users.name', 'users.email', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', DB::raw('(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`'), DB::raw('(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`'), 'dc_apj.APJ_NAMA as nama_apj', 'employee_details.employee_id')
             ;
 
         if ($request->status != 'all' && $request->status != '') {

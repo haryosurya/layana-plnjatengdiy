@@ -3,6 +3,8 @@
 namespace App\DataTables\DC;
 
 use App\DataTables\BaseDataTable;
+use App\Models\Dc_apj;
+use App\Models\Dc_gardu_induk;
 use App\Models\ews_inspeksi_pd;
 use Carbon\Carbon;
 use DB;
@@ -26,8 +28,7 @@ class EwsInspeksiPdDatatable extends BaseDataTable
             ->eloquent($query)  
             ->addIndexColumn() 
             ->editColumn('name', function ($row) { 
-                return '<a href="' . route('cubicle.show', [$row->OUTGOING_ID]) . '"><i class="fa fa-circle mr-1 text-light-green f-10"></i> '. $row->name.'</a> ';
-                 
+                return '<a href="' . route('cubicle.show', [$row->OUTGOING_ID]) . '"><i class="fa fa-circle mr-1 text-light-green f-10"></i> '. $row->name.'</a> '; 
             })
             ->editColumn( 'level_pd', function ($row) {
                     if ($row['level_pd'] == 'good' && $row['level_pd'] != '') 
@@ -57,8 +58,15 @@ class EwsInspeksiPdDatatable extends BaseDataTable
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id_inspeksi_pd . '" tabindex="0">';
  
-                        $action .= '<a href="' . route('cubicle.show', [$row->id_inspeksi_pd]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
- 
+                        // $action .= '<a href="' . route('cubicle.show', [$row->id_inspeksi_pd]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                        $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-pd.edit', [$row->id_inspeksi_pd]) . '">
+                            <i class="fa fa-edit mr-2"></i>
+                            ' . trans('app.edit') . '
+                        </a>';
+                        $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-user-id="' . $row->id_inspeksi_pd . '">
+                            <i class="fa fa-trash mr-2"></i>
+                            ' . trans('app.delete') . '
+                        </a>';
         
                 $action .= '</div>
                     </div>
@@ -82,6 +90,7 @@ class EwsInspeksiPdDatatable extends BaseDataTable
             ->withoutGlobalScope('active')
             ->join('dc_cubicle','dc_cubicle.OUTGOING_ID', 'ews_inspeksi_pd.id_outgoing')   
             ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID', 'ews_inspeksi_pd.id_gardu_induk')
+            ->leftJoin('dc_apj','dc_apj.APJ_ID', 'dc_gardu_induk.APJ_ID')   
             ->join('users','users.id', 'ews_inspeksi_pd.id_user')
 
             ->select(
@@ -89,6 +98,9 @@ class EwsInspeksiPdDatatable extends BaseDataTable
                 'dc_cubicle.OUTGOING_ID as OUTGOING_ID',
                 'dc_cubicle.CUBICLE_NAME as name',
                 'dc_gardu_induk.NAMA_ALIAS_GARDU_INDUK as gardu_name',
+                'dc_gardu_induk.GARDU_INDUK_ID as gardu_id',
+                'dc_apj.APJ_NAMA as nama_apj',
+                'dc_apj.APJ_ID as apj_id',
                 'users.name as operator'
                 )
             ;
@@ -112,6 +124,13 @@ class EwsInspeksiPdDatatable extends BaseDataTable
             if ($this->request()->endDate !== null && $this->request()->endDate != 'null' && $this->request()->endDate != '') {
                 $endDate = Carbon::createFromFormat($this->global->date_format, $this->request()->endDate)->toDateString();
                 $inspeksi = $inspeksi->having(DB::raw('DATE(ews_inspeksi_pd.`tgl_entry`)'), '<=', $endDate);
+            }
+            if ($request->gi != 'all' && $request->gi != '' ) { 
+                    $inspeksi = $inspeksi->where('ews_inspeksi_pd.id_gardu_induk', $request->gi) ; 
+            }
+            if ($request->apj != 'all' && $request->apj != '' ) { 
+                // $apj = Dc_gardu_induk::where('APJ_ID',$request->apj)->select('GARDU_INDUK_ID')->get();
+                    $inspeksi = $inspeksi->where('dc_apj.APJ_ID', $request->apj) ; 
             }
         return $inspeksi->groupBy('id_inspeksi_pd');
     }
@@ -163,10 +182,17 @@ class EwsInspeksiPdDatatable extends BaseDataTable
             // Column::make('id_inspeksi_pd'),
             Column::make('name'),
             Column::make('gardu_name'),
+            Column::make('nama_apj'),
             Column::make('operator'),
             Column::make('level_pd'),
             Column::make('tgl_entry'),
-            Column::make('tgl_inspeksi')
+            Column::make('tgl_inspeksi'),
+            Column::computed('action', __('app.action'))
+            ->exportable(false)
+            ->printable(false)
+            ->orderable(false)
+            ->searchable(false)
+            ->addClass('text-right pr-20')
         ];
     }
 

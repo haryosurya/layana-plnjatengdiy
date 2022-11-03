@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'deleted' => 'Data Deleted.',
     'fetchChat' => 'Fetching chat detail.',
     'confirm' => 'Confirm',
     'changeLeaveStatusConfirmation' => 'Do you really want to change leave status.',

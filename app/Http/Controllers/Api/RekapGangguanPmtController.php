@@ -192,7 +192,8 @@ class RekapGangguanPmtController extends Controller
                 $rekap_gangguan = $rekap_gangguan->whereBetween(DB::raw('DATE(ews_inspeksi_pd.`tgl_entry`)')   , [$startDate, $endDate]);
             }
             $reslt = $rekap_gangguan
-            ->orderBy('ews_inspeksi_pd.id_outgoing','ASC')
+            ->orderBy('ews_inspeksi_pd.id_inspeksi_pd','ASC')
+            ->groupBy('ews_inspeksi_pd.id_inspeksi_pd')
             ->paginate(5);
             return response()->json(array(        
                 'status'=>true,    
@@ -239,6 +240,7 @@ class RekapGangguanPmtController extends Controller
             }
             $reslt = $rekap_gangguan
             ->orderBy('ews_inspeksi_aset.id_inspeksi_aset','ASC')
+            ->groupBy('ews_inspeksi_aset.id_inspeksi_aset')
             ->paginate(5);
             return response()->json(array(        
                 'status'=>true,    

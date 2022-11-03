@@ -45,7 +45,8 @@ class ews_inspeksi_pd extends Model
     protected $casts = [
         'foto_pelaksanaan' => 'array',
         'foto_pengukuran' => 'array',
-        'tgl_entry' => 'datetime',
+        'tgl_entry' => 'datetime:Y-m-d H:i:s',
+        'tgl_inspeksi' => 'datetime:Y-m-d H:i:s',
         
         // more ...
     ];
@@ -61,4 +62,5 @@ class ews_inspeksi_pd extends Model
     {
         return $this->belongsTo(User::class, 'id_user','id');
     }
+    
 }

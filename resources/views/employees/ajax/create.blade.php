@@ -65,16 +65,16 @@ $addDepartmentPermission = user()->permission('add_department');
                                         id="employee_designation" data-live-search="true">
                                         <option value="">--</option>
                                         @foreach ($designations as $designation)
-                                            <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                            <option value="{{ $designation->APJ_ID }}">{{ $designation->APJ_NAMA }}</option>
                                         @endforeach
                                     </select>
 
-                                    @if ($addDesignationPermission == 'all' || $addDesignationPermission == 'added')
+                                    {{-- @if ($addDesignationPermission == 'all' || $addDesignationPermission == 'added')
                                         <x-slot name="append">
                                             <button id="designation-setting" type="button"
                                                 class="btn btn-outline-secondary border-grey">@lang('app.add')</button>
                                         </x-slot>
-                                    @endif
+                                    @endif --}}
                                 </x-forms.input-group>
                             </div>
                             <div class="col-lg-4 col-md-6">

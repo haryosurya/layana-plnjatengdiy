@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\Employee\StoreRequest;
 use App\Http\Requests\Admin\Employee\UpdateRequest;
 use App\Imports\EmployeeImport;
 use App\Jobs\ImportEmployeeJob;
+use App\Models\Dc_apj;
 use App\Models\Designation;
 use App\Models\EmployeeDetails;
 use App\Models\Role;
@@ -49,7 +50,7 @@ class EmployeeController extends AccountBaseController
 
         if (!request()->ajax()) {
             $this->employees = User::allEmployees(); 
-            $this->designations = Designation::allDesignations();
+            $this->designations = Dc_apj::get();
             $this->totalEmployees = count($this->employees);
             $this->roles = Role::where('name', '<>', 'client')
                 ->orderBy('id', 'asc')->get();
@@ -72,7 +73,7 @@ class EmployeeController extends AccountBaseController
 
         $this->teams = Team::all();
  
-        $this->designations = Designation::allDesignations();
+        $this->designations = Dc_apj::get();
  
         $this->lastEmployeeID = EmployeeDetails::max('id');
 
