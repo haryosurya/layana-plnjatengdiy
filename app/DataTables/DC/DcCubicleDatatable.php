@@ -155,6 +155,17 @@ class DcCubicleDatatable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax() 
             ->destroy(true) 
+            ->scrollY("500px")
+            ->scrollX('100%')
+            ->fixedColumns(true)
+            ->scrollCollapse(true)
+            ->fixedColumns( 
+                    [
+                        'left'=>'3',
+                        'right'=>'0'
+                    ]
+            ) 
+            ->dom('Bfrtip')
             ->responsive(true)
             ->serverSide(true)
             ->stateSave(false)
@@ -186,10 +197,11 @@ class DcCubicleDatatable extends DataTable
                 __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
                 __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
                 __('modules.dc.gi') => ['data' => 'gi', 'name' => 'gi', 'title' => __('modules.dc.gi')],
-                __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')]
-                // __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
-                // __('modules.dc.gardu') => ['data' => 'gardu', 'name' => 'gardu', 'title' => __('modules.dc.gardu')],
-                // __('modules.dc.incoming-name') => ['data' => 'incoming_name', 'name' => 'incoming_name', 'title' => __('modules.dc.incoming-name')],
+                __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')],
+                __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
+                __('modules.dc.gardu') => ['data' => 'gardu', 'name' => 'gardu', 'title' => __('modules.dc.gardu')],
+                __('modules.dc.incoming-name') => ['data' => 'incoming_name', 'name' => 'incoming_name', 'title' => __('modules.dc.incoming-name')],
+                
                 // __('modules.dc.GARDU_INDUK_KODE') => ['data' => 'GARDU_INDUK_KODE', 'name' => 'GARDU_INDUK_KODE', 'title' => __('modules.dc.GARDU_INDUK_KODE')],
                 // __('modules.dc.GARDU_INDUK_RTU_ID') => ['data' => 'GARDU_INDUK_RTU_ID', 'name' => 'GARDU_INDUK_RTU_ID', 'title' => __('modules.dc.GARDU_INDUK_RTU_ID')], 
                 // __('modules.dc.GARDU_INDUK_ALIAS') => ['data' => 'GARDU_INDUK_ALIAS', 'name' => 'GARDU_INDUK_ALIAS', 'title' => __('modules.dc.GARDU_INDUK_ALIAS')],
@@ -209,12 +221,12 @@ class DcCubicleDatatable extends DataTable
                     'dc_gardu_induk.PEMELIHARAAN_GI',
                     'dc_gardu_induk.BATAS_TEGANGAN_BAWAH',
                     'dc_gardu_induk.BATAS_TEGANGAN_ATAS' */  
-                Column::computed('action', __('app.action'))
-                    ->exportable(false)
-                    ->printable(false)
-                    ->orderable(false)
-                    ->searchable(false)
-                    ->addClass('text-right pr-20')
+                // Column::computed('action', __('app.action'))
+                //     ->exportable(false)
+                //     ->printable(false)
+                //     ->orderable(false)
+                //     ->searchable(false)
+                //     ->addClass('text-right pr-20')
             ]; 
     }
 
