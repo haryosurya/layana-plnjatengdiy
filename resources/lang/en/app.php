@@ -1,7 +1,9 @@
 <?php
 
 return array(
-    'aliases' => 'Aliases',
+    'online' => 'Online',
+    'offline' => 'Offline',
+    'session' => 'Session',
     'local' => 'Local',
     'remote' => 'Remote',
     'good' => 'Good',

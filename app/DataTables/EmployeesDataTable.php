@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-
+use Rainwater\Active\Active;
 class EmployeesDataTable extends BaseDataTable
 {
 
@@ -44,6 +44,14 @@ class EmployeesDataTable extends BaseDataTable
                 }
 
                 return '--';
+            })
+            ->addColumn('session', function ($row) {
+                $act = Active::users($row->id)->get();
+                if (!empty($act)) {
+                    return ' <i class="fa fa-circle mr-1 text-light-green f-10"></i>' . __('app.online');
+                }
+
+                return '<i class="fa fa-circle mr-1 text-red f-10"></i>' . __('app.offline');
             })
             ->editColumn('current_role_name', function ($row) {
                 $userRole = $row->roles->pluck('name')->toArray();
@@ -158,7 +166,7 @@ class EmployeesDataTable extends BaseDataTable
             ->setRowId(function ($row) {
                 return 'row-' . $row->id;
             })
-            ->rawColumns(['name', 'action', 'role', 'status', 'check'])
+            ->rawColumns(['name', 'action','session', 'role', 'status', 'check'])
             ->removeColumn('roleId')
             ->removeColumn('roleName')
             ->removeColumn('current_role');
@@ -301,6 +309,7 @@ class EmployeesDataTable extends BaseDataTable
             __('app.role') => ['data' => 'role', 'name' => 'role', 'width' => '20%', 'orderable' => false, 'exportable' => false, 'title' => __('app.role'), 'visible' => ($this->changeEmployeeRolePermission == 'all')],
             __('modules.employees.role') => ['data' => 'current_role_name', 'name' => 'current_role_name', 'visible' => false, 'title' => __('modules.employees.role')],
             __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
+            __('app.session') => ['data' => 'session', 'name' => 'session', 'title' => __('app.session')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)
