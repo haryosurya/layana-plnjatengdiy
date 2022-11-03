@@ -33,7 +33,8 @@ return array(
     'jenis-operasi' => 'Jenis Operasi',
     'cakupan-kerja' => 'Cakupan Kerja', 
     'total-trafo' => 'Total Trafo',
-    'total-pmt' => 'Total PMT'
+    'total-pmt' => 'Total PMT',
+    'inspeksi-pmt' => 'Inspeksi PMT'
 
   ),
   'dashboard' => array(

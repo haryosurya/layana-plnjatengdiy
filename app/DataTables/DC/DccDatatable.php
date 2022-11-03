@@ -6,6 +6,8 @@ use App\Models\Dc_apj;
 use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
 use App\Models\Dc_incoming_feeder;
+use App\Models\ews_inspeksi_pd;
+use DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -40,6 +42,24 @@ class DccDatatable extends DataTable
                     return $result;
                 } 
             )
+            ->addColumn('inspeksi-pmt', function ($row) {
+                $action ='';
+                $pmt = ews_inspeksi_pd::where('id_outgoing',$row->id)
+                ->select(
+                    DB::raw('(select count(ews_inspeksi_pd.id_inspeksi_pd) from `ews_inspeksi_pd` join dc_cubicle on dc_cubicle.OUTGOING_ID = ews_inspeksi_pd.id_outgoing inner join dc_apj on dc_apj.APJ_ID=dc_cubicle.APJ_ID where dc_apj.APJ_ID=' . $row->id . ' and ews_inspeksi_pd.level_pd="good" ) as good'),
+                    DB::raw('(select count(ews_inspeksi_pd.id_inspeksi_pd) from `ews_inspeksi_pd` join dc_cubicle on dc_cubicle.OUTGOING_ID = ews_inspeksi_pd.id_outgoing inner join dc_apj on dc_apj.APJ_ID=dc_cubicle.APJ_ID where dc_apj.APJ_ID=' . $row->id . ' and ews_inspeksi_pd.level_pd="moderate") as moderate'),
+                    DB::raw('(select count(ews_inspeksi_pd.id_inspeksi_pd) from `ews_inspeksi_pd` join dc_cubicle on dc_cubicle.OUTGOING_ID = ews_inspeksi_pd.id_outgoing inner join dc_apj on dc_apj.APJ_ID=dc_cubicle.APJ_ID where dc_apj.APJ_ID=' . $row->id . ' and ews_inspeksi_pd.level_pd="bad") as bad')
+
+                )
+                ->first()
+                ;
+                if(!empty($pmt)){
+                    $action = '<i class="fa fa-circle mr-1 text-light-green f-10"></i>'.$pmt['good'].' ' . __('app.good')  .' | <i class="fa fa-circle mr-1 text-yellow f-10"></i>'.$pmt->moderate.' ' . __('app.moderate') .' | <i class="fa fa-circle mr-1 text-red f-10"></i>'.$pmt->bad.' ' . __('app.bad');
+                    // $action = $pmt['good'];
+                }
+
+                return $action;
+            })
             // ->addColumn('total_pmt', function($row){
             //         $result = Dc_cubicle::join('dc_incoming_feeder','dc_incoming_feeder.incoming_id','dc_incoming_feeder.incoming_id')
             //         ->where('dc_incoming_feeder.GARDU_INDUK_ID',$row->id)->count();
@@ -84,7 +104,7 @@ class DccDatatable extends DataTable
 
                 return $action;
             })
-            ->rawColumns(['action','total_gardu','total_trafo','total_pmt']);
+            ->rawColumns(['action','total_gardu','total_trafo','total_pmt','inspeksi-pmt']);
     }
 
     /**
@@ -173,6 +193,8 @@ class DccDatatable extends DataTable
             __('modules.dc.total-gardu') => ['data' => 'total_gardu', 'name' => 'total_gardu', 'title' => __('modules.dc.total-gardu')], 
             __('modules.dc.total-trafo') => ['data' => 'total_trafo', 'name' => 'total_trafo', 'title' => __('modules.dc.total-trafo')], 
             __('modules.dc.total-pmt') => ['data' => 'total_pmt', 'name' => 'total_pmt', 'title' => __('modules.dc.total-pmt')], 
+            __('modules.dc.inspeksi-pmt') => ['data' => 'inspeksi-pmt', 'name' => 'inspeksi-pmt', 'title' => __('modules.dc.inspeksi-pmt')],
+
             // Column::computed('action', __('app.action'))
             //     ->exportable(false)
             //     ->printable(false)

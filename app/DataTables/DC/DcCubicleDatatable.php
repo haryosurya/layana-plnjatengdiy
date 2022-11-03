@@ -3,6 +3,8 @@
 namespace App\DataTables\DC;
 
 use App\Models\Dc_cubicle;
+use App\Models\ews_inspeksi_pd;
+use DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -72,6 +74,7 @@ class DcCubicleDatatable extends DataTable
                 }
                
             })
+
             ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
 
@@ -183,7 +186,7 @@ class DcCubicleDatatable extends DataTable
                 __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
                 __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
                 __('modules.dc.gi') => ['data' => 'gi', 'name' => 'gi', 'title' => __('modules.dc.gi')],
-                __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')],
+                __('modules.dc.dcc') => ['data' => 'dcc', 'name' => 'dcc', 'title' => __('modules.dc.dcc')]
                 // __('modules.dc.apj-nama') => ['data' => 'APJ_NAMA', 'name' => 'APJ_NAMA', 'title' => __('modules.dc.apj-nama')],
                 // __('modules.dc.gardu') => ['data' => 'gardu', 'name' => 'gardu', 'title' => __('modules.dc.gardu')],
                 // __('modules.dc.incoming-name') => ['data' => 'incoming_name', 'name' => 'incoming_name', 'title' => __('modules.dc.incoming-name')],
