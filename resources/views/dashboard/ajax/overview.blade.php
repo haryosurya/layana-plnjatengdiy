@@ -85,7 +85,7 @@
                                     @php 
                                         $location =  objetToArray(\Location::get($activity->ip_address));  
                                         $city = $location['cityName'];
-                                        $city = implode($location); 
+                                        // $city = implode($location); 
                                     @endphp 
                                 @else
                                     @php                                   
