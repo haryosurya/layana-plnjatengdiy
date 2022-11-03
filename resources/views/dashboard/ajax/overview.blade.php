@@ -60,12 +60,12 @@
         <div class="col-sm-12 col-lg-6 mt-3">
             <x-cards.data :title="__('modules.dashboard.recentLoginActivities')" >
                 <x-table> 
-                    <th>
-                        <td>Name</td>
-                        <td>Login</td>
-                        <td>location</td>
-                        <td>Browser</td>
-                    </th>
+                    <tr> 
+                            <td>Name</td>
+                            <td>Login</td>
+                            <td>location</td>
+                            <td>Browser</td> 
+                    </tr>
                     @forelse($activeUser as $activity) 
                         <tr> 
                             <td> 
@@ -80,7 +80,10 @@
                                             <div class="text-muted">{{$activity->user->employeeDetails->designation->name ?? '' }}</div>
                                 </span>
                             </td> 
-                            <td >@if(!is_null($activity->last_activity)) {{date("Y-m-d H:i:s", $activity->last_activity) }} @else -- @endif</td>
+                            <td >
+                                @if(!is_null($activity->last_activity)) {{date("Y-m-d H:i:s", $activity->last_activity) }} @else -- @endif
+                            </td>
+                            <td >
                                 @if ($activity->ip_address != '127.0.0.1')
                                     @php 
                                         $location =  objetToArray(\Location::get($activity->ip_address));  
@@ -92,9 +95,11 @@
                                         $city = '';
                                     @endphp 
                                 @endif
-                            <td >@if(!is_null($activity->ip_address)) {{ $activity->ip_address}} -> {{ $city }} @else -- @endif
+                                @if(!is_null($activity->ip_address)) {{ $activity->ip_address}} <hr> {{ $city }} @else -- @endif
                             </td>
-                            <td >@if(!is_null($activity->last_activity)) {{  $activity->user_agent }} @else -- @endif</td> 
+                            <td >
+                                @if(!is_null($activity->last_activity)) {{  $activity->user_agent }} @else -- @endif
+                            </td> 
                         </tr><!-- card end -->
                     @empty
                         <tr>
