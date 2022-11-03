@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\DataTables\BaseDataTable;
 use App\Models\Role;
+use App\Models\Session;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class EmployeesDataTable extends BaseDataTable
                 return '--';
             })
             ->addColumn('session', function ($row) {
-                $act = Active::users($row->id)->get();
+                $act = Session::where('user_id',$row->id)->first();
                 if (!empty($act)) {
                     return ' <i class="fa fa-circle mr-1 text-light-green f-10"></i>' . __('app.online');
                 }
