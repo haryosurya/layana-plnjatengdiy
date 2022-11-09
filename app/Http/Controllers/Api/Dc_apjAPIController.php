@@ -40,7 +40,7 @@ class Dc_apjAPIController extends Controller
             count(dc_apj.APJ_NAMA) as APJ,
             count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU '
              )  
-            
+            ->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id)
             ->where('dc_apj.APJ_ID','!=','12')
             ->where('dc_apj.APJ_ID','!=','13')
             ->groupBy('dc_apj.APJ_DCC');
@@ -58,6 +58,7 @@ class Dc_apjAPIController extends Controller
 
             $result = $result->paginate(12); 
             return response()->json( [           
+                // 'user' => auth()->user()->employeeDetail->apj_id,
                 'status' => true,
                 'data' => $result, 
                 'status_code' => 200

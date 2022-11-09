@@ -72,6 +72,12 @@ $editEmployeePermission = user()->permission('edit_employees');
 
                     <x-cards.data-row :label="__('app.email')" :value="$employee->email" />
 
+                    <x-cards.data-row :label="__('modules.dc.apj')"
+                        :value="(!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->apj)) ? ucwords($employee->employeeDetail->apj->APJ_NAMA) : '--'" />
+
+                    <x-cards.data-row :label="__('modules.dc.gi')"
+                        :value="(!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->gi)) ? ucwords($employee->employeeDetail->gi->GARDU_INDUK_NAMA) : '--'" />
+
                     <x-cards.data-row :label="__('app.designation')"
                         :value="(!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->designation)) ? ucwords($employee->employeeDetail->designation->name) : '--'" />
 

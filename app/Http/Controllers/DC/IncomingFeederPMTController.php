@@ -16,13 +16,14 @@ class IncomingFeederPMTController extends AccountBaseController
      */
     public function __construct()
     {
+         
         parent::__construct();
         $this->pageTitle = 'app.menu.incoming-feeder'; 
         $this->middleware(function ($request, $next) {
-            abort_403(!(user()->permission('view_incoming_feeder') == 'all'));
+            abort_403(!(user()->permission('view_incoming_feeder') == 'all') );
+            abort_403(!(in_array('incoming-feeder', user_modules())) );
             return $next($request);
-        });
-        
+        }); 
     }
     public function index(IncomingFeederDatatable $dataTable)
     {  

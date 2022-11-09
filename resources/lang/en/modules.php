@@ -37,6 +37,66 @@ return array(
     'inspeksi-pmt' => 'Inspeksi PMT'
 
   ),
+  'inspeksi' =>array( 
+    
+    'inspeksi_cubicle'=> 'Inspeksi Kubikel',
+    'clean_cubicle'=> 'Kebersihan Kubikel',
+    'tgl_entry'=> 'Tanggal Entry',
+    'tgl_inspeksi'=> 'Tanggal Inspeksi',
+    'body_cubicle'=> 'Body Cubicle',
+    'lv'=> 'LV Compartment',
+    'cb'=> 'CB Compartment',
+    'busbar'=> 'Busbar Compartment',
+    'power_cable'=> 'Kabel Power Compartment',
+    'pmt_cb'=> 'PMT (CB 20KV)',
+    'ak20kv'=> 'Accesories Kubikel 20KV',
+    'announ'=> 'Announciater',
+    // ind_lamp:1
+    // ind_volt:1
+    // ac220:1
+    // dc110:1
+    // desis:1
+    // dengung:1
+    // ngeter:1
+    // flash:1
+    // sangit:1
+    // amis:1
+    // feeder:1
+    // kubikel:1
+    // pmt:1
+    // grounding:1
+    // sangit2:1
+    // slr:1
+    // sar:1
+    // body_alat:1
+    // wiring:1
+    // w_prot:1
+    // w_meter:1
+    // w_acc:1
+    // relay_ready:1
+    // relay_display:1
+    // relay_mr:1
+    // relay_ms:1
+    // relay_mt:1
+    // pm_display:1
+    // pm_mr:1
+    // pm_ms:1
+    // pm_mt:1
+    // kwh_meter:1
+    // panel_rtu:1
+    // door:1
+    // fan:1
+    // lampu_panel:1
+    // grounding_rtu:1
+    // temp_panel:1
+    // kebersihan:1
+    // power_on:1
+    // led_txrx:1
+    // ethernet:1
+    // keterangan:1
+    // id_update:
+    // last_update:08-10-2022
+  ),
   'dashboard' => array(
     'totalClients' => 'Total Clients',
     'vll' => 'Total Beban Sistem',

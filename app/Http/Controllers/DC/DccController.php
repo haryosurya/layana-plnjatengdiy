@@ -16,7 +16,8 @@ class DccController extends AccountBaseController
         parent::__construct();
         $this->pageTitle = 'app.menu.dcc'; 
         $this->middleware(function ($request, $next) {
-            abort_403(!(user()->permission('view_gardu') == 'all'));
+            abort_403(!(user()->permission('view_dcc') == 'all'));
+            abort_403(!(in_array('dcc', user_modules())) ); 
             return $next($request);
         });
     }

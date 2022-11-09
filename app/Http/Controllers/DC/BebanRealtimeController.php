@@ -18,6 +18,7 @@ class BebanRealtimeController extends AccountBaseController
         $this->pageTitle = 'app.menu.beban-realtime'; 
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_beban_realtime') == 'all'));
+            abort_403(!(in_array('beban-realtime', user_modules())) );   
             return $next($request);
         });
     }

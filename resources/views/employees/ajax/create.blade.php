@@ -56,6 +56,34 @@ $addDepartmentPermission = user()->permission('add_department');
                                 </x-forms.input-group>
                                 <small class="form-text text-muted">@lang('placeholders.password')</small>
                             </div>
+
+
+                            <div class="col-lg-4 col-md-6">
+                                <x-forms.label class="my-3" fieldId="category_id"
+                                    :fieldLabel="__('modules.dc.apj')" fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="employee_apj"
+                                        id="employee_apj" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($apj as $apj)
+                                            <option value="{{ $apj->APJ_ID }}">{{ $apj->APJ_NAMA }}</option>
+                                        @endforeach
+                                    </select> 
+                                </x-forms.input-group>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6">
+                                <x-forms.label class="my-3" fieldId="category_id"
+                                    :fieldLabel="__('modules.dc.gi')" fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control  height-35 f-14" name="employee_gi"
+                                        id="employee_gi" data-live-search="true"> 
+                                    </select> 
+                                </x-forms.input-group>
+                            </div>
+
                             <div class="col-lg-4 col-md-6">
                                 <x-forms.label class="my-3" fieldId="category_id"
                                     :fieldLabel="__('app.designation')" fieldRequired="true">
@@ -65,16 +93,16 @@ $addDepartmentPermission = user()->permission('add_department');
                                         id="employee_designation" data-live-search="true">
                                         <option value="">--</option>
                                         @foreach ($designations as $designation)
-                                            <option value="{{ $designation->APJ_ID }}">{{ $designation->APJ_NAMA }}</option>
+                                            <option value="{{ $designation->id }}">{{ $designation->name }}</option>
                                         @endforeach
                                     </select>
 
-                                    {{-- @if ($addDesignationPermission == 'all' || $addDesignationPermission == 'added')
+                                    @if ($addDesignationPermission == 'all' || $addDesignationPermission == 'added')
                                         <x-slot name="append">
                                             <button id="designation-setting" type="button"
                                                 class="btn btn-outline-secondary border-grey">@lang('app.add')</button>
                                         </x-slot>
-                                    @endif --}}
+                                    @endif
                                 </x-forms.input-group>
                             </div>
                             <div class="col-lg-4 col-md-6">
@@ -159,112 +187,9 @@ $addDepartmentPermission = user()->permission('add_department');
                                     fieldName="login"></x-forms.radio>
                             </div>
                         </div>
-                    </div>
- 
-                    @if (function_exists('sms_setting') && sms_setting()->telegram_status)
-                        <div class="col-md-4">
-                            <x-forms.number fieldName="telegram_user_id" fieldId="telegram_user_id"
-                                fieldLabel="<i class='fab fa-telegram'></i> {{ __('sms::modules.telegramUserId') }}"
-                                :popover="__('sms::modules.userIdInfo')" />
-                        </div>
-                    @endif
-
+                    </div> 
                 </div>
-
-                @if (isset($fields) && count($fields) > 0)
-                    <div class="row p-20">
-                        @foreach ($fields as $field)
-                            <div class="col-md-4">
-                                @if ($field->type == 'text')
-                                    <x-forms.text fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldLabel="$field->label"
-                                        fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldPlaceholder="$field->label"
-                                        :fieldRequired="($field->required === 'yes') ? true : false">
-                                    </x-forms.text>
-                                @elseif($field->type == 'wordword')
-                                    <x-forms.password
-                                        fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldLabel="$field->label"
-                                        fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldPlaceholder="$field->label"
-                                        :fieldRequired="($field->required === 'yes') ? true : false">
-                                    </x-forms.password>
-                                @elseif($field->type == 'number')
-                                    <x-forms.number
-                                        fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldLabel="$field->label"
-                                        fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldPlaceholder="$field->label"
-                                        :fieldRequired="($field->required === 'yes') ? true : false">
-                                    </x-forms.number>
-                                @elseif($field->type == 'textarea')
-                                    <x-forms.textarea :fieldLabel="$field->label"
-                                        fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldRequired="($field->required === 'yes') ? true : false"
-                                        :fieldPlaceholder="$field->label">
-                                    </x-forms.textarea>
-                                @elseif($field->type == 'radio')
-                                    <div class="form-group my-3">
-                                        <x-forms.label
-                                            fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                            :fieldLabel="$field->label"
-                                            :fieldRequired="($field->required === 'yes') ? true : false">
-                                        </x-forms.label>
-                                        <div class="d-flex">
-                                            @foreach ($field->values as $key => $value)
-                                                <x-forms.radio fieldId="optionsRadios{{ $key . $field->id }}"
-                                                    :fieldLabel="$value"
-                                                    fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                                    :fieldValue="$value" :checked="($key == 0) ? true : false" />
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif($field->type == 'select')
-                                    <div class="form-group my-3">
-                                        <x-forms.label
-                                            fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                            :fieldLabel="$field->label"
-                                            :fieldRequired="($field->required === 'yes') ? true : false">
-                                        </x-forms.label>
-                                        {!! Form::select('custom_fields_data[' . $field->name . '_' . $field->id . ']', $field->values, isset($editUser) ? $editUser->custom_fields_data['field_' . $field->id] : '', ['class' => 'form-control select-picker']) !!}
-                                    </div>
-                                @elseif($field->type == 'date')
-                                    <x-forms.datepicker custom="true"
-                                        fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldRequired="($field->required === 'yes') ? true : false"
-                                        :fieldLabel="$field->label"
-                                        fieldName="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                        :fieldValue="now()->timezone($global->timezone)->format($global->date_format)"
-                                        :fieldPlaceholder="$field->label" />
-                                @elseif($field->type == 'checkbox')
-                                    <div class="form-group my-3">
-                                        <x-forms.label
-                                            fieldId="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                            :fieldLabel="$field->label"
-                                            :fieldRequired="($field->required === 'yes') ? true : false">
-                                        </x-forms.label>
-                                        <div class="d-flex checkbox-{{ $field->id }}">
-                                            <input type="hidden"
-                                                name="custom_fields_data[{{ $field->name . '_' . $field->id }}]"
-                                                id="{{ $field->name . '_' . $field->id }}">
-
-                                            @foreach ($field->values as $key => $value)
-                                                <x-forms.checkbox fieldId="optionsRadios{{ $key . $field->id }}"
-                                                    :fieldLabel="$value" fieldName="$field->name.'_'.$field->id.'[]'"
-                                                    :fieldValue="$value"
-                                                    onchange="checkboxChange('checkbox-{{ $field->id }}', '{{ $field->name . '_' . $field->id }}')"
-                                                    :fieldRequired="($field->required === 'yes') ? true : false" />
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-
+ 
                 <x-form-actions>
                     <x-forms.button-primary id="save-employee-form" class="mr-3" icon="check">
                         @lang('app.save')
@@ -349,6 +274,34 @@ $addDepartmentPermission = user()->permission('add_department');
         });
 
         init(RIGHT_MODAL);
+
+
+
+        
+        $('#employee_apj').on('change', function () {        
+            var id = this.value; 
+            $("#employee_gi").html(''); 
+            $.easyAjax({ 
+                url: "{{ route('employees.employeApj') }}", 
+                type: "POST", 
+                data: { 
+                    id: id, 
+                    _token: '{{csrf_token()}}' 
+                }, 
+                dataType: 'json', 
+                
+                success: function (response) { 
+                    // console.log(response);
+                    $("#employee_gi").attr('disabled', false);
+                    $('#employee_gi').html('<option value="">--</option>'); 
+                    $.each(response.gi, function (key, value) { 
+                        $("#employee_gi").append('<option value="' + value.id + '">' + value.nama + '</option>'); 
+                    });   
+                }
+
+            });
+
+        });
     });
 
     function checkboxChange(parentClass, id) {
@@ -366,4 +319,6 @@ $addDepartmentPermission = user()->permission('add_department');
         $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
         $.ajaxModal(MODAL_LG, url);
     });
+
+
 </script>

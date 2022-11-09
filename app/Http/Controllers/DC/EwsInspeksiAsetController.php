@@ -17,9 +17,13 @@ class EwsInspeksiAsetController extends AccountBaseController
      {
          parent::__construct();
          $this->pageTitle = 'app.menu.inspeksi-aset'; 
+         $this->dcc = Dc_apj::get();
+         $this->gi = Dc_gardu_induk::get();
          $this->middleware(function ($request, $next) {
-             abort_403(!(user()->permission('view_inspeksi_aset') == 'all'));
-             return $next($request);
+            abort_403(!(user()->permission('view_inspeksi_aset') == 'all'));
+            abort_403(!(in_array('inspeksi-aset', user_modules())) );
+
+            return $next($request);
          });
      }
      public function index(EwsInspeksiAsetDatatable $dataTable)
@@ -46,10 +50,9 @@ class EwsInspeksiAsetController extends AccountBaseController
          abort_403(!($this->editPermission == 'all' 
          ));
  
-         $this->pageTitle = __('app.update') . ' ' . __('app.inspeksi-aset'); 
-         // $this->teams = Team::allDepartments();
-         // $this->designations = Designation::allDesignations(); 
-  
+         $this->pageTitle = __('app.update') . ' ' . __('app.inspeksi-aset');  
+         $this->dcc = Dc_apj::get();
+         $this->gi = Dc_gardu_induk::get();
  
          if (request()->ajax()) {
              $html = view('dc.inspeksi-aset.ajax.edit', $this->data)->render();
@@ -58,7 +61,7 @@ class EwsInspeksiAsetController extends AccountBaseController
  
          $this->view = 'dc.inspeksi-aset.ajax.edit';
  
-         return view('dc.inspeksi-aset.index', $this->data);
+         return view('dc.inspeksi-aset.create', $this->data);
  
      }
 }

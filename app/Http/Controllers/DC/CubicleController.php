@@ -26,6 +26,7 @@ class CubicleController extends AccountBaseController
         $this->pageTitle = 'app.menu.cubicle'; 
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_cubicle') == 'all'));
+            abort_403(!(in_array('cubicle', user_modules())) );  
             return $next($request);
         });
     }

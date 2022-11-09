@@ -26,6 +26,8 @@ class EwsInspeksiPdController extends AccountBaseController
         $this->pageTitle = 'app.menu.inspeksi-pd'; 
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_inspeksi_pd') == 'all'));
+            abort_403(!(in_array('inspeksi-pd', user_modules())) );
+
             return $next($request);
         });
     }

@@ -61,6 +61,32 @@ $addDepartmentPermission = user()->permission('add_department');
                                 </x-forms.input-group>
                                 <small class="form-text text-muted">@lang('modules.client.passwordUpdateNote')</small>
                             </div>
+                            <div class="col-lg-4 col-md-6">
+                                <x-forms.label class="my-3" fieldId="category_id"
+                                    :fieldLabel="__('modules.dc.apj')" fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="employee_apj"
+                                        id="employee_apj" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($apj as $apj)
+                                            <option @if ($employee->employeeDetail->apj_id == $apj->APJ_ID) selected @endif  value="{{ $apj->APJ_ID }}">{{ $apj->APJ_NAMA }}</option>
+                                        @endforeach
+                                    </select> 
+                                </x-forms.input-group>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6">
+                                <x-forms.label class="my-3" fieldId="category_id"
+                                    :fieldLabel="__('modules.dc.gi')" fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control  height-35 f-14" name="employee_gi"
+                                        id="employee_gi" data-live-search="true"> 
+                                           
+                                    </select> 
+                                </x-forms.input-group>
+                            </div>
                             <div class="col-md-4">
                                 <x-forms.label class="my-3" fieldId="designation"
                                     :fieldLabel="__('app.designation')" fieldRequired="true">
@@ -70,8 +96,8 @@ $addDepartmentPermission = user()->permission('add_department');
                                         id="employee_designation" data-live-search="true">
                                         <option value="">--</option>
                                         @foreach ($designations as $designation)
-                                            <option @if ($employee->employeeDetail->designation_id == $designation->APJ_ID) selected @endif value="{{ $designation->APJ_ID }}">
-                                                {{ $designation->APJ_NAMA }}</option>
+                                            <option @if ($employee->employeeDetail->designation_id == $designation->id) selected @endif value="{{ $designation->id }}">
+                                                {{ $designation->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -331,6 +357,33 @@ $addDepartmentPermission = user()->permission('add_department');
         }
 
         init(RIGHT_MODAL);
+
+         
+        $('#employee_apj').on('change', function () {        
+            var id = this.value; 
+            $("#employee_gi").html(''); 
+            $.easyAjax({ 
+                url: "{{ route('employees.employeApj') }}", 
+                type: "POST", 
+                data: { 
+                    id: id, 
+                    _token: '{{csrf_token()}}' 
+                }, 
+                dataType: 'json', 
+                
+                success: function (response) { 
+                    // console.log(response);
+                    $("#employee_gi").attr('disabled', false);
+                    $('#employee_gi').html('<option value="">--</option>'); 
+                    $.each(response.gi, function (key, value) { 
+                        $("#employee_gi").append('<option @if ($employee->employeeDetail->gi_id == '+ value.id +') selected @endif  value="' + value.id + '">' + value.nama + '</option>'); 
+                    });   
+                }
+                // <option @if ($employee->employeeDetail->apj_id == $apj->APJ_ID) selected @endif  value="{{ $apj->APJ_ID }}">{{ $apj->APJ_NAMA }}</option>
+
+            });
+
+        });
     });
 
     function checkboxChange(parentClass, id) {

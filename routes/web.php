@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::post('dashboard/widget/{dashboardType}', [DashboardController::class, 'widget'])->name('dashboard.widget');
     Route::resource('settings', SettingsController::class)->only(['edit', 'update', 'index', 'change_language']);
     // employee routes
+    Route::post('employees/employeApj', [EmployeeController::class, 'employeApj'])->name('employees.employeApj');
     Route::post('employees/apply-quick-action', [EmployeeController::class, 'applyQuickAction'])->name('employees.apply_quick_action');
     Route::post('employees/assignRole', [EmployeeController::class, 'assignRole'])->name('employees.assign_role');
     Route::get('employees/byDepartment/{id}', [EmployeeController::class, 'byDepartment'])->name('employees.by_department');

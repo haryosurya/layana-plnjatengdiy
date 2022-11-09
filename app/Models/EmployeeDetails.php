@@ -77,4 +77,12 @@ class EmployeeDetails extends BaseModel
     {
         return $this->belongsTo(Team::class, 'department_id');
     }
+    public function apj()
+    {
+        return $this->belongsTo(Dc_apj::class,'apj_id', 'APJ_ID');
+    }
+    public function gi()
+    {
+        return $this->belongsTo(Dc_gardu_induk::class, 'gi_id', 'GARDU_INDUK_ID');
+    }
 }

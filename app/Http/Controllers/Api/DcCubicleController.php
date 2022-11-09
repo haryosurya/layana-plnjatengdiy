@@ -159,6 +159,7 @@ class DcCubicleController extends Controller
                         'phasa_t' => $result['IC'],
                         'tegangan' => $result['VLL'],
                     ),
+                    'gi_id' => $gi['GARDU_INDUK_ID'],
                     'gi' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'],
                     'incoming_name' => $gi['INCOMING_NAME'],
                     'incoming_alias' => $gi['NAMA_ALIAS_INCOMING'],

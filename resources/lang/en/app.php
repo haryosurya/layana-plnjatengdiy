@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'baik' => 'Baik',
+    'tbaik' => 'Tidak Baik',
+    'bersih' => 'Bersih',
+    'kotor' => 'Kotor',
     'online' => 'Online',
     'offline' => 'Offline',
     'session' => 'Session',

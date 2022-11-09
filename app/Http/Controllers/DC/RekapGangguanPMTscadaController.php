@@ -22,6 +22,8 @@ class RekapGangguanPMTscadaController extends AccountBaseController
         $this->pageTitle = 'app.menu.rekap-gangguan-pmt';
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_rekap_gangguan_pmt') == 'all'));
+            abort_403(!(in_array('rekap-gangguan-pmt', user_modules())) );
+
             return $next($request);
         });
     }

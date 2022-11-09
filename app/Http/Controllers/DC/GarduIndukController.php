@@ -20,6 +20,8 @@ class GarduIndukController extends AccountBaseController
         $this->pageTitle = 'app.menu.gardu-induk'; 
         $this->middleware(function ($request, $next) {
             abort_403(!(user()->permission('view_gardu') == 'all'));
+            abort_403(!(in_array('gardu-induk', user_modules())) );
+
             return $next($request);
         });
     }

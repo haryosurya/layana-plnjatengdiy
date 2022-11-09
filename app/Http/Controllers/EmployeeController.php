@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\Employee\UpdateRequest;
 use App\Imports\EmployeeImport;
 use App\Jobs\ImportEmployeeJob;
 use App\Models\Dc_apj;
+use App\Models\Dc_gardu_induk;
 use App\Models\Designation;
 use App\Models\EmployeeDetails;
 use App\Models\Role;
@@ -19,11 +20,13 @@ use App\Models\RoleUser;
 use App\Models\Team;
 use App\Models\User;
 use Artisan;
+use Bus;
 use Carbon\Carbon;
 use DB;
 use Excel;
 // use Request;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class EmployeeController extends AccountBaseController
@@ -50,7 +53,7 @@ class EmployeeController extends AccountBaseController
 
         if (!request()->ajax()) {
             $this->employees = User::allEmployees(); 
-            $this->designations = Dc_apj::get();
+            $this->designations = Designation::allDesignations();
             $this->totalEmployees = count($this->employees);
             $this->roles = Role::where('name', '<>', 'client')
                 ->orderBy('id', 'asc')->get();
@@ -64,6 +67,10 @@ class EmployeeController extends AccountBaseController
      *
      * @return \Illuminate\Http\Response
      */
+    public function employeApj(Request $request){
+        $data['gi'] =Dc_gardu_induk::where('APJ_ID',$request->id)->get(['GARDU_INDUK_ID as id','GARDU_INDUK_NAMA as nama']); 
+        return response()->json($data);
+    }
     public function create()
     {
         $this->pageTitle = __('app.add') . ' ' . __('app.employee');
@@ -73,16 +80,13 @@ class EmployeeController extends AccountBaseController
 
         $this->teams = Team::all();
  
-        $this->designations = Dc_apj::get();
- 
+        $this->designations = Designation::allDesignations();
+        $this->apj = Dc_apj::select('APJ_ID','APJ_NAMA')->whereNotIn('APJ_ID',  ['12','13'])->get();
+        $this->gi = Dc_gardu_induk::select('GARDU_INDUK_ID','GARDU_INDUK_NAMA')->get();
         $this->lastEmployeeID = EmployeeDetails::max('id');
 
         $employee = new EmployeeDetails();
-
-        // if (!empty($employee->getCustomFieldGroupsWithFields())) {
-        //     $this->fields = $employee->getCustomFieldGroupsWithFields()->fields;
-        // }
-
+ 
         if (request()->ajax()) {
             $html = view('employees.ajax.create', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
@@ -233,7 +237,8 @@ class EmployeeController extends AccountBaseController
         $this->pageTitle = __('app.update') . ' ' . __('app.employee'); 
         $this->teams = Team::allDepartments();
         $this->designations = Designation::allDesignations(); 
- 
+        $this->apj = Dc_apj::select('APJ_ID','APJ_NAMA')->whereNotIn('APJ_ID',  ['12','13'])->get(); 
+        $this->gi = Dc_gardu_induk::select('GARDU_INDUK_ID','GARDU_INDUK_NAMA')->get();
 
         if (request()->ajax()) {
             $html = view('employees.ajax.edit', $this->data)->render();
@@ -426,6 +431,8 @@ class EmployeeController extends AccountBaseController
         $employee->employee_id = $request->employee_id;
         $employee->address = $request->address;  
         $employee->department_id = $request->department;
+        $employee->apj_id = $request->employee_apj;
+        $employee->gi_id = $request->employee_gi;
         $employee->designation_id = $request->designation;
         $employee->joining_date = Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d');
         $employee->place_of_birth = $request->place_of_birth;
