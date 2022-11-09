@@ -59,22 +59,43 @@ class BebanRealtimeController extends Controller
             // $historylastdate = Sm_meter_gi 
             // ::orderBy('OUTGOING_METER_ID','DESC') 
             // ->max('IA_TIME') ;
-            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id)
-          
+            $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id) 
             ->orderBy('IA_TIME','DESC')
+            ->take('100') 
             ->select('IA','IB','IC','IN','IA_TIME')  
             ;
             if ($request->get('date'))
             {
                 $keyword = $request->get('date');    
-                $history_pmt = $history_pmt->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword )));
+                $history_pmt = $history_pmt
+                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                ;
             }
             else
             {
-                $history_pmt = $history_pmt-> 
-                latest('IA_TIME')
+                $history_pmt = $history_pmt
+                -> latest('IA_TIME') 
                 ;
             } 
+            $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
+            ->orderBy('IA_TIME','DESC')
+            ->take('100') 
+            ->select('IA','IB','IC','IN','IA_TIME')  
+            ;
+            if ($request->get('date'))
+            {
+                $keyword = $request->get('date');    
+                $pmt_paginate = $pmt_paginate
+                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                ;
+            }
+            else
+            {
+                $pmt_paginate = $pmt_paginate
+                -> latest('IA_TIME') 
+                ;
+            } 
+
             return response()->json(array(    
                 'status'=>true,   
                 'data' => array(
@@ -89,6 +110,7 @@ class BebanRealtimeController extends Controller
                      
                     'PMT' => $history_pmt->get(),
                     'PMT_COUNT' => $history_pmt->count(),
+                    'PMT_PAGINATE' => $pmt_paginate->paginate(10),
                     // 'PMT_LAST_DATE' => $historylastdate,
                 ),
                 // 'data' => $result, 
