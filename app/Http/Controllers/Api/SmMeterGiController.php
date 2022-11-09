@@ -17,32 +17,29 @@ class SmMeterGiController extends Controller
         if(auth('sanctum')->check() == true){ 
 
             try{
-                $result = Sm_meter_gi::orderBy('OUTGOING_METER_ID','DESC');
-                if ($request->get('IA_TIME_FROM') && !empty($request->get('IA_TIME_TO')))
-                    {
-                        $from = Carbon::parse($request->get('IA_TIME_FROM'))->toDateTimeString();    
-                        $to = Carbon::parse($request->get('IA_TIME_TO'))->toDateTimeString();    
-                        $result = $result-> whereBetween('IA_TIME',[$from,$to]);  
-                    } 
-                if ($request->get('IB_TIME_FROM') && !empty($request->get('IB_TIME_TO')))
-                    {
-                        $from = Carbon::parse($request->get('IB_TIME_FROM'))->toDateTimeString();    
-                        $to = Carbon::parse($request->get('IB_TIME_TO'))->toDateTimeString();    
-                        $result = $result-> whereBetween('IB_TIME',[$from,$to]) ;  
-                    } 
-                if ($request->get('IC_TIME_FROM') && !empty($request->get('IC_TIME_TO')))
-                    {
-                        $from = Carbon::parse($request->get('IC_TIME_FROM'))->toDateTimeString();    
-                        $to = Carbon::parse($request->get('IC_TIME_TO'))->toDateTimeString();    
-                        $result = $result-> whereBetween('IC_TIME',[$from,$to])  ;  
-                    } 
-                if ($request->get('IN_TIME_FROM') && !empty($request->get('IN_TIME_TO')))
-                    {
-                        $from = Carbon::parse($request->get('IN_TIME_FROM'))->toDateTimeString();    
-                        $to = Carbon::parse($request->get('IN_TIME_TO'))->toDateTimeString();    
-                        $result = $result-> whereBetween('IN_TIME',[$from,$to])  ;  
+                $history_pmt = Sm_meter_gi::orderBy('OUTGOING_METER_ID','DESC')
+                ->orderBy('IA_TIME','DESC')
+                ->take('100') 
+                ->select('IA','IB','IC','IN','IA_TIME')  
+                ;
+                if ($request->get('date'))
+                {
+                    $keyword = $request->get('date');    
+                    $history_pmt = $history_pmt
+                    ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                    ;
+                }
+                else
+                {
+                    $history_pmt = $history_pmt
+                    -> latest('IA_TIME') 
+                    ;
+                } 
+                if ($request->get('OUTGOING_ID') && !empty($request->get('OUTGOING_ID')))
+                    {    
+                        $history_pmt = $history_pmt-> where('OUTGOING_ID',$request->get('OUTGOING_ID'));  
                     }  
-                $result = $result->paginate(10);
+                $result = $history_pmt->paginate(10);
                 // $total_records=Sm_meter_gi::count(); 
                 return response()->json(array(  
                     'status'=>true,          
