@@ -87,9 +87,12 @@ class EwsInspeksiPdController extends Controller
             /* image */
             $inspectAsset->foto_pelaksanaan = json_encode($foto_pelaksanaanResponse);
             $inspectAsset->foto_pengukuran = json_encode($foto_pengukuranResponse);
+            $inspectAsset->save(); 
     
-    
-            $inspectAsset->save();
+            /* update PD LEVEl dc cubicle */
+            $cubicleLevel = Dc_cubicle::withoutGlobalScope('active')->findOrFail($id); 
+            $cubicleLevel->PD_LEVEL = $request->level_pd; 
+            $cubicleLevel->save();
      
             return response()->json(array(   
                 'status'=>true,         

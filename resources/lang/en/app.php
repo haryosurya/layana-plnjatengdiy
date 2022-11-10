@@ -1,6 +1,16 @@
 <?php
 
 return array(
+    'operasi' => 'Operasi',
+    'cadangan' => 'Cadangan',
+    'berbeban' => 'Berbeban',
+    'bertegangan' => 'Bertegangan',
+    'testpos' => 'Test Posisi',
+    'servpos' => 'Service Posisi',
+    'on' => 'On',
+    'off' => 'Off',
+    'ada' => 'Ada',
+    'tada' => 'Tidak Ada',
     'baik' => 'Baik',
     'tbaik' => 'Tidak Baik',
     'bersih' => 'Bersih',
