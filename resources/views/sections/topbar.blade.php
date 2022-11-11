@@ -31,13 +31,13 @@
     <div class="page-header-right float-right d-flex align-items-center">
         <ul>
             <!-- SEARCH START -->
-            <li>
+            {{-- <li>
                 <div class="d-flex align-items-center">
                     <a href="javascript:;" class="d-block header-icon-box open-search">
                         <i class="fa fa-search f-16 text-dark-grey"></i>
                     </a>
                 </div>
-            </li>
+            </li> --}}
             <!-- SEARCH END -->
             <!-- Sticky Note START -->
              
@@ -45,7 +45,7 @@
  
 
             <!-- NOTIFICATIONS START -->
-            <li>
+            {{-- <li>
                 <div class="notification_box dropdown">
                     <a class="d-block dropdown-toggle header-icon-box show-user-notifications" type="link"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,7 +82,7 @@
                         @endif
                     </div>
                 </div>
-            </li>
+            </li> --}}
             <!-- NOTIFICATIONS END -->
             <!-- LOGOUT START -->
             <li>
