@@ -1,6 +1,17 @@
 <?php
 
 return array(
+    'keterangan' => 'Keterangan',
+    'kbrg' => 'Kedip Bergatian',
+    'mnyl' => 'Mati / Nyala',
+    'nyala' => 'Nyala',
+    'mati' => 'Mati',
+    'normal' => 'Normal',
+    'blank' => 'Blank',
+    'ready' => 'Ready',
+    'alarm' => 'Alarm',
+    'kencang' => 'Kencang',
+    'kendor' => 'Kendor',
     'operasi' => 'Operasi',
     'cadangan' => 'Cadangan',
     'berbeban' => 'Berbeban',

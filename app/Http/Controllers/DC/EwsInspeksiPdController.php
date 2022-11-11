@@ -117,17 +117,16 @@ class EwsInspeksiPdController extends AccountBaseController
     }
     public function edit($id)
     {
-        $this->aset = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id);
+        $this->pd = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id);
 
-        $this->editPermission = user()->permission('edit_inspeksi_aset');
+        $this->editPermission = user()->permission('edit_inspeksi_pd');
 
         abort_403(!($this->editPermission == 'all' 
         ));
 
-        $this->pageTitle = __('app.update') . ' ' . __('app.inspeksi-pd'); 
-        // $this->teams = Team::allDepartments();
-        // $this->designations = Designation::allDesignations(); 
- 
+        $this->pageTitle = __('app.update') . ' ' . __('app.menu.inspeksi-pd');  
+        $this->dcc = Dc_apj::get();
+        $this->gi = Dc_gardu_induk::get();
 
         if (request()->ajax()) {
             $html = view('dc.inspeksi-pd.ajax.edit', $this->data)->render();
@@ -136,7 +135,8 @@ class EwsInspeksiPdController extends AccountBaseController
 
         $this->view = 'dc.inspeksi-pd.ajax.edit';
 
-        return view('dc.inspeksi-pd.index');
+        return view('dc.inspeksi-pd.create', $this->data);
 
     }
+     
 }

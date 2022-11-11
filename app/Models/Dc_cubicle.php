@@ -215,7 +215,7 @@ class Dc_cubicle extends BaseModel
      * @var string
      */
     protected $table = 'dc_cubicle';
-
+    public $timestamps = false;
     /**
      * The primary key for the model.
      * 

@@ -51,7 +51,7 @@ class EwsInspeksiAsetController extends AccountBaseController
          abort_403(!($this->editPermission == 'all' 
          ));
  
-         $this->pageTitle = __('app.update') . ' ' . __('app.inspeksi-aset');  
+         $this->pageTitle = __('app.update') . ' ' . __('app.menu.inspeksi-aset');  
          $this->dcc = Dc_apj::get();
          $this->gi = Dc_gardu_induk::get();
  

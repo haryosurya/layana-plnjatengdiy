@@ -19,9 +19,7 @@ $addDepartmentPermission = user()->permission('add_department');
                 <div class="row p-20">
                     <div class="col-lg-9 col-xl-10">
                         
-                    </div>
-                       
-
+                    </div> 
                 </div>
  
 
@@ -31,7 +29,7 @@ $addDepartmentPermission = user()->permission('add_department');
                 <x-form-actions>
                     <x-forms.button-primary id="save-form" class="mr-3" icon="check">@lang('app.save')
                     </x-forms.button-primary>
-                    <x-forms.button-cancel :link="route('inspeksi-aset.index')" class="border-0">@lang('app.cancel')
+                    <x-forms.button-cancel :link="route('inspeksi-pd.index')" class="border-0">@lang('app.cancel')
                     </x-forms.button-cancel>
                 </x-form-actions>
             </div>
@@ -50,7 +48,7 @@ $addDepartmentPermission = user()->permission('add_department');
             //  ;
 
         $('#save-form').click(function() {
-            const url = "{{ route('inspeksi-pd.update', $aset->id_inspeksi_pd) }}";
+            const url = "{{ route('inspeksi-pd.update', $pd->id_inspeksi_pd) }}";
 
             $.easyAjax({
                 url: url,

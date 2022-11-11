@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helper\Files;
+use App\Helper\Reply;
 use App\Http\Controllers\Controller;
+use App\Models\Dc_apj;
 use App\Models\Dc_cubicle;
+use App\Models\Dc_gardu_induk;
 use App\Models\Dc_inspeksi_pd;
 use App\Models\ews_inspeksi_pd;
 use Auth;
@@ -73,21 +76,21 @@ class EwsInspeksiPdController extends Controller
             );
     
             $cubicle = Dc_cubicle::where('OUTGOING_ID',$id)->first(); 
-            $inspectAsset = new ews_inspeksi_pd();
-            $inspectAsset->id_outgoing = $cubicle['OUTGOING_ID'] ;
-            $inspectAsset->id_user = Auth::user()->id;
-            $inspectAsset->id_gardu_induk = $cubicle->dcIncomingFeeder->GARDU_INDUK_ID;
-            $inspectAsset->tgl_entry = Carbon::createFromFormat($this->global->date_format , $request->tgl_entry)->format('Y-m-d H:i:s'); 
-            $inspectAsset->tgl_inspeksi = Carbon::createFromFormat($this->global->date_format , $request->tgl_inspeksi)->format('Y-m-d H:i:s'); 
-            $inspectAsset->citicality = $request->citicality;
-            $inspectAsset->level_pd = $request->level_pd;
-            $inspectAsset->keterangan = $request->keterangan;
-            $inspectAsset->id_update = $request->id_update;
-            $inspectAsset->last_update = Carbon::createFromFormat($this->global->date_format ,$request->last_update)->format('Y-m-d H:i:s');
+            $inspectPd = new ews_inspeksi_pd();
+            $inspectPd->id_outgoing = $cubicle['OUTGOING_ID'] ;
+            $inspectPd->id_user = Auth::user()->id;
+            $inspectPd->id_gardu_induk = $cubicle->dcIncomingFeeder->GARDU_INDUK_ID;
+            $inspectPd->tgl_entry = Carbon::createFromFormat($this->global->date_format , $request->tgl_entry)->format('Y-m-d H:i:s'); 
+            $inspectPd->tgl_inspeksi = Carbon::createFromFormat($this->global->date_format , $request->tgl_inspeksi)->format('Y-m-d H:i:s'); 
+            $inspectPd->citicality = $request->citicality;
+            $inspectPd->level_pd = $request->level_pd;
+            $inspectPd->keterangan = $request->keterangan;
+            $inspectPd->id_update = $request->id_update;
+            $inspectPd->last_update = Carbon::createFromFormat($this->global->date_format ,$request->last_update)->format('Y-m-d H:i:s');
             /* image */
-            $inspectAsset->foto_pelaksanaan = json_encode($foto_pelaksanaanResponse);
-            $inspectAsset->foto_pengukuran = json_encode($foto_pengukuranResponse);
-            $inspectAsset->save(); 
+            $inspectPd->foto_pelaksanaan = json_encode($foto_pelaksanaanResponse);
+            $inspectPd->foto_pengukuran = json_encode($foto_pengukuranResponse);
+            $inspectPd->save(); 
     
             /* update PD LEVEl dc cubicle */
             $cubicleLevel = Dc_cubicle::withoutGlobalScope('active')->findOrFail($id); 
@@ -96,7 +99,7 @@ class EwsInspeksiPdController extends Controller
      
             return response()->json(array(   
                 'status'=>true,         
-                'data' => $inspectAsset, 
+                'data' => $inspectPd, 
                 'status_code' => 200
             )); 
         }
@@ -107,4 +110,5 @@ class EwsInspeksiPdController extends Controller
             ], 500);
         }
     }
+
 }
