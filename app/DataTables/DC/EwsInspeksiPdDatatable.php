@@ -187,6 +187,7 @@ class EwsInspeksiPdDatatable extends BaseDataTable
             Column::make('level_pd'),
             Column::make('tgl_entry'),
             Column::make('tgl_inspeksi'),
+            Column::make('last_update'),
             Column::computed('action', __('app.action'))
             ->exportable(false)
             ->printable(false)

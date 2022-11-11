@@ -100,6 +100,8 @@ return array(
     'led_txrx'=> 'Indikasi LED TX/RX',
     'ethernet'=> 'Kondisi Kabel Ethernet',
     'keterangan'=> 'Keterangan',
+    'cpd'=> 'Critically Partial Discharge',
+    'lpd'=> 'Level Partial Discharge',
     // 'id_update'=> 'PMT',
     // 'last_update'=> 'PMT',
     // ind_lamp:1
