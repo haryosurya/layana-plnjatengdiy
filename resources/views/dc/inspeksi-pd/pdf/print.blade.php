@@ -2,36 +2,9 @@ a<html lang="en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>@lang('app.menu.inspeksi-pd')</title>
-    
-    <!-- Font Awesome Icons -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/all.min.css') }}"> --}}
-
-    <!-- Simple Line Icons -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/simple-line-icons.css') }}"> --}}
-
-    <!-- Datepicker -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/datepicker.min.css') }}"> --}}
-{{--  --}}
-    <!-- TimePicker -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/bootstrap-timepicker.min.css') }}"> --}}
-
-    <!-- Select Plugin -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/select2.min.css') }}"> --}}
-
-    <!-- Bootstrap Icons -->
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/css/bootstrap-icons.css') }}"> --}}
-
-    {{-- @stack('datatable-styles') --}}
-
-    <!-- Template CSS -->
+    <title>@lang('app.menu.inspeksi-pd')</title> 
     <link type="text/css" rel="stylesheet" media="all" href="{{ asset('css/prnt.css') }}">
-    <style>
-        .clearfix:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+    <style> 
 
         a {
             text-decoration: none;
@@ -300,10 +273,9 @@ a<html lang="en">
     </style>
 </head>
 
-<body>
-    <header class="clearfix">
-
-        <table cellpadding="0" cellspacing="0" class="billing"> 
+<body class="content-wrapper"> 
+    <main>
+        <table cellpadding="0" cellspacing="0"  > 
             <tr>
                 <td id="invoiced_to">
                     <div>  
@@ -330,8 +302,6 @@ a<html lang="en">
                 </td>
             </tr>
         </table>
-    </header>
-    <main>
         <div id="details">
             <div class="row">
                 <div class="col-sm-12">
@@ -340,7 +310,7 @@ a<html lang="en">
                             <div class="row p-20">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
                                             for="usr">@lang('modules.inspeksi.lpd')</label>
                                         <div class="d-flex">
                                             @php
@@ -366,7 +336,7 @@ a<html lang="en">
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
                                             for="usr">@lang('modules.inspeksi.cpd')</label> 
                                             <span>
                                                 {{ $pd->citicality ?? '' }}
@@ -375,7 +345,7 @@ a<html lang="en">
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group my-3"> 
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
                                         for="usr">@lang('modules.inspeksi.keterangan')</label>
                                         <span>
                                             {{$pd->keterangan}}
@@ -383,48 +353,44 @@ a<html lang="en">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6"> 
-                                    <div class="form-group my-3"> 
-
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
+                                    <div class="form-group my-3">  
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
                                             for="usr">@lang('modules.inspeksi.cpd')</label> 
                                         <span>
                                             {{ $pd->citicality ?? '' }}
                                         </span> 
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="form-group my-3"> 
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
-                                        for="usr">@lang('modules.inspeksi.foto_p')</label>  
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6">
-                                                        @php
-                                                    $file = json_decode($pd->foto_pelaksanaan); 
-                                                    @endphp   
-                                                <a href="javascript:;" class="img-lightbox" data-image-url="{{ $file->image_url }}">
-                                                    <img src="{{ $file->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
-                                                </a>  
-                                            </div>
-                                        </div>
+                                <div class="col-lg-6 col-md-6"> 
+                                    <div class="form-group my-3">  
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
+                                            for="usr">@lang('modules.inspeksi.foto_p')</label> 
+                                        <span>
+                                            @php
+                                            $file = json_decode($pd->foto_pelaksanaan); 
+                                            @endphp   
+                                            <br>
+                                            {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $file->image_url }}"> --}}
+                                                <img src="{{ $file->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
+                                            {{-- </a>   --}}
+                                        </span> 
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
-                                    {{-- <div class="form-group my-3">  --}}
-                                        <label class="f-14 text-dark-grey mb-12 w-100"
-                                        for="usr">@lang('modules.inspeksi.foto_p')</label> 
-                                        {{-- <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block"> --}}
+                                <div class="col-lg-6 col-md-6"> 
+                                    <div class="form-group my-3">  
+                                        <label class="f-14 text-dark-grey mb-8 w-100"
+                                            for="usr">@lang('modules.inspeksi.foto_pe')</label> 
+                                        <span>
                                             @php
-                                                $filep = json_decode($pd->foto_pengukuran); 
-                                            @endphp  
-                                            {{-- <p class="mb-0 text-dark-grey f-14 w-70 text-wrap"> --}}
-                                            
-                                        <a href="javascript:;" class="img-lightbox" data-image-url="{{ $filep->image_url }}">
-                                            <img src="{{ $filep->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
-                                        </a>
-                                            {{-- </p> --}}
-                                        {{-- </div>  --}}
-                                    {{-- </div> --}}
-                                </div>
+                                            $filep = json_decode($pd->foto_pengukuran); 
+                                            @endphp   
+                                            <br>
+                                            {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $filep->image_url }}"> --}}
+                                                <img src="{{ $filep->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
+                                            {{-- </a> --}}
+                                        </span> 
+                                    </div>
+                                </div> 
                             </div>  
                         </div>
                     </x-form>
