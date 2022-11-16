@@ -17,6 +17,8 @@ class SmokeDetectorController extends Controller
             ->leftJoin('dc_gardu_induk','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
             ->selectRaw('dc_apj.APJ_ID,dc_apj.APJ_NAMA,dc_apj.APJ_ALIAS,dc_apj.APJ_DCC,count(dc_gardu_induk.GARDU_INDUK_NAMA) as TOTAL_GARDU
             ,dc_gardu_induk.GARDU_INDUK_ID')  
+            ->where('dc_apj.APJ_ID','!=','12')
+            ->where('dc_apj.APJ_ID','!=','13')
             ->groupBy('dc_apj.APJ_ID');
 
             if ($request->get('APJ_DCC'))

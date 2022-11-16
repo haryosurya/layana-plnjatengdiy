@@ -12,6 +12,7 @@ use App\Models\Dc_cubicle;
 use App\Models\Dc_gardu_induk;
 use App\Models\ews_inspeksi_aset;
 use App\Models\ews_inspeksi_pd;
+use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -98,5 +99,54 @@ class EwsInspeksiPdController extends AccountBaseController
         $cubicleLevel->save();
   
         return Reply::successWithData(__('messages.updateSuccess'), ['redirectUrl' => route('inspeksi-pd.index')]);
+    }
+    public function show($id){
+
+        $this->pd = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id);
+
+        $this->editPermission = user()->permission('edit_inspeksi_pd');
+
+        abort_403(!($this->editPermission == 'all' 
+        ));
+
+        $this->pageTitle = __('app.update') . ' ' . __('app.menu.inspeksi-pd');  
+        $this->dcc = Dc_apj::get();
+        $this->gi = Dc_gardu_induk::get();
+
+        if (request()->ajax()) {
+            $html = view('dc.inspeksi-pd.ajax.view', $this->data)->render();
+            return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+        }
+
+        $this->view = 'dc.inspeksi-pd.ajax.view';
+
+        return view('dc.inspeksi-pd.create', $this->data);
+
+    }
+    public function download($id)
+    {
+        // $this->pd = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id); 
+        
+
+        $pdfOption = $this->domPdfObjectForDownload($id);
+        $pdf = $pdfOption['pdf'];
+        $filename = $pdfOption['fileName'];
+
+        return $pdf->download($filename . '.pdf');
+        // return view('dc.inspeksi-pd.pdf.print', $this->data);
+
+    }
+
+    public function domPdfObjectForDownload($id)
+    {
+        $this->pd = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id); 
+        $pdf = app('dompdf.wrapper'); 
+        $pdf->loadView('dc.inspeksi-pd.pdf.print', $this->data);
+        $filename = $this->pd->id_inspeksi_pd;
+
+        return [
+            'pdf' => $pdf,
+            'fileName' => $filename
+        ];
     }
 }

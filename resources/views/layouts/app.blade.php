@@ -339,12 +339,7 @@
             $('#search-text-field').val(SEARCH_KEYWORD);
             $('#reset-filters').removeClass('d-none');
         }
-
-        $('body').on('click', '.show-hide-purchase-code', function() {
-            $('> .icon', this).toggleClass('fa-eye-slash fa-eye');
-            $(this).siblings('span').toggleClass('blur-code ');
-        });
-
+ 
 
     </script>
 

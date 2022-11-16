@@ -59,6 +59,14 @@ class EwsInspeksiPdDatatable extends BaseDataTable
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id_inspeksi_pd . '" tabindex="0">';
  
                         // $action .= '<a href="' . route('cubicle.show', [$row->id_inspeksi_pd]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                        $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-pd.show', [$row->id_inspeksi_pd]) . '">
+                            <i class="fa fa-eye mr-2"></i>
+                            ' . trans('app.view') . '
+                        </a>';
+                        $action .= '<a class="dropdown-item" href="' . route('inspeksi-pd-download', [$row->id_inspeksi_pd]) . '">
+                            <i class="fa fa-eye mr-2"></i>
+                            ' . trans('app.download') . '
+                        </a>';
                         $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-pd.edit', [$row->id_inspeksi_pd]) . '">
                             <i class="fa fa-edit mr-2"></i>
                             ' . trans('app.edit') . '

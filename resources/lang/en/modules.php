@@ -41,6 +41,8 @@ return array(
     
     'inspeksi_cubicle'=> 'Inspeksi Kubikel',
     'clean_cubicle'=> 'Kebersihan Kubikel',
+    'foto_pelaksanaan'=> 'Foto Pelaksanaan',
+    'foto_pengukuran'=> 'Foto Pengukuran',
     'tgl_entry'=> 'Tanggal Entry',
     'tgl_inspeksi'=> 'Tanggal Inspeksi',
     'body_cubicle'=> 'Body Cubicle',
@@ -102,6 +104,8 @@ return array(
     'keterangan'=> 'Keterangan',
     'cpd'=> 'Critically Partial Discharge',
     'lpd'=> 'Level Partial Discharge',
+    'foto_p'=> 'Foto Pelaksanaan',
+    'foto_pe'=> 'Foto Pengukuran',
     // 'id_update'=> 'PMT',
     // 'last_update'=> 'PMT',
     // ind_lamp:1
