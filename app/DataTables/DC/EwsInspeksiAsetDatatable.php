@@ -34,7 +34,10 @@ class EwsInspeksiAsetDatatable extends BaseDataTable
                             <i class="icon-options-vertical icons"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id_inspeksi_aset . '" tabindex="0">';
- 
+                        $action .= '<a class="dropdown-item" href="' . route('inspeksi-aset-download', [$row->id_inspeksi_aset]) . '">
+                        <i class="fa fa-print mr-2"></i>
+                        ' . trans('app.download') . '
+                    </a>';
                         // $action .= '<a href="' . route('cubicle.show', [$row->id_inspeksi_pd]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
                         $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-aset.edit', [$row->id_inspeksi_aset]) . '">
                             <i class="fa fa-edit mr-2"></i>

@@ -76,6 +76,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::get('inspeksi-pd-print',[DCEwsInspeksiPdController::class,'domPdfObjectForDownload'] )->name('inspeksi-pd-print');
     Route::get('inspeksi-pd-download/{id}',[DCEwsInspeksiPdController::class,'download'] )->name('inspeksi-pd-download');
     Route::resource('inspeksi-aset',EwsInspeksiAsetController::class );
+    Route::get('inspeksi-aset-print',[EwsInspeksiAsetController::class,'domPdfObjectForDownload'] )->name('inspeksi-aset-print');
+    Route::get('inspeksi-aset-download/{id}',[EwsInspeksiAsetController::class,'download'] )->name('inspeksi-aset-download');
     Route::get('rekap-gangguan-pmt',[RekapGangguanPMTscadaController::class,'index' ])->name('rekap-gangguan-pmt.index');
     Route::get('rekap-gangguan-pmt/{id}',[RekapGangguanPMTscadaController::class,'show' ])->name('rekap-gangguan-pmt.show');
 

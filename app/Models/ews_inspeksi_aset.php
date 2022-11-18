@@ -91,4 +91,12 @@ class ews_inspeksi_aset extends Model
      * @var array
      */
     protected $fillable = ['id_outgoing', 'id_user', 'id_gardu_induk', 'tgl_entry', 'tgl_inspeksi', 'body_cubicle', 'lv', 'cb', 'busbar', 'power_cable', 'pmt_cb', 'announ', 'ind_lamp', 'ind_volt', 'ac220', 'dc110', 'desis', 'dengung', 'ngeter', 'flash', 'sangit', 'amis', 'feeder', 'kubikel', 'pmt', 'grounding', 'sangit2', 'slr', 'sar', 'body_alat', 'wiring', 'w_prot', 'w_meter', 'w_acc', 'relay_ready', 'relay_display', 'relay_mr', 'relay_ms', 'relay_mt', 'pm_display', 'pm_mr', 'pm_ms', 'pm_mt', 'kwh_meter', 'panel_rtu', 'door', 'fan', 'lampu_panel', 'grounding_rtu', 'temp_panel', 'kebersihan', 'power_on', 'led_txrx', 'ethernet', 'keterangan', 'id_update', 'last_update'];
+    public function Cubicle()
+    {
+        return $this->belongsTo(Dc_cubicle::class, 'id_outgoing','OUTGOING_ID');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user','id');
+    }
 }

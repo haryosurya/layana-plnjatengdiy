@@ -272,9 +272,8 @@ a<html lang="en">
 
     </style>
 </head>
-
 <body class="content-wrapper"> 
-    <main>
+    <header class="clearfix">
         <table cellpadding="0" cellspacing="0"  > 
             <tr>
                 <td id="invoiced_to">
@@ -302,6 +301,8 @@ a<html lang="en">
                 </td>
             </tr>
         </table>
+    </header>
+    <main> 
         <div id="details">
             <div class="row">
                 <div class="col-sm-12">

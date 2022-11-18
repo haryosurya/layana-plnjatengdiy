@@ -133,4 +133,29 @@ class EwsInspeksiAsetController extends AccountBaseController
         return Reply::successWithData(__('messages.updateSuccess'), ['redirectUrl' => route('inspeksi-aset.index')]);
 
      }
+     public function download($id)
+    { 
+        $this->pd = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
+
+        $pdfOption = $this->domPdfObjectForDownload($id);
+        $pdf = $pdfOption['pdf'];
+        $filename = $pdfOption['fileName'];
+
+        // return $pdf->download($filename . '.pdf');
+        return view('dc.inspeksi-aset.pdf.print', $this->data);
+
+    }
+
+    public function domPdfObjectForDownload($id)
+    {
+        $this->pd = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
+        $pdf = app('dompdf.wrapper'); 
+        $pdf->loadView('dc.inspeksi-aset.pdf.print', $this->data);
+        $filename = $this->pd->id_inspeksi_pd;
+
+        return [
+            'pdf' => $pdf,
+            'fileName' => $filename
+        ];
+    }
 }

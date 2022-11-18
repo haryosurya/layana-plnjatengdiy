@@ -64,7 +64,7 @@ class EwsInspeksiPdDatatable extends BaseDataTable
                             ' . trans('app.view') . '
                         </a>';
                         $action .= '<a class="dropdown-item" href="' . route('inspeksi-pd-download', [$row->id_inspeksi_pd]) . '">
-                            <i class="fa fa-eye mr-2"></i>
+                            <i class="fa fa-print mr-2"></i>
                             ' . trans('app.download') . '
                         </a>';
                         $action .= '<a class="dropdown-item openRightModal" href="' . route('inspeksi-pd.edit', [$row->id_inspeksi_pd]) . '">
