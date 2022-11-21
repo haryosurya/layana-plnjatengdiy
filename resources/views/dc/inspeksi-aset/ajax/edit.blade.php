@@ -507,7 +507,7 @@
                             <div class="d-flex">
                                 <x-forms.radio fieldId="w_meter-kencang" :fieldLabel="__('app.kencang')" 
                                     fieldName="w_meter"
-                                    fieldValue="Kencang" :checked="($aset->w_prot == 'Kencang') ? 'checked' : ''">
+                                    fieldValue="Kencang" :checked="($aset->w_meter == 'Kencang') ? 'checked' : ''">
                                 </x-forms.radio>
                                 <x-forms.radio fieldId="w_meter-kendor" :fieldLabel="__('app.kendor')" 
                                     fieldName="w_meter"

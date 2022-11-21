@@ -135,23 +135,23 @@ class EwsInspeksiAsetController extends AccountBaseController
      }
      public function download($id)
     { 
-        $this->pd = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
+        $this->aset = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
 
         $pdfOption = $this->domPdfObjectForDownload($id);
         $pdf = $pdfOption['pdf'];
         $filename = $pdfOption['fileName'];
 
-        // return $pdf->download($filename . '.pdf');
-        return view('dc.inspeksi-aset.pdf.print', $this->data);
+        return $pdf->download($filename . '.pdf');
+        // return view('dc.inspeksi-aset.pdf.print', $this->data);
 
     }
 
     public function domPdfObjectForDownload($id)
     {
-        $this->pd = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
+        $this->aset = ews_inspeksi_aset::withoutGlobalScope('active')->findOrFail($id); 
         $pdf = app('dompdf.wrapper'); 
         $pdf->loadView('dc.inspeksi-aset.pdf.print', $this->data);
-        $filename = $this->pd->id_inspeksi_pd;
+        $filename = 'inspeksi-aset'.$this->aset->tgl_inspeksi.'-'. $this->aset->id_inspeksi_pd;
 
         return [
             'pdf' => $pdf,

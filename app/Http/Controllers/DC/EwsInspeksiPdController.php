@@ -142,7 +142,7 @@ class EwsInspeksiPdController extends AccountBaseController
         $this->pd = ews_inspeksi_pd::withoutGlobalScope('active')->findOrFail($id); 
         $pdf = app('dompdf.wrapper'); 
         $pdf->loadView('dc.inspeksi-pd.pdf.print', $this->data);
-        $filename = $this->pd->id_inspeksi_pd;
+        $filename = 'inspeksi-pd-'.$this->pd->tgl_inspeksi.'-'.$this->pd->id_inspeksi_pd;
 
         return [
             'pdf' => $pdf,
