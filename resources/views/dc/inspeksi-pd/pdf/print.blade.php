@@ -273,32 +273,38 @@
     <main> 
         <table cellpadding="0" cellspacing="0"  > 
             <tr>
-                <td class="width:50%">
+                <td  style=" vertical-align:top ; width:80%">
                     <div id="logo">
                         <img src="{{ $global->logo_url }}" alt="home" class="dark-logo" />
                         <div>
                             <small>@lang("modules.invoices.generatedBy"):</small>
-                            <div>{{ ucwords($global->company_name) }}</div> 
-                        </div>
-                        <br>
-                        <div>
-                            <small>Operator:</small>
-                            <div>{{ ucwords($pd->user->name??"") }}</div> 
+                            <div>{{ ucwords($global->company_name) }}</div>  
                         </div>
                     </div>
                 </td> 
-                <td align="right">
-                    <div class="pull-right"> 
-                        <div>{{ ucfirst($pd->id_inspeksi_pd) }}</div>
-                        <div>{{ ucwords($pd->Cubicle->CUBICLE_NAME) }}</div>
-                        <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->NAMA_ALIAS_INCOMING) }}</div>
-                        <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->dcGarduInduk->GARDU_INDUK_NAMA) }}</div>
-                        <div class="mb-3">
-                            <div>@lang('app.date') :</div>
-                            <div>{!! nl2br($pd->tgl_entry) !!}</div>
-                        </div>   
-                    </div>
-    
+                <td  style="width:20%" align="right">
+                    <table>
+                        <tr>
+                            <td>Operator</td>
+                            <td> {{ ucwords($pd->user->name??"") }}</td>
+                        </tr>
+                        <tr>
+                            <td>Id Inspeksi</td>
+                            <td> {{ ucfirst($pd->id_inspeksi_pd) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kubikel</td>
+                            <td>{{ ucwords($pd->Cubicle->CUBICLE_NAME) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gardu Induk</td>
+                            <td>{{ ucwords($pd->Cubicle->dcIncomingFeeder->dcGarduInduk->GARDU_INDUK_NAMA) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Entry</td>
+                            <td>{!! nl2br($pd->tgl_entry) !!}</td>
+                        </tr>
+                    </table>  
                 </td>
             </tr>
         </table> 
