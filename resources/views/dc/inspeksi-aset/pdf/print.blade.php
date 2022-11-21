@@ -281,7 +281,7 @@
                     <br>
                     <div>
                         <small>Operator:</small>
-                        <div>{{ ucwords($aset->user->name) }}</div> 
+                        <div>{{ ucwords($aset->user->name??'') }}</div> 
                     </div>
                 </div>
             </td> 

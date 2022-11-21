@@ -132,8 +132,8 @@ class EwsInspeksiPdController extends AccountBaseController
         $pdf = $pdfOption['pdf'];
         $filename = $pdfOption['fileName'];
 
-        // return $pdf->download($filename . '.pdf');
-        return view('dc.inspeksi-pd.pdf.print', $this->data);
+        return $pdf->download($filename . '.pdf');
+        // return view('dc.inspeksi-pd.pdf.print', $this->data);
 
     }
 
