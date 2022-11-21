@@ -278,6 +278,11 @@
                         <small>@lang("modules.invoices.generatedBy"):</small>
                         <div>{{ ucwords($global->company_name) }}</div> 
                     </div>
+                    <br>
+                    <div>
+                        <small>Operator:</small>
+                        <div>{{ ucwords($aset->user->name) }}</div> 
+                    </div>
                 </div>
             </td> 
             <td align="right">

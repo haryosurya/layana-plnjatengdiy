@@ -269,37 +269,39 @@
     </style>
 </head>
 <body class="content-wrapper"> 
-    <header class="clearfix">
+     
+    <main> 
         <table cellpadding="0" cellspacing="0"  > 
             <tr>
-                <td id="invoiced_to">
-                    <div>  
-                            <div>{{ ucfirst($pd->id_inspeksi_pd) }}</div>
-                            <div>{{ ucwords($pd->Cubicle->CUBICLE_NAME) }}</div>
-                            <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->NAMA_ALIAS_INCOMING) }}</div>
-                            <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->dcGarduInduk->GARDU_INDUK_NAMA) }}</div>
-                            <div class="mb-3">
-                                <div>@lang('app.date') :</div>
-                                <div>{!! nl2br($pd->tgl_entry) !!}</div>
-                            </div>  
-                          
-                    </div>
-                </td>
-                <td>
-                    <div id="company">
-                        <div id="logo">
-                            <img src="{{ $global->logo_url }}" alt="home" class="dark-logo" />
-                        </div>
+                <td class="width:50%">
+                    <div id="logo">
+                        <img src="{{ $global->logo_url }}" alt="home" class="dark-logo" />
+                        <div>
                             <small>@lang("modules.invoices.generatedBy"):</small>
-                        <div>{{ ucwords($global->company_name) }}</div>
-                         
+                            <div>{{ ucwords($global->company_name) }}</div> 
+                        </div>
+                        <br>
+                        <div>
+                            <small>Operator:</small>
+                            <div>{{ ucwords($pd->user->name??"") }}</div> 
+                        </div>
                     </div>
+                </td> 
+                <td align="right">
+                    <div class="pull-right"> 
+                        <div>{{ ucfirst($pd->id_inspeksi_pd) }}</div>
+                        <div>{{ ucwords($pd->Cubicle->CUBICLE_NAME) }}</div>
+                        <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->NAMA_ALIAS_INCOMING) }}</div>
+                        <div>{{ ucwords($pd->Cubicle->dcIncomingFeeder->dcGarduInduk->GARDU_INDUK_NAMA) }}</div>
+                        <div class="mb-3">
+                            <div>@lang('app.date') :</div>
+                            <div>{!! nl2br($pd->tgl_entry) !!}</div>
+                        </div>   
+                    </div>
+    
                 </td>
             </tr>
-            
-        </table>
-    </header>
-    <main> 
+        </table> 
         <table align="left" cellpadding="0" cellspacing="0"  > 
             <tr>
                 <td>
