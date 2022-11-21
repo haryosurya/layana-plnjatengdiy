@@ -1,12 +1,19 @@
-a<html lang="en">
+<html lang="en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>@lang('app.menu.inspeksi-pd')</title> 
     <link type="text/css" rel="stylesheet" media="all" href="{{ asset('css/prnt.css') }}">
-    <style> 
+    <style>
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
         a {
+            color: #0087C3;
             text-decoration: none;
         }
 
@@ -17,25 +24,31 @@ a<html lang="en">
             margin: 0 auto;
             color: #555555;
             background: #FFFFFF;
-            font-size: 13px;
+            font-size: 14px;
             font-family: Verdana, Arial, Helvetica, sans-serif;
         }
 
         h2 {
-            font-weight: normal;
+            font-weight:normal;
         }
+ 
 
-        header {
-            padding: 10px 0;
+        #logo {
+            float: left;
+            margin-top: 11px;
         }
 
         #logo img {
-            height: 33px;
-            margin-bottom: 15px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        #company {
+
         }
 
         #details {
-            margin-bottom: 25px;
+            margin-bottom: 50px;
         }
 
         #client {
@@ -53,12 +66,16 @@ a<html lang="en">
             margin: 0;
         }
 
+        #invoice {
+
+        }
+
         #invoice h1 {
             color: #0087C3;
-            line-height: 2em;
+            font-size: 2.4em;
+            line-height: 1em;
             font-weight: normal;
             margin: 0 0 10px 0;
-            font-size: 20px;
         }
 
         #invoice .date {
@@ -69,17 +86,16 @@ a<html lang="en">
         table {
             width: 100%;
             border-spacing: 0;
-            /* margin-bottom: 20px; */
+            margin-bottom: 20px;
+            white-space:nowrap;
         }
 
         table th,
         table td {
-            padding: 5px 8px;
-            text-align: center;
-        }
-
-        table th {
-            background: #EEEEEE;
+            padding: 5px 10px 7px 10px;
+            /* background: #EEEEEE; */
+            /* text-align: left; */
+            /* border-bottom: 1px solid #FFFFFF; */
         }
 
         table th {
@@ -88,30 +104,29 @@ a<html lang="en">
         }
 
         table td {
-            text-align: right;
+            /* text-align: center; */
         }
 
-        table td.desc h3,
-        table td.qty h3 {
-            font-size: 0.9em;
+        table td.desc h3, table td.q h3 {
+            color: #57B223;
+            font-size: 1.2em;
             font-weight: normal;
             margin: 0 0 0 0;
         }
 
         table .no {
-            font-size: 1.2em;
+            color: #FFFFFF;
+            font-size: 1.6em;
+            background: #57B223;
             width: 10%;
-            text-align: center;
-            border-left: 1px solid #e7e9eb;
         }
 
-        table .desc, table .item-summary  {
+        table .desc {
             text-align: left;
         }
 
         table .unit {
-            /* background: #DDDDDD; */
-            border: 1px solid #e7e9eb;
+            background: #DDDDDD;
         }
 
 
@@ -122,20 +137,21 @@ a<html lang="en">
 
         table td.unit,
         table td.qty,
-        table td.total {
+        table td.total
+        {
             font-size: 1.2em;
             text-align: center;
         }
 
-        table td.unit {
+        table td.unit{
             width: 35%;
         }
 
-        table td.desc {
+        table td.desc{
             width: 45%;
         }
 
-        table td.qty {
+        table td.qty{
             width: 5%;
         }
 
@@ -144,6 +160,7 @@ a<html lang="en">
             padding: 1px 8px 5px;
             font-size: 1.3em;
             width: 80px;
+            color: #fff;
             float: right;
             text-align: center;
             display: inline-block;
@@ -152,39 +169,40 @@ a<html lang="en">
         .status.unpaid {
             background-color: #E7505A;
         }
-
         .status.paid {
             background-color: #26C281;
         }
-
         .status.cancelled {
             background-color: #95A5A6;
         }
-
         .status.error {
             background-color: #F4D03F;
         }
 
         table tr.tax .desc {
             text-align: right;
+            color: #1BA39C;
         }
-
         table tr.discount .desc {
             text-align: right;
             color: #E43A45;
         }
-
         table tr.subtotal .desc {
             text-align: right;
+            color: #1d0707;
+        }
+        table tbody tr:last-child td {
+            /* border: none; */
+            align :left;
         }
 
-
         table tfoot td {
-            padding: 10px;
+            padding: 10px 10px 20px 10px;
+            background: #FFFFFF;
+            border-bottom: none;
             font-size: 1.2em;
             white-space: nowrap;
-            border-bottom: 1px solid #e7e9eb;
-            font-weight: 700;
+            /* border-bottom: 1px solid #AAAAAA; */
         }
 
         table tfoot tr:first-child td {
@@ -192,9 +210,13 @@ a<html lang="en">
         }
 
         table tfoot tr td:first-child {
-            /* border: none; */
+            border: none;
         }
 
+        #thanks {
+            font-size: 2em;
+            margin-bottom: 50px;
+        }
 
         #notices {
             padding-left: 6px;
@@ -211,65 +233,39 @@ a<html lang="en">
             height: 30px;
             position: absolute;
             bottom: 0;
-            border-top: 1px solid #e7e9eb;
+            border-top: 1px solid #AAAAAA;
             padding: 8px 0;
             text-align: center;
         }
 
-        table.billing td {
-            background-color: #fff;
+        .q {
+            background-color: rgb(189, 189, 189);
+            align:left;
         }
 
-        table td#invoiced_to {
+        table td div#invoiced_to {
             text-align: left;
-            padding-left: 0;
         }
 
-        #notes {
+        #notes{
             color: #767676;
             font-size: 11px;
         }
 
-        .item-summary {
-            font-size: 11px;
-            padding-left: 0;
+        .item-summary{
+            font-size: 12px
         }
 
-
-        .page_break {
-            page-break-before: always;
+        .mb-3{
+            margin-bottom: 1rem;
         }
 
-
-        table td.text-center {
-            text-align: center;
+        .logo {
+            text-align: right;
         }
-
-        .word-break {
-            word-wrap:break-word;
+        .logo img {
+            max-width: 150px !important;
         }
-
-        #invoice-table td {
-            border: 1px solid #e7e9eb;
-        }
-
-        .border-left-0 {
-            border-left: 0 !important;
-        }
-
-        .border-right-0 {
-            border-right: 0 !important;
-        }
-
-        .border-top-0 {
-            border-top: 0 !important;
-        }
-
-        .border-bottom-0 {
-            border-bottom: 0 !important;
-        }
-
-
     </style>
 </head>
 <body class="content-wrapper"> 
@@ -300,106 +296,96 @@ a<html lang="en">
                     </div>
                 </td>
             </tr>
+            
         </table>
     </header>
     <main> 
-        <div id="details">
-            <div class="row">
-                <div class="col-sm-12">
-                    <x-form id="save-data-form" method="PUT">
-                        <div class="add-client bg-white rounded"> 
-                            <div class="row p-20">
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                            for="usr">@lang('modules.inspeksi.lpd')</label>
-                                        <div class="d-flex">
-                                            @php
-                                                if ($pd->level_pd  == 'good' && $pd->level_pd  != '') 
-                                                {
-                                                    $pds = '  <i class="fa fa-circle mr-1 text-light-green f-10"></i> <span class="badge badge-success">' . __('app.good')  .'</span>';
-                                                }
-                                                elseif ($pd->level_pd  == 'moderate' && $pd->level_pd  != '') 
-                                                {
-                                                    $pds =  '<i class="fa fa-circle mr-1 text-yellow f-10"></i> <span class="badge badge-warning">' . __('app.moderate')  .'</span>'; 
-                                                }
-                                                elseif ($pd->level_pd  == 'bad' && $pd->level_pd  != '') 
-                                                {
-                                                    $pds =  ' <i class="fa fa-circle mr-1 text-red f-10"></i> <span class="badge badge-danger">' . __('app.bad')  .'</span>';
-                                                }
-                                                else{
-                                                    $pds =  '';
-                                                }  
-                                                echo $pds ;
-                                            @endphp
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                            for="usr">@lang('modules.inspeksi.cpd')</label> 
-                                            <span>
-                                                {{ $pd->citicality ?? '' }}
-                                            </span> 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="form-group my-3"> 
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                        for="usr">@lang('modules.inspeksi.keterangan')</label>
-                                        <span>
-                                            {{$pd->keterangan}}
-                                        </span> 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6"> 
-                                    <div class="form-group my-3">  
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                            for="usr">@lang('modules.inspeksi.cpd')</label> 
-                                        <span>
-                                            {{ $pd->citicality ?? '' }}
-                                        </span> 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6"> 
-                                    <div class="form-group my-3">  
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                            for="usr">@lang('modules.inspeksi.foto_p')</label> 
-                                        <span>
-                                            @php
-                                            $file = json_decode($pd->foto_pelaksanaan); 
-                                            @endphp   
-                                            <br>
-                                            {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $file->image_url }}"> --}}
-                                                <img src="{{ $file->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
-                                            {{-- </a>   --}}
-                                        </span> 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6"> 
-                                    <div class="form-group my-3">  
-                                        <label class="f-14 text-dark-grey mb-8 w-100"
-                                            for="usr">@lang('modules.inspeksi.foto_pe')</label> 
-                                        <span>
-                                            @php
-                                            $filep = json_decode($pd->foto_pengukuran); 
-                                            @endphp   
-                                            <br>
-                                            {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $filep->image_url }}"> --}}
-                                                <img src="{{ $filep->image_url }}" width="100" height="100" class="p-20 img-thumbnail">
-                                            {{-- </a> --}}
-                                        </span> 
-                                    </div>
-                                </div> 
-                            </div>  
-                        </div>
-                    </x-form>
+        <table align="left" cellpadding="0" cellspacing="0"  > 
+            <tr>
+                <td>
+                    <label class="f-14 text-dark-grey mb-8 w-100"
+                    for="usr">@lang('modules.inspeksi.lpd')</label>
+                    <div class="d-flex">
+                        @php
+                            if ($pd->level_pd  == 'good' && $pd->level_pd  != '') 
+                            {
+                                $pds = '  <i class="fa fa-circle mr-1 text-light-green f-10"></i> <span class="badge badge-success">' . __('app.good')  .'</span>';
+                            }
+                            elseif ($pd->level_pd  == 'moderate' && $pd->level_pd  != '') 
+                            {
+                                $pds =  '<i class="fa fa-circle mr-1 text-yellow f-10"></i> <span class="badge badge-warning">' . __('app.moderate')  .'</span>'; 
+                            }
+                            elseif ($pd->level_pd  == 'bad' && $pd->level_pd  != '') 
+                            {
+                                $pds =  ' <i class="fa fa-circle mr-1 text-red f-10"></i> <span class="badge badge-danger">' . __('app.bad')  .'</span>';
+                            }
+                            else{
+                                $pds =  '';
+                            }  
+                            echo $pds ;
+                        @endphp
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group my-3">
+                        <label class="f-14 text-dark-grey mb-8 w-100"
+                            for="usr">@lang('modules.inspeksi.cpd')</label> 
+                        <div class="d-flex">
 
-                </div>
-            </div>
-        </div> 
-         
+                            <span>
+                                {{ $pd->citicality ?? '' }}
+                            </span> 
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group my-3">
+                        <label class="f-14 text-dark-grey mb-8 w-100"
+                            for="usr">@lang('modules.inspeksi.cpd')</label> 
+                        <div class="d-flex">
+
+                            <span>
+                                {{ $pd->keterangan ?? '' }}
+                            </span> 
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group my-3">  
+                                <label class="f-14 text-dark-grey mb-8 w-100"
+                                    for="usr">@lang('modules.inspeksi.foto_p')</label> 
+                                <span>
+                                    @php
+                                    $file = json_decode($pd->foto_pelaksanaan); 
+                                    @endphp   
+                                    <br>
+                                    {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $file->image_url }}"> --}}
+                                        <img src="{{ $file->image_url }}" width="200" height="200" class="p-20 img-thumbnail">
+                                    {{-- </a>   --}}
+                                </span> 
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="form-group my-3">  
+                                <label class="f-14 text-dark-grey mb-8 w-100"
+                                    for="usr">@lang('modules.inspeksi.foto_pe')</label> 
+                                <span>
+                                    @php
+                                    $filep = json_decode($pd->foto_pengukuran); 
+                                    @endphp   
+                                    <br>
+                                    {{-- <a href="javascript:;" class="img-lightbox" data-image-url="{{ $filep->image_url }}"> --}}
+                                        <img src="{{ $filep->image_url }}" width="200" height="200" class="p-20 img-thumbnail">
+                                    {{-- </a> --}}
+                                </span> 
+                            </div>
+                        </td>
+                    </tr>
+                </td>
+            </tr>
+        </table> 
 
     </main>
 </body>

@@ -16,7 +16,7 @@ $addDepartmentPermission = user()->permission('add_department');
         <x-form id="save-data-form" method="PUT">
             <div class="add-client bg-white rounded"> 
                 <div class="row p-20">
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="form-group my-3">
                             <label class="f-14 text-dark-grey mb-12 w-100"
                                 for="usr">@lang('modules.inspeksi.lpd')</label>
@@ -42,7 +42,7 @@ $addDepartmentPermission = user()->permission('add_department');
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="form-group my-3">
                             <label class="f-14 text-dark-grey mb-12 w-100"
                                 for="usr">@lang('modules.inspeksi.cpd')</label> 
@@ -51,7 +51,7 @@ $addDepartmentPermission = user()->permission('add_department');
                                 </span> 
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="form-group my-3"> 
                             <label class="f-14 text-dark-grey mb-12 w-100"
                             for="usr">@lang('modules.inspeksi.keterangan')</label>
@@ -59,14 +59,7 @@ $addDepartmentPermission = user()->permission('add_department');
                                 {{$pd->keterangan}}
                             </span> 
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6"> 
-                            <label class="f-14 text-dark-grey mb-12 w-100"
-                                for="usr">@lang('modules.inspeksi.cpd')</label> 
-                                <span>
-                                    {{ $pd->citicality ?? '' }}
-                                </span> 
-                    </div>
+                    </div> 
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group my-3"> 
                             <label class="f-14 text-dark-grey mb-12 w-100"
