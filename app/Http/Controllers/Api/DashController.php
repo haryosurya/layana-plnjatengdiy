@@ -22,9 +22,14 @@ class DashController extends Controller
 
             try{
                 // Total MW didapat dari table dc_cubicle, dengan mengalikan colom VLL x Rata-rata(IA,IB,IC)
-                $vll = Dc_cubicle::sum('VLL'); 
-                $hum = ews_freq::where('freq_time','!=','')->orderBy('freq_time', 'DESC')->first(); 
-                $mw = Dc_cubicle::avg('IA','IB','IC');
+                $vll = Dc_cubicle::sum('VLL') ??''; 
+                $ews =ews_freq::where('freq_time','!=','')->orderBy('freq_time', 'DESC')->first();
+                if(!empty($ews)){
+                    $hum = $ews->freq; 
+                }else{
+                    $hum ="0";
+                }
+                $mw = Dc_cubicle::avg('IA','IB','IC') ?? '';
                 
                 $total_records= Dc_cubicle::count(); 
                 $total_records_all = Dc_cubicle::count(); 
@@ -44,31 +49,50 @@ class DashController extends Controller
                 $totalOutgoing =  Dc_cubicle::count(); 
                 $totalIncoming = Dc_incoming_feeder::count();
                 $totalGardu = Dc_gardu_induk::count();
-                $countSmoke = sm_material_panel::count();
+                $countSmokedcc = sm_material_panel::where('GARDU_INDUK_ID','!=','NULL')
+                ->count();
+                // $smokecount = sm_material_panel::
+                // join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','sm_material_panel.GARDU_INDUK_ID')
+                // ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')
+                // ->distinct()
+                // ->count('dc_apj.APJ_ID');
+                $countSmoke = sm_material_panel::where('GARDU_INDUK_ID','!=','NULL')
+                ->where(function ($query) {
+                    $query->where('SSD_1', '=', '1');
+                    $query->orWhere('SSD_2', '=', '1');
+                    $query->orWhere('SSD_3', '=', '1');
+                    $query->orWhere('SSD_4', '=', '1');
+                })
+                ->count();
+                $countNOSmoke = sm_material_panel::
+                where('GARDU_INDUK_ID','!=','NULL')
+                // ->where('SSD_1', '=', '0') 
+                ->where(function ($query) {
+                    $query
+                        ->where('SSD_1', '=', 0)
+                        ->orWhere('SSD_1', null) ;})
+                ->where(function ($query) {
+                    $query
+                        ->where('SSD_2', '=', 0)
+                        ->orWhere('SSD_2', null) ;})
+                ->where(function ($query) {
+                    $query
+                        ->where('SSD_3', '=', 0)
+                        ->orWhere('SSD_3', null) ;})
+                ->where(function ($query) {
+                    $query
+                        ->where('SSD_4', '=', 0)
+                        ->orWhere('SSD_4', null) ;  
+                }) 
+                ->count();
+//                 Counting data dari sm_material_panel where dardu_induk_id != null AND ssd_1=1 OR ssd_2=1 OR ssd_3=1 OR ssd_4=1.
+// Counting data dari sm_material_panel where dardu_induk_id != null AND ssd_1=0 AND ssd_2=0 AND ssd_3=0 AND ssd_4=0.
+                // AND ssd_1=1 OR ssd_2=1 OR ssd_3=1 OR ssd_4=1
                 // Diganti dengan jumlah penyulang yang posisinya close. Perhitungannya dari table dc_cubicle, colom SCB & SCB_INV. 
                 // Yang di hitung adalah SCB = 1 SCB_INV = 0 dan SCB = 0 SCB_INV = 1.
                 // Tampilannya menjadi “XXX Penyulang Operasi”
                 $bebanRealtime = Dc_cubicle::
-                where('OPERATION_TYPE', '=', '1')
-                    //     where(function($query){
-                    //         return $query
-                    //         ->where('SCB','=','1')
-                    //         ->where(function($query){
-                    //             return $query
-                    //             ->where('SCB_INV','=', null)
-                    //             ->orWhere('SCB_INV', '=', '0');
-                    //         }) 
-                    //         ;
-                    //     })
-                    //    ->orWhere(function($query){
-                    //         return $query 
-                    //         ->where(function($query){
-                    //             return $query
-                    //             ->where('SCB','=', null)
-                    //             ->orWhere('SCB', '=', '0');
-                    //         })
-                    //         ->where('SCB_INV', '=', '1');
-                    //     })
+                where('OPERATION_TYPE', '=', '1') 
                         ->groupBy('OUTGOING_ID')
                         ->count()
                     ; 
@@ -98,16 +122,12 @@ class DashController extends Controller
                 ->groupBy('APJ_ID')
                 // ->selectRaw('count() as total, APJ_ID')
                 ->count();
-                $smokecount = sm_material_panel::
-                join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','sm_material_panel.GARDU_INDUK_ID')
-                ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')
-                ->distinct()
-                ->count('dc_apj.APJ_ID');
+               
                 $result = array(
                     // 'vll'=>$vll,
                     // 'mw'=>$mw,
                     'beban_sistem'=>round($vll*$mw,0),
-                    'total_frekuensi'=>round($hum->freq??'',0),
+                    'total_frekuensi'=>$hum,
                     'pd_level'=> array(
                         'good'=>round($pd_level_good,2),
                         'moderate'=>round($pd_level_mod,2),
@@ -133,9 +153,9 @@ class DashController extends Controller
                        'up3_count' => $rekap_gangguan2 
                     ),
                     'smoke_detector'=>array(
-                        'smoke' => '',
-                        'non_smoke' => '',
-                        'DCC' => $smokecount,
+                        'smoke' => $countSmoke,
+                        'non_smoke' => $countNOSmoke,
+                        'DCC' => $countSmokedcc,
                     )
                 );
                 return response()->json(array(    

@@ -391,10 +391,18 @@ class DcCubicleController extends Controller
                 dc_cubicle.PD_LEVEL, 
                 dc_apj.APJ_ID as APJ_ID,
                 dc_apj.APJ_NAMA as APJ_NAMA,
-                ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
-                dc_cubicle.HUMIDITY,
+                dc_cubicle.HUMIDITY, 
+                dc_cubicle.IA as A, 
+                dc_cubicle.IB as B, 
+                dc_cubicle.IC as C,  
+                GREATEST( (dc_cubicle.IA), (dc_cubicle.IB), (dc_cubicle.IC) )  as TEMPERATURE,
                 dc_cubicle.PD_CRITICAL'
                 ) ;
+                // MAX(dc_cubicle.IA,dc_cubicle.IB,dc_cubicle.IC) AS temp,
+                // ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
+                // MAX (VALUE (dc_cubicle.IA),(dc_cubicle.IB),(dc_cubicle.IC))      
+                // (SELECT GREATEST(IA, IB, IC) FROM dc_cubicle) as t
+                // (SELECT MAX(v) FROM (dc_cubicle (IA),(IB),(IC) AS value(v))) AS TEMPERATURE
 
             if($request->APJ_NAMA){
                 $keyword = $request->get('APJ_NAMA');    
