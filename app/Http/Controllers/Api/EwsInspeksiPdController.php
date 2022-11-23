@@ -95,6 +95,7 @@ class EwsInspeksiPdController extends Controller
             /* update PD LEVEl dc cubicle */
             $cubicleLevel = Dc_cubicle::withoutGlobalScope('active')->findOrFail($id); 
             $cubicleLevel->PD_LEVEL = $request->level_pd; 
+            $cubicleLevel->PD_CRITICAL = $request->citicality; 
             $cubicleLevel->save();
      
             return response()->json(array(   

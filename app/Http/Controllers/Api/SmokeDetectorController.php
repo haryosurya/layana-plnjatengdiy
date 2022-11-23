@@ -49,11 +49,13 @@ class SmokeDetectorController extends Controller
 
     public function list_smoke(Request $request, $id){
         try{
-            $result = sm_material_panel::orderBy('MATERIAL_PANEL_ID','DESC')
+            $result = sm_material_panel::orderBy('sm_material_panel.MATERIAL_PANEL_ID','DESC')
+            ->groupBy('sm_material_panel.MATERIAL_PANEL_ID')
             ->join('dc_gardu_induk','sm_material_panel.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
             ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
             ->selectRaw( 
                 'sm_material_panel.MATERIAL_PANEL_ID,
+                sm_material_panel.GEDUNG as GEDUNG,
                 sm_material_panel.KETERANGAN as KETERANGAN,
                 sm_material_panel.TANGGAL_PEMASANGAN as TANGGAL_PEMASANGAN,
                 sm_material_panel.LAST_UPDATE as LAST_UPDATE,
