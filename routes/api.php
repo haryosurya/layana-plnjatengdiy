@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('rekapGangguanPMTscadaSingle/{id}', [RekapGangguanPmtController::class,'rekapGangguanPMTscadaSingle']);
     Route::get('rekapGangguanPD', [RekapGangguanPmtController::class,'rekapGangguanPD']);
     Route::get('rekapInspeksiAset', [RekapGangguanPmtController::class,'rekapInspeksiAset']);
+    Route::get('rekapInspeksiAsetSingle/{id}', [RekapGangguanPmtController::class,'rekapInspeksiAsetSingle']);
+    Route::get('rekapGangguanPDSingle/{id}', [RekapGangguanPmtController::class,'rekapGangguanPDSingle']);
     // Route::get('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);   
     // Route::get('CountingGangguan',[DashController::class, 'CountingGangguan','as' => 'CountingGangguan']); 
     /* REKAP GANGGUAN */

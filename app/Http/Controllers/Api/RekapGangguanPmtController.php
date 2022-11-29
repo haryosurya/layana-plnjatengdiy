@@ -252,6 +252,10 @@ class RekapGangguanPmtController extends Controller
             ews_inspeksi_pd:: 
             join('dc_cubicle','dc_cubicle.OUTGOING_ID','ews_inspeksi_pd.id_outgoing')
             ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_pd.id_gardu_induk')
+            ->select(
+                'ews_inspeksi_pd.*',
+                'dc_cubicle.*'
+            )
             ;  
             $m = now()->month;
             $y = now()->year; 
@@ -276,6 +280,31 @@ class RekapGangguanPmtController extends Controller
             ->orderBy('ews_inspeksi_pd.id_inspeksi_pd','ASC')
             ->groupBy('ews_inspeksi_pd.id_inspeksi_pd')
             ->paginate(5);
+            return response()->json(array(        
+                'status'=>true,    
+                'data' => $reslt , 
+                'status_code' => 200
+            ));
+        } 
+        catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    public function rekapGangguanPDSingle($id)
+    {
+        
+        try{ 
+            $rekap_gangguan = 
+            ews_inspeksi_pd:: 
+            join('dc_cubicle','dc_cubicle.OUTGOING_ID','ews_inspeksi_pd.id_outgoing')
+            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_pd.id_gardu_induk')
+            ;   
+            $reslt = $rekap_gangguan
+            ->where('ews_inspeksi_pd.id_inspeksi_pd',$id)
+            ->first();
             return response()->json(array(        
                 'status'=>true,    
                 'data' => $reslt , 
@@ -323,6 +352,32 @@ class RekapGangguanPmtController extends Controller
             ->orderBy('ews_inspeksi_aset.id_inspeksi_aset','ASC')
             ->groupBy('ews_inspeksi_aset.id_inspeksi_aset')
             ->paginate(5);
+            return response()->json(array(        
+                'status'=>true,    
+                'data' => $reslt , 
+                'status_code' => 200
+            ));
+        } 
+        catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    public function rekapInspeksiAsetSingle ($id)
+    {
+        
+        try{ 
+            $rekap_gangguan = 
+            ews_inspeksi_aset:: 
+            join('dc_cubicle','dc_cubicle.OUTGOING_ID','ews_inspeksi_aset.id_outgoing')
+            ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_aset.id_gardu_induk')
+            ;  
+             
+            $reslt = $rekap_gangguan
+            ->where('id_inspeksi_aset',$id)
+            ->first();
             return response()->json(array(        
                 'status'=>true,    
                 'data' => $reslt , 
