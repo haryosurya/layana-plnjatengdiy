@@ -61,7 +61,7 @@ class BebanRealtimeController extends Controller
             // ->max('IA_TIME') ;
             $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id) 
             ->orderBy('IA_TIME','DESC')
-            ->take('100') 
+            ->limit('24') 
             ->select('IA','IB','IC','IN','IA_TIME')  
             ;
             if ($request->get('date'))

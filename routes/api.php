@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /* REKAP GANGGUAN */
     Route::get('rekapGangguan', [RekapGangguanPmtController::class,'index']);
     Route::get('rekapGangguanPMTscada', [RekapGangguanPmtController::class,'rekapGangguanPMTscada']);
+    Route::get('rekapGangguanPMTscadaSingle/{id}', [RekapGangguanPmtController::class,'rekapGangguanPMTscadaSingle']);
     Route::get('rekapGangguanPD', [RekapGangguanPmtController::class,'rekapGangguanPD']);
     Route::get('rekapInspeksiAset', [RekapGangguanPmtController::class,'rekapInspeksiAset']);
     // Route::get('rekapInspeksiAset', [EwsInspeksiAsetController::class,'list']);   

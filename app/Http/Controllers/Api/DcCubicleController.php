@@ -395,6 +395,7 @@ class DcCubicleController extends Controller
                 dc_cubicle.IA as A, 
                 dc_cubicle.IB as B, 
                 dc_cubicle.IC as C,  
+                dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,  
                 GREATEST( (dc_cubicle.IA), (dc_cubicle.IB), (dc_cubicle.IC) )  as TEMPERATURE,
                 dc_cubicle.PD_CRITICAL'
                 ) ;
@@ -425,7 +426,9 @@ class DcCubicleController extends Controller
                 $result = $result->where('dc_cubicle.PD_CRITICAL', $keyword ) ;
             }
 
-            $result = $result->paginate(10); 
+            $result = $result
+            ->where('OPERATION_TYPE',1)
+            ->paginate(10); 
             return response()->json( [           
                 'status' => true,
                 'data' => $result, 

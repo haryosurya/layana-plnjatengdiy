@@ -92,8 +92,7 @@ class DashController extends Controller
                 // Yang di hitung adalah SCB = 1 SCB_INV = 0 dan SCB = 0 SCB_INV = 1.
                 // Tampilannya menjadi “XXX Penyulang Operasi”
                 $bebanRealtime = Dc_cubicle::
-                where('OPERATION_TYPE', '=', '1') 
-                        ->groupBy('OUTGOING_ID')
+                where('OPERATION_TYPE', '=', '1')  
                         ->count()
                     ; 
                 $bebanRealtimeGardu = Dc_cubicle:: 
@@ -109,7 +108,8 @@ class DashController extends Controller
                 })
                 ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
                 ->leftJoin('dc_gardu_induk','dc_incoming_feeder.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
-                ->groupBy('dc_incoming_feeder.GARDU_INDUK_ID')->count()
+                ->groupBy('dc_incoming_feeder.GARDU_INDUK_ID')
+                ->count()
                 ;
                 // Mengambil data gangguan tiap bulan. Count dari table dc-operasi_pmt_scada dengan tanggal gangguan tiap bulan.
                 // Tampilannya menjadi “XXX Gangguan pada bulan ini”
