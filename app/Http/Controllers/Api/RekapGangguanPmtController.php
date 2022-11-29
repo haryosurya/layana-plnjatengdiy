@@ -85,8 +85,7 @@ class RekapGangguanPmtController extends Controller
             }
             $rekap_gangguan = $rekap_gangguan->groupBy('dc_operasi_pmt_scada.OPERASI_PMT_ID')
             ->selectRaw(
-                '
-
+                ' 
                 dc_operasi_pmt_scada.OPERASI_PMT_ID,
                 concat( date_format( dc_operasi_pmt_scada.TGL_OPERASI_PMT, _utf8 "%d-%m-%Y %H:%i" ), ":00" ) AS TGL_OPERASI,
                 concat( date_format( dc_operasi_pmt_scada.TGL_NORMAL_PMT, _utf8 "%d-%m-%Y %H:%i" ), ":00" ) AS TGL_PENORMALAN_PMT,
@@ -252,10 +251,7 @@ class RekapGangguanPmtController extends Controller
             ews_inspeksi_pd:: 
             join('dc_cubicle','dc_cubicle.OUTGOING_ID','ews_inspeksi_pd.id_outgoing')
             ->join('dc_gardu_induk','dc_gardu_induk.GARDU_INDUK_ID','ews_inspeksi_pd.id_gardu_induk')
-            ->select(
-                'ews_inspeksi_pd.*',
-                'dc_cubicle.*'
-            )
+
             ;  
             $m = now()->month;
             $y = now()->year; 
