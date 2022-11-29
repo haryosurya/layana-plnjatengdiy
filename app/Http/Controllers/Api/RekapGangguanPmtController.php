@@ -230,7 +230,7 @@ class RekapGangguanPmtController extends Controller
                 '); 
                 /* 
                 */
-            $reslt = $rekap_gangguan->where('OPERASI_PMT_ID',$id); 
+            $reslt = $rekap_gangguan->where('OPERASI_PMT_ID',$id)->first(); 
             return response()->json(array(        
                 'status'=>true,     
                 'data' => $reslt ,  
