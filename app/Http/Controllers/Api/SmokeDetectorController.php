@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Dc_apj;
 use App\Models\Dc_gardu_induk;
+use App\Models\ews_ssd_gedung;
 use App\Models\sm_material_panel;
 use Illuminate\Http\Request;
 
@@ -49,62 +50,37 @@ class SmokeDetectorController extends Controller
 
     public function list_smoke(Request $request, $id){
         try{
-            $result = sm_material_panel::orderBy('sm_material_panel.MATERIAL_PANEL_ID','DESC')
-            ->groupBy('sm_material_panel.MATERIAL_PANEL_ID')
-            ->join('dc_gardu_induk','sm_material_panel.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
+            $result = ews_ssd_gedung::orderBy('ews_ssd_gedung.GEDUNG_ID','DESC')
+            ->groupBy('ews_ssd_gedung.GEDUNG_ID')
+            ->join('dc_gardu_induk','ews_ssd_gedung.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
             ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')  
             ->selectRaw( 
-                'sm_material_panel.MATERIAL_PANEL_ID,
-                sm_material_panel.GEDUNG as GEDUNG,
-                sm_material_panel.KETERANGAN as KETERANGAN,
-                sm_material_panel.TANGGAL_PEMASANGAN as TANGGAL_PEMASANGAN,
-                sm_material_panel.LAST_UPDATE as LAST_UPDATE,
+                'ews_ssd_gedung.GEDUNG_ID,
+                ews_ssd_gedung.GEDUNG_NOMOR as GEDUNG_NOMOR, 
                 dc_apj.APJ_ID,
                 dc_apj.APJ_NAMA,  
                 dc_apj.APJ_DCC as APJ_DCC,  
                 dc_gardu_induk.GARDU_INDUK_NAMA, 
                 dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID,
-                (CASE 
-
-                        WHEN sm_material_panel.SSD_1 IS NULL OR (
-                            sm_material_panel.SSD_1 = NULL OR
-                            sm_material_panel.SSD_1 = "0" )
-                        OR sm_material_panel.SSD_2 IS NULL OR (
-                            sm_material_panel.SSD_2 = NULL OR
-                            sm_material_panel.SSD_2 = "0" )
-                        OR sm_material_panel.SSD_3 IS NULL OR (
-                            sm_material_panel.SSD_3 = NULL OR
-                            sm_material_panel.SSD_3 = "0" )
-                        OR sm_material_panel.SSD_4 IS NULL OR (
-                            sm_material_panel.SSD_4 = NULL OR
-                            sm_material_panel.SSD_4 = "0" ) 
-                             
-                        THEN "NO SMOKE" 
-                        
-                        ELSE "SMOKE" 
-                        
+                (CASE  
+                        WHEN ews_ssd_gedung.SSD_1 IS NULL OR (
+                            ews_ssd_gedung.SSD_1 = NULL OR
+                            ews_ssd_gedung.SSD_1 = "0" )
+                        OR ews_ssd_gedung.SSD_2 IS NULL OR (
+                            ews_ssd_gedung.SSD_2 = NULL OR
+                            ews_ssd_gedung.SSD_2 = "0" )
+                        OR ews_ssd_gedung.SSD_3 IS NULL OR (
+                            ews_ssd_gedung.SSD_3 = NULL OR
+                            ews_ssd_gedung.SSD_3 = "0" )
+                        OR ews_ssd_gedung.SSD_4 IS NULL OR (
+                            ews_ssd_gedung.SSD_4 = NULL OR
+                            ews_ssd_gedung.SSD_4 = "0" )  
+                        THEN "NO SMOKE"  
+                        ELSE "SMOKE"  
                         END) AS STATUS
                         '
                 ) ; 
-                        
-
-            $result = $result->where('KETERANGAN', '!=', "" ) ;
-
-            if ($request->get('KETERANGAN'))
-            {
-                $keyword = $request->get('KETERANGAN');    
-                $result = $result->orWhere('KETERANGAN', $keyword ) ;
-            }  
-            if ($request->get('TANGGAL_PEMASANGAN'))
-            {
-                $keyword = $request->get('TANGGAL_PEMASANGAN');    
-                $result = $result->where('TANGGAL_PEMASANGAN', date('Y-m-d', strtotime( $request->get('TANGGAL_PEMASANGAN')  )) ) ;
-            } 
-            if ($request->get('LAST_UPDATE'))
-            {
-                $keyword = $request->get('LAST_UPDATE');    
-                $result = $result->where('LAST_UPDATE', date('Y-m-d', strtotime( $request->get('LAST_UPDATE')  ))  ) ;
-            } 
+                  
             if ($request->get('APJ_DCC'))
             {
                 $keyword = $request->get('APJ_DCC');    
@@ -121,7 +97,7 @@ class SmokeDetectorController extends Controller
                 $result = $result->HAVING('STATUS', $keyword ) ;
             } 
 
-                $result = $result->paginate(12); 
+            $result = $result->paginate(12); 
 
                 
             return response()->json( [           
@@ -140,18 +116,9 @@ class SmokeDetectorController extends Controller
     public function detail_smoke($id){
         try{ 
             $result = [];
-            $result = sm_material_panel::where('MATERIAL_PANEL_ID',$id)
-            ->join('dc_gardu_induk','sm_material_panel.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
-            ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')->first(); 
-            // ->selectRaw( 
-            //     'dc_apj.APJ_ID,
-            //     dc_apj.APJ_NAMA,  
-            //     dc_apj.APJ_DCC,  
-            //     dc_gardu_induk.GARDU_INDUK_NAMA,  
-            //     dc_gardu_induk.GARDU_INDUK_ID'
-            // ) 
-            // ->select('sm_material_panel.*')  
-            // ;  
+            $result = ews_ssd_gedung::where('GEDUNG_ID',$id)
+            ->join('dc_gardu_induk','ews_ssd_gedung.GARDU_INDUK_ID','dc_gardu_induk.GARDU_INDUK_ID')  
+            ->leftJoin('dc_apj','dc_apj.APJ_ID','dc_gardu_induk.APJ_ID')->first();  
  
                 if(
                  $result['SSD_1'] == '' | $result['SSD_1'] == null |$result['SSD_1'] == "null"|$result['SSD_1'] == "0"|
@@ -163,18 +130,10 @@ class SmokeDetectorController extends Controller
                     $s = "smoke"; 
                 }
                $res = array(
-                "MATERIAL_PANEL_ID" => $result->MATERIAL_PANEL_ID,
+                "GEDUNG_ID" => $result->GEDUNG_ID,
                 "SMOKE_LABEL" => $s,
                 "GARDU_INDUK_ID" => $result->GARDU_INDUK_ID,
-                "GEDUNG" => $result->GEDUNG,
-                "MATERIAL_ID" => $result->MATERIAL_ID,
-                "QTY" => $result->QTY,
-                "MATERIAL_SN" => $result->MATERIAL_SN,
-                "MATERIAL_IP_ADDRESS" => $result->MATERIAL_IP_ADDRESS,
-                "TANGGAL_PEMASANGAN" => $result->TANGGAL_PEMASANGAN,
-                "KETERANGAN" => $result->KETERANGAN,
-                "USER_UPDATE" => $result->USER_UPDATE,
-                "LAST_UPDATE" => $result->LAST_UPDATE,
+                "GEDUNG" => $result->GEDUNG,  
                 "SSD_1" => $result->SSD_1,
                 "SSD_1_TIME" => $result->SSD_1_TIME,
                 "SSD_2" => $result->SSD_2,

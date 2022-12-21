@@ -377,7 +377,7 @@ class DcCubicleController extends Controller
     
     public function dccSinglePMt($id, Request $request){
         if (auth('sanctum')->check()){  
-            $result = Dc_cubicle::where('dc_cubicle.INCOMING_ID',$id)
+            $result = Dc_cubicle::where('dc_gardu_induk.GARDU_INDUK_ID',$id)
             ->orderBy('dc_cubicle.OUTGOING_ID','ASC') 
             ->join('dc_apj','dc_apj.APJ_ID','dc_cubicle.APJ_ID') 
             ->join('dc_incoming_feeder','dc_incoming_feeder.INCOMING_ID','dc_cubicle.INCOMING_ID') 
