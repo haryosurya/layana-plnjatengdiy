@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Dc_cubicle;
 use App\Models\ews_ssd_gedung;
+use App\Models\User;
 use Google\Service\FirebaseCloudMessaging\Notification;
 use Illuminate\Console\Command;
 
@@ -13,14 +15,14 @@ class SmokeDetector extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'command:noti';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'notification pln';
 
     /**
      * Create a new command instance.
@@ -40,6 +42,8 @@ class SmokeDetector extends Command
     public function handle()
     {
         // return 0;
+        $tokens = User::get()->select('fcm_token');
+
         $smokeDetect =  
             ews_ssd_gedung::orderBy('ews_ssd_gedung.GEDUNG_ID','DESC')
             ->groupBy('ews_ssd_gedung.GEDUNG_ID')
@@ -51,79 +55,90 @@ class SmokeDetector extends Command
             ->orWhere('ews_ssd_gedung.SSD_4','=','1') 
             ->selectRaw( 
                 'ews_ssd_gedung.GEDUNG_ID,
-                ews_ssd_gedung.GEDUNG_NOMOR as GEDUNG_NOMOR, 
+                ews_ssd_gedung.SSD_1 as SSD_1, 
+                ews_ssd_gedung.SSD_2 as SSD_2, 
+                ews_ssd_gedung.SSD_3 as SSD_3, 
+                ews_ssd_gedung.SSD_4 as SSD_4,  
+                ews_ssd_gedung.SSD_1 as SSD_1_TIME, 
+                ews_ssd_gedung.SSD_2 as SSD_2_TIME, 
+                ews_ssd_gedung.SSD_3 as SSD_3_TIME, 
+                ews_ssd_gedung.SSD_4 as SSD_4_TIME,  
                 dc_apj.APJ_ID,
                 dc_apj.APJ_NAMA,  
                 dc_apj.APJ_DCC as APJ_DCC,  
                 dc_gardu_induk.GARDU_INDUK_NAMA, 
-                dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID,
-                
-                (CASE  
-                        WHEN ews_ssd_gedung.SSD_1 IS NULL OR (
-                            ews_ssd_gedung.SSD_1 = NULL OR
-                            ews_ssd_gedung.SSD_1 = "0" )
-                        OR ews_ssd_gedung.SSD_2 IS NULL OR (
-                            ews_ssd_gedung.SSD_2 = NULL OR
-                            ews_ssd_gedung.SSD_2 = "0" )
-                        OR ews_ssd_gedung.SSD_3 IS NULL OR (
-                            ews_ssd_gedung.SSD_3 = NULL OR
-                            ews_ssd_gedung.SSD_3 = "0" )
-                        OR ews_ssd_gedung.SSD_4 IS NULL OR (
-                            ews_ssd_gedung.SSD_4 = NULL OR
-                            ews_ssd_gedung.SSD_4 = "0" )  
-                        THEN "NO SMOKE"  
-                        ELSE "SMOKE"  
-                        END) AS STATUS
-                        '
+                dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID'
                 ) 
-            ->get() ; 
-            
+            ->get() ;  
         if(!empty($smokeDetect)){
             foreach ($smokeDetect as $s) {
                 {
-
-                    $url = 'https://fcm.googleapis.com/fcm/send';
-                    $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
-                      
-                    $serverKey = 'server key goes here';
-              
-                    $data = [ 
-                        "notification" => [
-                            "title" => $s->GEDUNG_NOMOR,
-                            "body" => $request->GEDUNG_NOMOR,  
-                        ]
-                    ];
-                    $encodedData = json_encode($data);
-                
-                    $headers = [
-                        'Authorization:key=' . $serverKey,
-                        'Content-Type: application/json',
-                    ];
-                
-                    $ch = curl_init();
-                  
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                    // Disabling SSL Certificate support temporarly
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-                    // Execute post
-                    $result = curl_exec($ch);
-                    if ($result === FALSE) {
-                        die('Curl failed: ' . curl_error($ch));
-                    }        
-                    // Close connection
-                    curl_close($ch);
-                    // FCM response
-                    dd($result);   
-                // $body = 'Terdeteksi ASAP di GI '.$s->GARDU_INDUK_ID.' Gedung '.$s->GEDUNG_NOMOR.' pada [SSD_1_TIME/ SSD_2_TIME/ SSD_3_TIME/ SSD_3_TIME/]'
-                // Terdeteksi ASAP di GI [GARDU_INDUK_NAMA] Gedung [GEDUNG_NOMOR] pada [SSD_1_TIME/ SSD_2_TIME/ SSD_3_TIME/ SSD_3_TIME/]
+                    if ($s->SSD_1 == '1' ) {
+                        $t = $s->SSD_1_TIME;
+                    }
+                    elseif($s->SSD_2 == '1' ) {
+                        $t = $s->SSD_2_TIME;
+                    }
+                    elseif($s->SSD_3 == '1' ) {
+                        $t = $s->SSD_3_TIME;
+                    }
+                    else{
+                        $t = $s->SSD_4_TIME;
+                    }
+                    // User::get()->select('fcm_token');
+                    $title = "Smoke Detector";
+                    $msg = 'Terdeteksi ASAP di GI '.$s->GARDU_INDUK_ID.' Gedung '.$s->GEDUNG_NOMOR.' pada '.$t;
+                   
+                    push_notification_android($tokens,$title,$msg);    
                 }
             }
         }
+        $cub =  
+            Dc_cubicle::orderBy('OUTGOING_ID','DESC') 
+            ->where('TEMP_A','>=','LIMIT_UPPER_TIME')
+            ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
+            ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
+            ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
+            ->get() ;  
+        if(!empty($cub)){
+            foreach ($cub as $c) { 
+                {
+                    $titl = "Temperatur";
+                    if ($c->TEMP_A >= $c->LIMIT_UPPER_TIME ) {
+                        $time = $c->TEMP_A_TIME;
+                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa A mencapai '.$c->TEMP_A.'° C pada '.$c->TEMP_A_TIME;
+                        push_notification_android($tokens,$title,$msgs);    
+                    }
+                    if($c->TEMP_B >= $c->LIMIT_UPPER_TIME ) {
+                        $time = $c->TEMP_B_TIME;
+                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa B mencapai '.$c->TEMP_B.'° C pada '.$c->TEMP_B_TIME; 
+                        push_notification_android($tokens,$title,$msgs);    
+                    }
+                    if($c->TEMP_C >= $c->LIMIT_UPPER_TIME ) {
+                        $time = $c->TEMP_C_TIME;
+                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa C mencapai '.$c->TEMP_C.'° C pada '.$c->TEMP_C_TIME; 
+                        push_notification_android($tokens,$titl,$msgs);     
+                    }  
+                }
+            }
+        }
+
+        
+        $hum =  
+        Dc_cubicle::orderBy('OUTGOING_ID','DESC') 
+        ->where('HUMIDITY','>=','LIMIT_UPPER_HUMIDITY') 
+        ->get() ;  
+        if(!empty($hum)){
+            foreach ($hum as $h) { 
+                {
+                    $titles = "Humidity"; 
+                    $times = $h->HUMIDITY_TIME;
+                    $msgss = 'Kelembaban '.$c->CUBICLE_NAME.' mencapai '.$h->HUMIDITY.'% pada '.$times;
+                    push_notification_android($tokens,$titles,$msgss); 
+                }
+            }
+        }
+
+
     }
 }

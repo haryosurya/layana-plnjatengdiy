@@ -508,7 +508,7 @@ if (!function_exists('abort_403')) {
 
 if (!function_exists('push_notification_android')) {
 
-    function push_notification_android($tokens,$title,$msg,$customParam) {
+    function push_notification_android($tokens,$title,$msg) {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
         $messageArray = array();
