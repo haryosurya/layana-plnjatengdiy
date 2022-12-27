@@ -65,8 +65,10 @@ class AuthController extends ApiBaseController
                         'message' => 'Email & Password does not match with our record.',
                     ], 401);
                 }
-    
+                
                 $user = User::where('email', $request->email)->first();
+                $user->forceFill(['fcm_token' => $request->fcm_token])->save();
+                
                 // \Auth::logoutOtherDevices($request->password);
                 \Auth::user()->tokens()->delete();  
                 // Auth::user()->currentAccessToken()->delete();
