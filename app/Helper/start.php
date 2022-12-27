@@ -514,8 +514,7 @@ if (!function_exists('push_notification_android')) {
         $messageArray = array();
         $messageArray["notification"] = array (
             'title' => $title,
-            'message' => $msg,
-            'customParam' => $customParam,
+            'message' => $msg, 
         );
         $fields = array(
             'registration_ids' => $tokens,
