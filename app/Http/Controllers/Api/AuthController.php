@@ -67,7 +67,7 @@ class AuthController extends ApiBaseController
                 }
                 
                 $user = User::where('email', $request->email)->first();
-                $user->forceFill(['fcm_token' => $request->fcm_token])->save();
+                $user->update(['fcm_token' => $request->fcm_token]);
                 
                 // \Auth::logoutOtherDevices($request->password);
                 \Auth::user()->tokens()->delete();  
