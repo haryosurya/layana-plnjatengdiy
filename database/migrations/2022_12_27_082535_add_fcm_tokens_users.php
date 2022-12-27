@@ -15,7 +15,7 @@ class AddFcmTokensUsers extends Migration
     {
         //
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('fcm_token')->nullable()->after('id'); 
+            $table->string('fcm_token')->nullable()->after('id'); 
         });
     }
 
