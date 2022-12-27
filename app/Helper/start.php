@@ -505,6 +505,51 @@ if (!function_exists('abort_403')) {
 
 }
 
+
+if (!function_exists('push_notification_android')) {
+
+    function push_notification_android($tokens,$title,$msg,$customParam) {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $api_key = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
+        $messageArray = array();
+        $messageArray["notification"] = array (
+            'title' => $title,
+            'message' => $msg,
+            'customParam' => $customParam,
+        );
+        $fields = array(
+            'registration_ids' => $tokens,
+            'data' => $messageArray,
+        );
+        $headers = array(
+            'Authorization: key=' . $api_key, //GOOGLE_API_KEY
+            'Content-Type: application/json'
+        );
+        // Open connection
+        $ch = curl_init();
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            echo 'Android: Curl failed: ' . curl_error($ch);
+        }
+        // Close connection
+        curl_close($ch);
+        return $result;
+        }
+
+}
+
+
+
+
 if (!function_exists('sidebar_user_perms')) {
 
     // @codingStandardsIgnoreLine

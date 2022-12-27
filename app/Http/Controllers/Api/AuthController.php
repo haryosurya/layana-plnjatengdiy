@@ -45,7 +45,8 @@ class AuthController extends ApiBaseController
                 $validateUser = Validator::make($request->all(), 
                 [
                     'email' => 'required|email',
-                    'password' => 'required'
+                    'password' => 'required',
+                    'fcm_token' => 'required'
                 ]);
     
                 if($validateUser->fails()){
