@@ -34,6 +34,7 @@ use App\Http\Controllers\SocialAuthSettingController;
 use App\Http\Controllers\StorageSettingController;
 use App\Http\Controllers\ThemeSettingController;
 use App\Http\Controllers\TwoFASettingController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
  
 /*
@@ -200,44 +201,49 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     });
     Route::get('apis',function () { return view('apis'); });
 });
-Route::get('testapifirebase', function () { 
-    $url = 'https://fcm.googleapis.com/fcm/send';
-    $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
+// Route::get('testapifirebase', function () { 
+//     $url = 'https://fcm.googleapis.com/fcm/send';
+//     $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
       
-    $serverKey = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
+//     $serverKey = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
 
-    $data = [
-        "registration_ids" => $FcmToken,
-        "notification" => [
-            "title" => "test",
-            "body" => "test",  
-        ]
-    ];
-    $encodedData = json_encode($data);
+//     $data = [
+//         "registration_ids" => $FcmToken,
+//         "notification" => [
+//             "title" => "test",
+//             "body" => "test",  
+//         ]
+//     ];
+//     $encodedData = json_encode($data);
 
-    $headers = [
-        'Authorization:key=' . $serverKey,
-        'Content-Type: application/json',
-    ];
+//     $headers = [
+//         'Authorization:key=' . $serverKey,
+//         'Content-Type: application/json',
+//     ];
 
-    $ch = curl_init();
+//     $ch = curl_init();
   
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-    // Disabling SSL Certificate support temporarly
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-    // Execute post
-    $result = curl_exec($ch);
-    if ($result === FALSE) {
-        die('Curl failed: ' . curl_error($ch));
-    }        
-    // Close connection
-    curl_close($ch);
-    // FCM response
-    dd($result); 
-});
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//     curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+//     // Disabling SSL Certificate support temporarly
+//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+//     // Execute post
+//     $result = curl_exec($ch);
+//     if ($result === FALSE) {
+//         die('Curl failed: ' . curl_error($ch));
+//     }        
+//     // Close connection
+//     curl_close($ch);
+//     // FCM response
+//     dd($result); 
+// });
+// Route::get('usr', function () { 
+//     $result =  User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+
+//     dd($result); 
+// });
