@@ -34,6 +34,7 @@ use App\Http\Controllers\SocialAuthSettingController;
 use App\Http\Controllers\StorageSettingController;
 use App\Http\Controllers\ThemeSettingController;
 use App\Http\Controllers\TwoFASettingController;
+use App\Models\Dc_cubicle;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
  
@@ -242,8 +243,43 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 //     // FCM response
 //     dd($result); 
 // });
-// Route::get('usr', function () { 
-//     $result =  User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+Route::get('usr', function () { 
+    $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
 
-//     dd($result); 
-// });
+    $cub =  
+    Dc_cubicle::where('TEMP_A','>','LIMIT_UPPER_TIME')
+    ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
+    ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
+    ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
+    ->get();  
+    // dd($cub);
+if(!empty($cub)){
+    foreach ($cub as $c) { 
+        {
+            // dd($c);
+            $titl = "Temperatur";
+            if ($c['TEMP_A'] >= $c['LIMIT_UPPER_TIME'] ) {
+                $time = $c['TEMP_A_TIME'];
+                $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa A mencapai '.$c['TEMP_A'].'° C pada '.$time;
+                $send = push_notification_android($tokens,$titl,$msgs);  
+                // dd($send);  
+                // dd($msgs);
+            }
+            if($c->TEMP_B >= $c->LIMIT_UPPER_TIME ) {
+                $time = $c->TEMP_B_TIME;
+                $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa B mencapai '.$c->TEMP_B.'° C pada '.$c->TEMP_B_TIME; 
+                $send = push_notification_android($tokens,$titl,$msgs);    
+                // dd($msgs);
+                // dd(push_notification_android($tokens,$titl,$msgs));  
+            }
+            if($c->TEMP_C >= $c->LIMIT_UPPER_TIME ) {
+                $time = $c->TEMP_C_TIME;
+                $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa C mencapai '.$c->TEMP_C.'° C pada '.$c->TEMP_C_TIME; 
+                $send = push_notification_android($tokens,$titl,$msgs);     
+                // dd($msgs);
+                // dd(push_notification_android($tokens,$titl,$msgs));  
+            }  
+        }
+    }
+}
+});

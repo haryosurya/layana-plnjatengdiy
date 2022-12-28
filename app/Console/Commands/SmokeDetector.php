@@ -107,12 +107,12 @@ class SmokeDetector extends Command
                     if ($c->TEMP_A >= $c->LIMIT_UPPER_TIME ) {
                         $time = $c->TEMP_A_TIME;
                         $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa A mencapai '.$c->TEMP_A.'° C pada '.$c->TEMP_A_TIME;
-                        push_notification_android($tokens,$title,$msgs);    
+                        push_notification_android($tokens,$titl,$msgs);    
                     }
                     if($c->TEMP_B >= $c->LIMIT_UPPER_TIME ) {
                         $time = $c->TEMP_B_TIME;
                         $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa B mencapai '.$c->TEMP_B.'° C pada '.$c->TEMP_B_TIME; 
-                        push_notification_android($tokens,$title,$msgs);    
+                        push_notification_android($tokens,$titl,$msgs);    
                     }
                     if($c->TEMP_C >= $c->LIMIT_UPPER_TIME ) {
                         $time = $c->TEMP_C_TIME;

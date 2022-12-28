@@ -490,8 +490,7 @@ if (!function_exists('push_notification_android')) {
             "notification" => [
                 "title" => $title,
                 "body" => $msg,  
-            ]
-
+            ] 
         ];
         $url = 'https://fcm.googleapis.com/fcm/send';
         // $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
@@ -527,7 +526,9 @@ if (!function_exists('push_notification_android')) {
         $result = curl_exec($ch);
         if ($result === FALSE) {
             die('Curl failed: ' . curl_error($ch));
+            echo 'fail';
         }        
+        echo 'success';
         // Close connection
         curl_close($ch);
  
