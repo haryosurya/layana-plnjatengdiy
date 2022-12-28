@@ -55,6 +55,7 @@ class SmokeDetector extends Command
             ->orWhere('ews_ssd_gedung.SSD_4','=','1') 
             ->selectRaw( 
                 'ews_ssd_gedung.GEDUNG_ID,
+                ews_ssd_gedung.GEDUNG_NOMOR,
                 ews_ssd_gedung.SSD_1 as SSD_1, 
                 ews_ssd_gedung.SSD_2 as SSD_2, 
                 ews_ssd_gedung.SSD_3 as SSD_3, 
@@ -69,59 +70,65 @@ class SmokeDetector extends Command
                 dc_gardu_induk.GARDU_INDUK_NAMA, 
                 dc_gardu_induk.GARDU_INDUK_ID as GARDU_INDUK_ID'
                 ) 
-            ->get() ;  
+            ->get()->toArray() ;  
         if(!empty($smokeDetect)){
             foreach ($smokeDetect as $s) {
-                {
-                    if ($s->SSD_1 == '1' ) {
-                        $t = $s->SSD_1_TIME;
-                    }
-                    elseif($s->SSD_2 == '1' ) {
-                        $t = $s->SSD_2_TIME;
-                    }
-                    elseif($s->SSD_3 == '1' ) {
-                        $t = $s->SSD_3_TIME;
-                    }
-                    else{
-                        $t = $s->SSD_4_TIME;
-                    }
-                    // User::get()->select('fcm_token');
-                    $title = "Smoke Detector";
-                    $msg = 'Terdeteksi ASAP di GI '.$s->GARDU_INDUK_ID.' Gedung '.$s->GEDUNG_NOMOR.' pada '.$t;
-                   
-                    push_notification_android($tokens,$title,$msg);    
+                $title = "Smoke Detector"; 
+                if ($s['SSD_1'] == '1' ) { 
+                    $msg = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_1_TIME'];
+                    push_notification_android($tokens,$title,$msg);     
                 }
+                // sleep(2); 
+                if($s['SSD_2'] == '1' ) { 
+                    $msga = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_2_TIME'];
+                    push_notification_android($tokens,$title,$msga);    
+                }
+                if($s['SSD_3'] == '1' ) { 
+                    $msgz = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_3_TIME'];
+                    push_notification_android($tokens,$title,$msgz);    
+                }
+                if($s['SSD_4'] == '1' ){ 
+                    $msgsss = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_4_TIME'];
+                    // dd($msgsss);
+                    push_notification_android($tokens,$title,$msgsss);    
+                }  
             }
         }
+
+
+
         $cub =  
-            Dc_cubicle::orderBy('OUTGOING_ID','DESC') 
-            ->where('TEMP_A','>=','LIMIT_UPPER_TIME')
+            Dc_cubicle::where('TEMP_A','>','LIMIT_UPPER_TIME')
             ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
             ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
             ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
-            ->get() ;  
+            ->get();  
+            // dd($cub);
         if(!empty($cub)){
             foreach ($cub as $c) { 
                 {
+                    // dd($c);
                     $titl = "Temperatur";
-                    if ($c->TEMP_A >= $c->LIMIT_UPPER_TIME ) {
-                        $time = $c->TEMP_A_TIME;
-                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa A mencapai '.$c->TEMP_A.'° C pada '.$c->TEMP_A_TIME;
-                        push_notification_android($tokens,$titl,$msgs);    
+                    if ($c['TEMP_A'] >= $c['LIMIT_UPPER_TIME'] ) {
+                        $time = $c['TEMP_A_TIME'];
+                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa A mencapai '.$c['TEMP_A'].'° C pada '.$time;
+                        $send = push_notification_android($tokens,$titl,$msgs);   
                     }
-                    if($c->TEMP_B >= $c->LIMIT_UPPER_TIME ) {
-                        $time = $c->TEMP_B_TIME;
-                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa B mencapai '.$c->TEMP_B.'° C pada '.$c->TEMP_B_TIME; 
-                        push_notification_android($tokens,$titl,$msgs);    
+                    sleep(20);
+                    if($c['TEMP_B'] >= $c['LIMIT_UPPER_TIME'] ) {
+                        $time = $c['TEMP_B_TIME'];
+                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa B mencapai '.$c['TEMP_B'].'° C pada '.$c['TEMP_B_TIME']; 
+                        $send = push_notification_android($tokens,$titl,$msgs);     
                     }
-                    if($c->TEMP_C >= $c->LIMIT_UPPER_TIME ) {
-                        $time = $c->TEMP_C_TIME;
-                        $msgs = 'Suhu Kabel Power '.$c->CUBICLE_NAME.' Phasa C mencapai '.$c->TEMP_C.'° C pada '.$c->TEMP_C_TIME; 
-                        push_notification_android($tokens,$titl,$msgs);     
+                    if($c['TEMP_C'] >= $c['LIMIT_UPPER_TIME'] ) {
+                        $time = $c['TEMP_C_TIME'];
+                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa C mencapai '.$c['TEMP_C'].'° C pada '.$c['TEMP_C_TIME']; 
+                        $send = push_notification_android($tokens,$titl,$msgs);     
                     }  
                 }
             }
         }
+         
 
         
         $hum =  
@@ -132,8 +139,9 @@ class SmokeDetector extends Command
             foreach ($hum as $h) { 
                 {
                     $titles = "Humidity"; 
-                    $times = $h->HUMIDITY_TIME;
-                    $msgss = 'Kelembaban '.$c->CUBICLE_NAME.' mencapai '.$h->HUMIDITY.'% pada '.$times;
+                    $times = $h['HUMIDITY_TIME'];
+                    $msgss = 'Kelembaban '.$h['CUBICLE_NAME'].' mencapai '.$h['HUMIDITY'].'% pada '.$times;
+                    // echo($msgss);
                     push_notification_android($tokens,$titles,$msgss); 
                 }
             }
