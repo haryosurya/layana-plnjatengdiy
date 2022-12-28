@@ -176,7 +176,7 @@ return [
              *
              * Enable debugging of HTTP requests made directly from the SDK.
              */
-            'debug' => env('FIREBASE_ENABLE_DEBUG', false),
+            'debug' => env('FIREBASE_ENABLE_DEBUG', true),
         ],
     ],
 ];

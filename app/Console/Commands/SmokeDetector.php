@@ -42,7 +42,7 @@ class SmokeDetector extends Command
     public function handle()
     {
         // return 0;
-        $tokens = User::get()->select('fcm_token');
+        $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
 
         $smokeDetect =  
             ews_ssd_gedung::orderBy('ews_ssd_gedung.GEDUNG_ID','DESC')

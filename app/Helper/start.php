@@ -227,48 +227,7 @@ if (!function_exists('pusher_settings')) {
     }
 
 }
-
-// if (!function_exists('main_menu_settings')) {
-
-//     // @codingStandardsIgnoreLine
-//     function main_menu_settings()
-//     {
-//         if (!session()->has('main_menu_settings')) {
-//             session(['main_menu_settings' => \App\Models\MenuSetting::first()->main_menu]);
-//         }
-
-//         return session('main_menu_settings');
-//     }
-
-// }
-
-// if (!function_exists('sub_menu_settings')) {
-
-//     // @codingStandardsIgnoreLine
-//     function sub_menu_settings()
-//     {
-//         if (!session()->has('sub_menu_settings')) {
-//             session(['sub_menu_settings' => \App\Models\MenuSetting::first()->setting_menu]);
-//         }
-
-//         return session('sub_menu_settings');
-//     }
-
-// }
-
-// if (!function_exists('isSeedingData')) {
-
-//     /**
-//      * Check if app is seeding data
-//      * @return boolean
-//      */
-//     function isSeedingData()
-//     {
-//         // We set config(['app.seeding' => true]) at the beginning of each seeder. And check here
-//         return config('app.seeding');
-//     }
-
-// }
+ 
 
 if (!function_exists('isRunningInConsoleOrSeeding')) {
 
@@ -504,45 +463,75 @@ if (!function_exists('abort_403')) {
     }
 
 }
+if (!function_exists('fbase')) {
+
+    function fbase($token, $notification)
+    {
+        Http::acceptJson()->withToken(config('fcm.token'))->post(
+            'https://fcm.googleapis.com/fcm/send',
+            [
+                'to' => $token,
+                'notification' => $notification,
+            ]
+        );
+    }
+
+}
 
 
 if (!function_exists('push_notification_android')) {
 
     function push_notification_android($tokens,$title,$msg) {
         $url = 'https://fcm.googleapis.com/fcm/send';
-        $api_key = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
-        $messageArray = array();
-        $messageArray["notification"] = array (
-            'title' => $title,
-            'message' => $msg, 
-        );
-        $fields = array(
-            'registration_ids' => $tokens,
-            'data' => $messageArray,
-        );
-        $headers = array(
-            'Authorization: key=' . $api_key, //GOOGLE_API_KEY
-            'Content-Type: application/json'
-        );
-        // Open connection
+        // $api_key = 'AAAAZnHfQlw:APA91bHAmXA22bd9l3FosWDQEyRFyZgC2nSzOoUAUaB0Po0iHrJg0NHfk2E4k4d75mi4a5_lq72bR6e2ro3WLhGPnr3rynDJ6IoTTIUiDF8Wbk0bDhsRuu68k1bTGTQ3EfiFjIfHmi2f';
+ 
+        $data = [
+            "registration_ids" => $tokens,
+            "notification" => [
+                "title" => $title,
+                "body" => $msg,  
+            ]
+
+        ];
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        // $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
+          
+        $serverKey = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
+    
+        $data = [
+            "registration_ids" => $tokens,
+            "notification" => [
+                "title" => "test",
+                "body" => "test",  
+            ]
+        ];
+        $encodedData = json_encode($data);
+    
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+    
         $ch = curl_init();
-        // Set the url, number of POST vars, POST data
+      
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
         // Execute post
         $result = curl_exec($ch);
         if ($result === FALSE) {
-            echo 'Android: Curl failed: ' . curl_error($ch);
-        }
+            die('Curl failed: ' . curl_error($ch));
+        }        
         // Close connection
         curl_close($ch);
-        return $result;
-        }
+ 
+    }
 
 }
 

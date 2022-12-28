@@ -182,7 +182,8 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class, 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Rainwater\Active\ActiveServiceProvider::class,
-        Stevebauman\Location\LocationServiceProvider::class
+        Stevebauman\Location\LocationServiceProvider::class,
+        Kreait\Laravel\Firebase\ServiceProvider::class
     ],
 
     /*
