@@ -492,18 +492,18 @@ if (!function_exists('push_notification_android')) {
                 "body" => $msg,  
             ] 
         ];
-        $url = 'https://fcm.googleapis.com/fcm/send';
+        // $url = 'https://fcm.googleapis.com/fcm/send';
         // $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
           
         $serverKey = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
     
-        $data = [
-            "registration_ids" => $tokens,
-            "notification" => [
-                "title" => "test",
-                "body" => "test",  
-            ]
-        ];
+        // $data = [
+        //     "registration_ids" => $tokens,
+        //     "notification" => [
+        //         "title" => "test",
+        //         "body" => "test",  
+        //     ]
+        // ];
         $encodedData = json_encode($data);
     
         $headers = [
