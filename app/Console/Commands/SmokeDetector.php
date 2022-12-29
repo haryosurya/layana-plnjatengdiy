@@ -78,7 +78,8 @@ class SmokeDetector extends Command
                     $time_smoke= date('Y-m-d H:i',strtotime($s['SSD_1_TIME']));
                     $time_smoke= date('Y-m-d H:i',strtotime($time_smoke.' + 1 Minutes')); 
                     // if ($time_smoke == $date_now){
-                        $msg = "**Terdeteksi** ASAP di GI ".$s['GARDU_INDUK_ID']." Gedung ".$s['GEDUNG_NOMOR']." pada ".$s['SSD_1_TIME'];
+                        
+                        $msg = "<b>Terdeteksi</b> ASAP di GI ".$s['GARDU_INDUK_ID']." Gedung ".$s['GEDUNG_NOMOR']." pada ".$s['SSD_1_TIME'];
                         push_notification_android($tokens,$title,$msg);     
                     // }
                 }
