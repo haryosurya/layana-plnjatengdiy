@@ -181,114 +181,29 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 
     Route::post('mark-read', [NotificationController::class, 'markRead'])->name('mark_single_notification_read');
 
-    Route::get('routes', function () {
-        $routeCollection = Route::getRoutes();
+    // Route::get('routes', function () {
+    //     $routeCollection = Route::getRoutes();
     
-        echo "<table style='width:100%'>";
-        echo "<tr>";
-        echo "<td width='10%'><h4>HTTP Method</h4></td>";
-        echo "<td width='10%'><h4>Route</h4></td>";
-        echo "<td width='10%'><h4>Name</h4></td>";
-        echo "<td width='70%'><h4>Corresponding Action</h4></td>";
-        echo "</tr>";
-        foreach ($routeCollection as $value) {
-            echo "<tr>";
-            echo "<td>" . $value->methods()[0] . "</td>";
-            echo "<td>" . $value->uri() . "</td>";
-            echo "<td>" . $value->getName() . "</td>";
-            echo "<td>" . $value->getActionName() . "</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-    });
-    Route::get('apis',function () { return view('apis'); });
-});
-// Route::get('testapifirebase', function () { 
-//     $url = 'https://fcm.googleapis.com/fcm/send';
-//     $FcmToken = ["eLROqKFfQECn10nG7xplgm:APA91bH9OVHfhMNwmUut6PDMK55R5-nyAdFtBehcnO1NJ8iDtBG58SHUSiZH7faXPIyFwa6wSGALPKFNkfobDUsBWoXTjPk3iBTtSSZzKEZ0DPb9-T1fzW9nJFvErtJgIMLcZEOxdujH","cFFVbntNSC68dRwr9Zlxyn:APA91bE1BulTssiQY8uswIb5ui4VXzfP5Px83sFIMcG9-x5DU_aOOshVg8hj8gJ_GrTsFiaLaRCs0tO5Dl7K4wZ0661YiZcPukI3Ef2pnxsVh_mtivOGQtWYJaDKPUZcS-bl4GlXHVjG"];
-      
-//     $serverKey = 'AAAAZnHfQlw:APA91bGhJgRCUSWbLHi2_loTlVxf0iCTJcFYqHBGBapzBUrnh6-TitfPazajIvFveBeG0mt0Q9wNUZVNoFufm42xzwNlCs90JaZulT2ANbRBHypjLM9Jtrs6earOdGQ-95aAKfM8w7N6';
-
-//     $data = [
-//         "registration_ids" => $FcmToken,
-//         "notification" => [
-//             "title" => "test",
-//             "body" => "test",  
-//         ]
-//     ];
-//     $encodedData = json_encode($data);
-
-//     $headers = [
-//         'Authorization:key=' . $serverKey,
-//         'Content-Type: application/json',
-//     ];
-
-//     $ch = curl_init();
-  
-//     curl_setopt($ch, CURLOPT_URL, $url);
-//     curl_setopt($ch, CURLOPT_POST, true);
-//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-//     curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-//     // Disabling SSL Certificate support temporarly
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-//     // Execute post
-//     $result = curl_exec($ch);
-//     if ($result === FALSE) {
-//         die('Curl failed: ' . curl_error($ch));
-//     }        
-//     // Close connection
-//     curl_close($ch);
-//     // FCM response
-//     dd($result); 
-// });
-Route::get('usr', function () { 
-    $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
-    // $cub =  
-    //         Dc_cubicle::where('TEMP_A','>','LIMIT_UPPER_TIME')
-    //         ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
-    //         ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
-    //         ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
-    //         ->get();  
-    //         // dd($cub);
-    //     if(!empty($cub)){
-            
-    //         foreach ($cub as $c) { 
-    //             {
-    //                 // dd($c);
-    //                 $titl = "Temperatur";
-    //                 $date_now= date('Y-m-d H:i',strtotime(' + 1 Minutes'));
-    //                 if ($c['TEMP_A'] >= $c['LIMIT_UPPER_TIME'] ) {
-    //                     $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_A_TIME']));
-    //                     $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes')); 
-    //                     if ($time_temp == $date_now){
-    //                         $time = $c['TEMP_A_TIME'];
-    //                         $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa A mencapai '.$c['TEMP_A'].'° C pada '.$time;
-    //                         $send = push_notification_android($tokens,$titl,$msgs);   
-    //                     }
-    //                 } 
-    //                 if($c['TEMP_B'] >= $c['LIMIT_UPPER_TIME'] ) {
-    //                     $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_B_TIME']));
-    //                     $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes'));
-    //                     if ($time_temp == $date_now){
-    //                         $time = $c['TEMP_B_TIME']; 
-    //                         $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa B mencapai '.$c['TEMP_B'].'° C pada '.$c['TEMP_B_TIME']; 
-    //                         $send = push_notification_android($tokens,$titl,$msgs);     
-    //                     }
-    //                 }
-    //                 if($c['TEMP_C'] >= $c['LIMIT_UPPER_TIME'] ) {
-    //                     $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_C_TIME']));
-    //                     $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes'));
-    //                     if ($time_temp == $date_now){
-    //                         $time = $c['TEMP_C_TIME'];
-    //                         $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa C mencapai '.$c['TEMP_C'].'° C pada '.$c['TEMP_C_TIME']; 
-    //                         $send = push_notification_android($tokens,$titl,$msgs); 
-    //                     }    
-    //                 }  
-    //             }
-    //         }
+    //     echo "<table style='width:100%'>";
+    //     echo "<tr>";
+    //     echo "<td width='10%'><h4>HTTP Method</h4></td>";
+    //     echo "<td width='10%'><h4>Route</h4></td>";
+    //     echo "<td width='10%'><h4>Name</h4></td>";
+    //     echo "<td width='70%'><h4>Corresponding Action</h4></td>";
+    //     echo "</tr>";
+    //     foreach ($routeCollection as $value) {
+    //         echo "<tr>";
+    //         echo "<td>" . $value->methods()[0] . "</td>";
+    //         echo "<td>" . $value->uri() . "</td>";
+    //         echo "<td>" . $value->getName() . "</td>";
+    //         echo "<td>" . $value->getActionName() . "</td>";
+    //         echo "</tr>";
     //     }
+    //     echo "</table>";
+    // }); 
+}); 
+// Route::get('usr', function () { 
+//     $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+     
          
-});
+// });
