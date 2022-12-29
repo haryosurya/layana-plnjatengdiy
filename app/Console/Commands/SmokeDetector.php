@@ -43,7 +43,7 @@ class SmokeDetector extends Command
     {
         // return 0;
         $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
-
+        $date_now= date('Y-m-d H:i',strtotime(' + 1 Minutes')); 
         $smokeDetect =  
             ews_ssd_gedung::orderBy('ews_ssd_gedung.GEDUNG_ID','DESC')
             ->groupBy('ews_ssd_gedung.GEDUNG_ID')
@@ -75,22 +75,38 @@ class SmokeDetector extends Command
             foreach ($smokeDetect as $s) {
                 $title = "Smoke Detector"; 
                 if ($s['SSD_1'] == '1' ) { 
-                    $msg = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_1_TIME'];
-                    push_notification_android($tokens,$title,$msg);     
+                    $time_smoke= date('Y-m-d H:i',strtotime($s['SSD_1_TIME']));
+                    $time_smoke= date('Y-m-d H:i',strtotime($time_smoke.' + 1 Minutes')); 
+                    if ($time_smoke == $date_now){
+                        $msg = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_1_TIME'];
+                        push_notification_android($tokens,$title,$msg);     
+                    }
                 }
                 // sleep(2); 
                 if($s['SSD_2'] == '1' ) { 
-                    $msga = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_2_TIME'];
-                    push_notification_android($tokens,$title,$msga);    
+                    $time_smoke= date('Y-m-d H:i',strtotime($s['SSD_2_TIME']));
+                    $time_smoke= date('Y-m-d H:i',strtotime($time_smoke.' + 1 Minutes')); 
+                    if ($time_smoke == $date_now){
+                        $msga = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_2_TIME'];
+                        push_notification_android($tokens,$title,$msga);    
+                    }
                 }
                 if($s['SSD_3'] == '1' ) { 
-                    $msgz = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_3_TIME'];
-                    push_notification_android($tokens,$title,$msgz);    
+                    $time_smoke= date('Y-m-d H:i',strtotime($s['SSD_3_TIME']));
+                    $time_smoke= date('Y-m-d H:i',strtotime($time_smoke.' + 1 Minutes')); 
+                    if ($time_smoke == $date_now){
+                        $msgz = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_3_TIME'];
+                        push_notification_android($tokens,$title,$msgz);    
+                    }
                 }
                 if($s['SSD_4'] == '1' ){ 
-                    $msgsss = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_4_TIME'];
-                    // dd($msgsss);
-                    push_notification_android($tokens,$title,$msgsss);    
+                    $time_smoke= date('Y-m-d H:i',strtotime($s['SSD_4_TIME']));
+                    $time_smoke= date('Y-m-d H:i',strtotime($time_smoke.' + 1 Minutes')); 
+                    if ($time_smoke == $date_now){
+                        $msgsss = 'Terdeteksi ASAP di GI '.$s['GARDU_INDUK_ID'].' Gedung '.$s['GEDUNG_NOMOR'].' pada '.$s['SSD_4_TIME'];
+                        // dd($msgsss);
+                        push_notification_android($tokens,$title,$msgsss);    
+                    }
                 }  
             }
         }
@@ -98,37 +114,48 @@ class SmokeDetector extends Command
 
 
         $cub =  
-            Dc_cubicle::where('TEMP_A','>','LIMIT_UPPER_TIME')
-            ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
-            ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
-            ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
-            ->get();  
-            // dd($cub);
+        Dc_cubicle::where('TEMP_A','>','LIMIT_UPPER_TIME')
+        ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME')
+        ->orWhere('TEMP_C','>=','LIMIT_UPPER_TIME')  
+        ->orWhere('TEMP_B','>=','LIMIT_UPPER_TIME') 
+        ->get();  
+        // dd($cub);
         if(!empty($cub)){
+            
             foreach ($cub as $c) { 
                 {
                     // dd($c);
                     $titl = "Temperatur";
                     if ($c['TEMP_A'] >= $c['LIMIT_UPPER_TIME'] ) {
-                        $time = $c['TEMP_A_TIME'];
-                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa A mencapai '.$c['TEMP_A'].'° C pada '.$time;
-                        $send = push_notification_android($tokens,$titl,$msgs);   
-                    }
-                    sleep(20);
+                        $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_A_TIME']));
+                        $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes')); 
+                        if ($time_temp == $date_now){
+                            $time = $c['TEMP_A_TIME'];
+                            $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa A mencapai '.$c['TEMP_A'].'° C pada '.$time;
+                            $send = push_notification_android($tokens,$titl,$msgs);   
+                        }
+                    } 
                     if($c['TEMP_B'] >= $c['LIMIT_UPPER_TIME'] ) {
-                        $time = $c['TEMP_B_TIME'];
-                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa B mencapai '.$c['TEMP_B'].'° C pada '.$c['TEMP_B_TIME']; 
-                        $send = push_notification_android($tokens,$titl,$msgs);     
+                        $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_B_TIME']));
+                        $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes'));
+                        if ($time_temp == $date_now){
+                            $time = $c['TEMP_B_TIME']; 
+                            $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa B mencapai '.$c['TEMP_B'].'° C pada '.$c['TEMP_B_TIME']; 
+                            $send = push_notification_android($tokens,$titl,$msgs);     
+                        }
                     }
                     if($c['TEMP_C'] >= $c['LIMIT_UPPER_TIME'] ) {
-                        $time = $c['TEMP_C_TIME'];
-                        $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa C mencapai '.$c['TEMP_C'].'° C pada '.$c['TEMP_C_TIME']; 
-                        $send = push_notification_android($tokens,$titl,$msgs);     
+                        $time_temp= date('Y-m-d H:i',strtotime($c['TEMP_C_TIME']));
+                        $time_temp= date('Y-m-d H:i',strtotime($time_temp.' + 1 Minutes'));
+                        if ($time_temp == $date_now){
+                            $time = $c['TEMP_C_TIME'];
+                            $msgs = 'Suhu Kabel Power '.$c['CUBICLE_NAME'].' Phasa C mencapai '.$c['TEMP_C'].'° C pada '.$c['TEMP_C_TIME']; 
+                            $send = push_notification_android($tokens,$titl,$msgs); 
+                        }    
                     }  
                 }
             }
         }
-         
 
         
         $hum =  
@@ -139,10 +166,14 @@ class SmokeDetector extends Command
             foreach ($hum as $h) { 
                 {
                     $titles = "Humidity"; 
-                    $times = $h['HUMIDITY_TIME'];
-                    $msgss = 'Kelembaban '.$h['CUBICLE_NAME'].' mencapai '.$h['HUMIDITY'].'% pada '.$times;
-                    // echo($msgss);
-                    push_notification_android($tokens,$titles,$msgss); 
+                    $time_humidity= date('Y-m-d H:i',strtotime($h['HUMIDITY_TIME']));
+                    $time_humidity= date('Y-m-d H:i',strtotime($time_humidity.' + 1 Minutes')); 
+                    if ($time_humidity == $date_now){
+                        $times = $h['HUMIDITY_TIME'];
+                        $msgss = 'Kelembaban '.$h['CUBICLE_NAME'].' mencapai '.$h['HUMIDITY'].'% pada '.$times;
+                        // echo($msgss);
+                        push_notification_android($tokens,$titles,$msgss); 
+                    }
                 }
             }
         }
