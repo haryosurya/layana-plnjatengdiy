@@ -487,10 +487,10 @@ if (!function_exists('push_notification_android')) {
  
         $data = [
             "registration_ids" => $tokens,
-            "notification" => [
-                "title" => $title,
-                "body" => $msg,  
-            ] ,
+            // "notification" => [
+            //     "title" => $title,
+            //     "body" => $msg,  
+            // ] ,
             "data"=>[
                 "title" => $title,
                 "body" => $msg, 
