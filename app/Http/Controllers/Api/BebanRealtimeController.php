@@ -68,18 +68,26 @@ class BebanRealtimeController extends Controller
             ;
             if ($request->get('date'))
             {
-                $keyword = $request->get('date');    
+                $keyword = $request->get('date');  
+                $date =   date('Y-m-d', strtotime( $keyword ));
                 $history_pmt = $history_pmt
-                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                ->whereDate('IA_TIME',$date )
+                ->get()
                 ;
             }
             else
             {
+                $date=date('Y-m-d', strtotime( Carbon::now()->format('Y-m-d') ));
                 $history_pmt = $history_pmt 
-                ->whereDate('IA_TIME', date('Y-m-d', strtotime( Carbon::now()->format('Y-m-d') ))) 
-
+                ->whereDate('IA_TIME', $date) 
+                ->get()
                 ;
             } 
+            $dd = Sm_meter_gi::get()->groupBy(function($date) {
+                        return Carbon::parse($date->IA_TIME)->format('h');
+            });
+
+
             $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
             ->orderBy('IA_TIME','DESC')
             ->take('100') 
@@ -111,7 +119,7 @@ class BebanRealtimeController extends Controller
                     'incoming_name' => $gi['INCOMING_NAME'],
                     'combine_gardu_dan_incoming' =>'GI '. $gi->dcGarduInduk['GARDU_INDUK_NAMA'].' Incoming '.$gi['INCOMING_NAME'],
                      
-                    'PMT' => $history_pmt->get(),
+                    'PMT' => $dd,
                     'PMT_COUNT' => $history_pmt->count(),
                     'PMT_PAGINATE' => $pmt_paginate->paginate(10),
                     // 'PMT_LAST_DATE' => $historylastdate,
