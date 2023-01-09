@@ -70,13 +70,13 @@ class BebanRealtimeController extends Controller
             {
                 $keyword = $request->get('date');    
                 $history_pmt = $history_pmt
-                ->whereDate('IA_TIME', date('Y-m-d H:i:s', strtotime( $keyword ))) 
+                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
                 ;
             }
             else
             {
-                $history_pmt = $history_pmt
-                ->whereDate('IA_TIME', Carbon::now()->format('Y-m-d'))
+                $history_pmt = $history_pmt 
+                ->whereDate('IA_TIME', date('Y-m-d', strtotime( Carbon::now()->format('Y-m-d') ))) 
 
                 ;
             } 
