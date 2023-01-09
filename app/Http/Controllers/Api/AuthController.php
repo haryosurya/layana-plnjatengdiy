@@ -46,7 +46,7 @@ class AuthController extends ApiBaseController
                 [
                     'email' => 'required|email',
                     'password' => 'required',
-                    'fcm_token' => 'required'
+                    // 'fcm_token' => 'required'
                 ]);
     
                 if($validateUser->fails()){
