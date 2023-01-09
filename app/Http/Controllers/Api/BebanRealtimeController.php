@@ -113,24 +113,24 @@ class BebanRealtimeController extends Controller
                 'IC' => $ic,
             ];
 
-            // $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
-            // ->orderBy('IA_TIME','DESC')
-            // ->take('100') 
-            // ->select('IA','IB','IC','IN','IA_TIME')  
-            // ;
-            // if ($request->get('date'))
-            // {
-            //     $keyword = $request->get('date');    
-            //     $pmt_paginate = $pmt_paginate
-            //     ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
-            //     ;
-            // }
-            // else
-            // {
-            //     $pmt_paginate = $pmt_paginate
-            //     -> latest('IA_TIME') 
-            //     ;
-            // } 
+            $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
+            ->orderBy('IA_TIME','DESC')
+            ->take('100') 
+            ->select('IA','IB','IC','IN','IA_TIME')  
+            ;
+            if ($request->get('date'))
+            {
+                $keyword = $request->get('date');    
+                $pmt_paginate = $pmt_paginate
+                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                ;
+            }
+            else
+            {
+                $pmt_paginate = $pmt_paginate
+                -> latest('IA_TIME') 
+                ;
+            } 
 
             return response()->json(array(    
                 'status'=>true,   
@@ -146,8 +146,8 @@ class BebanRealtimeController extends Controller
                      
                     'PMT' => $pmt_get,
                     'PMT_COUNT' => $history_pmt->count(),
-                    'PMT_PAGINATE' => $pmt_get,
-                    // 'PMT_PAGINATE' => $pmt_paginate->paginate(10),
+                    // 'PMT_PAGINATE' => $pmt_get,
+                    'PMT_PAGINATE' => $pmt_paginate->paginate(10),
                     // 'PMT_LAST_DATE' => $historylastdate,
                 ),
                 // 'data' => $result, 
