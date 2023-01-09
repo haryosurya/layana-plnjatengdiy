@@ -70,13 +70,14 @@ class BebanRealtimeController extends Controller
             {
                 $keyword = $request->get('date');    
                 $history_pmt = $history_pmt
-                ->whereDate('IA_TIME', date('Y-m-d', strtotime( $keyword ))) 
+                ->whereDate(date('Y-m-d', strtotime('sm_meter_gi.IA_TIME')), date('Y-m-d', strtotime( $keyword ))) 
                 ;
             }
             else
             {
                 $history_pmt = $history_pmt
-                -> latest('IA_TIME') 
+                ->whereDate(date('Y-m-d', strtotime('sm_meter_gi.IA_TIME')), Carbon::now()->format('Y-m-d'))
+
                 ;
             } 
             $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
