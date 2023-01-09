@@ -83,9 +83,11 @@ class BebanRealtimeController extends Controller
                 ->get()
                 ;
             } 
-            $dd = Sm_meter_gi::get()->groupBy(function($date) {
-                        return Carbon::parse($date->IA_TIME)->format('h');
-            });
+            $dd = DB::table('sm_meter_gi')
+            ->select(DB::raw('count(*) as count, HOUR(IA_TIME) as hour'))
+            ->whereDate('IA_TIME', '=', Carbon::now()->toDateString())
+            ->groupBy('hour')
+            ->get();
 
 
             $pmt_paginate = Sm_meter_gi::where('OUTGOING_ID',$id) 
