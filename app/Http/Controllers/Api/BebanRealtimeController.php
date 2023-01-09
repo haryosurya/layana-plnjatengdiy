@@ -62,7 +62,7 @@ class BebanRealtimeController extends Controller
             $history_pmt = Sm_meter_gi::where('OUTGOING_ID',$id) 
             // ->orderBy('IA_TIME','DESC')
             // ORDER BY HOUR(date_time), MINUTE(date_time), date_time
-            ->orderBy(DB::raw('HOUR(sm_meter_gi.IA_TIME)'))
+            ->orderBy(DB::raw('HOUR(IA_TIME)'))
             ->limit('24') 
             ->select('IA','IB','IC','IN','IA_TIME')  
             ;
