@@ -85,7 +85,7 @@ class BebanRealtimeController extends Controller
             } 
             $dd = DB::table('sm_meter_gi')
             ->select(DB::raw('count(*) as count, HOUR(IA_TIME) as hour'))
-            ->whereDate('IA_TIME', '=', Carbon::now()->toDateString())
+            ->whereDate('IA_TIME', '=', $date)
             ->groupBy('hour')
             ->get();
 
