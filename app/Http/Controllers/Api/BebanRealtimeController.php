@@ -86,19 +86,22 @@ class BebanRealtimeController extends Controller
             $dd = DB::table('sm_meter_gi');
 
             $ia =$dd
-            ->select(DB::raw('count(*) as count,sm_meter_gi.*, HOUR(IA_TIME) as hour'))
+            ->select(DB::raw('sm_meter_gi.*, HOUR(IA_TIME) as hour'))
+            ->orderBy('IA_TIME')
             ->orderByDesc('IA')
             ->whereDate('IA_TIME', '=', $date)
             ->groupBy('hour')
             ->get();
             $ib =$dd
-            ->select(DB::raw('count(*) as count,sm_meter_gi.*, HOUR(IB_TIME) as hour'))
+            ->select(DB::raw('sm_meter_gi.*, HOUR(IB_TIME) as hour'))
+            ->orderBy('IB_TIME')
             ->orderByDesc('IB')
             ->whereDate('IB_TIME', '=', $date)
             ->groupBy('hour')
             ->get();
             $ic =$dd
-            ->select(DB::raw('count(*) as count,sm_meter_gi.*, HOUR(IC_TIME) as hour'))
+            ->select(DB::raw('sm_meter_gi.*, HOUR(IC_TIME) as hour'))
+            ->orderBy('IC_TIME')
             ->orderByDesc('IC')
             ->whereDate('IC_TIME', '=', $date)
             ->groupBy('hour')
