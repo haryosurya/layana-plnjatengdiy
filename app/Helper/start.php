@@ -477,6 +477,17 @@ if (!function_exists('fbase')) {
     }
 
 }
+if (!function_exists('convertObjectClass')) {
+    function convertObjectClass($array, $final_class) {
+        return unserialize(sprintf(
+            'O:%d:"%s"%s',
+            strlen($final_class),
+            $final_class,
+            strstr(serialize($array), ':')
+            ));
+        }
+
+}
 
 
 if (!function_exists('push_notification_android')) {

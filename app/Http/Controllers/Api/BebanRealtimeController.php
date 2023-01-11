@@ -17,6 +17,7 @@ class BebanRealtimeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
         //
@@ -118,6 +119,10 @@ class BebanRealtimeController extends Controller
             ->take('100') 
             ->select('IA','IB','IC','IN','IA_TIME')  
             ;
+
+            // $merge = convertObjectClass(array_merge((array) $ia, (array) $ib,(array)$ic), 'pmt')->get();
+            // $merge = (object) array_merge( (array) $ia, (array) $ib, (array)$ic);
+            $merge = array_merge(array_merge( $ia->toArray(), $ib->toArray()), $ic->toArray());
             if ($request->get('date'))
             {
                 $keyword = $request->get('date');    
@@ -147,8 +152,8 @@ class BebanRealtimeController extends Controller
                     'PMT' => $pmt_get,
                     'PMT_COUNT' => $history_pmt->count(),
                     // 'PMT_PAGINATE' => $pmt_get,
-                    'PMT_PAGINATE' => $pmt_paginate->paginate(10),
-                    // 'PMT_LAST_DATE' => $historylastdate,
+                    // 'PMT_PAGINATE' => $pmt_paginate->paginate(10),
+                    'PMT_LAST_DATE' => $merge,
                 ),
                 // 'data' => $result, 
                 'status_code' => 200
@@ -161,7 +166,7 @@ class BebanRealtimeController extends Controller
             ], 500);
         }
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
