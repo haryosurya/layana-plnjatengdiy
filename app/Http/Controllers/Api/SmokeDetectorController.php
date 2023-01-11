@@ -32,6 +32,11 @@ class SmokeDetectorController extends Controller
                 $keyword = $request->get('GARDU_INDUK_ID');    
                 $result = $result->where('GARDU_INDUK_ID', $keyword ) ;
             } 
+            if ($request->get('APJ_NAMA'))
+            {
+                $keyword = $request->get('APJ_NAMA');    
+                $result = $result->where('APJ_NAMA', $keyword ) ;
+            } 
 
             $result = $result->paginate(12); 
             return response()->json( [           
@@ -95,6 +100,11 @@ class SmokeDetectorController extends Controller
             {
                 $keyword = $request->get('STATUS');    
                 $result = $result->HAVING('STATUS', $keyword ) ;
+            } 
+            if ($request->get('APJ_NAMA'))
+            {
+                $keyword = $request->get('APJ_NAMA');    
+                $result = $result->where('APJ_NAMA', $keyword ) ;
             } 
 
             $result = $result->paginate(12); 
