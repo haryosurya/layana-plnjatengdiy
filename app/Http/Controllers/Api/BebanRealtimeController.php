@@ -152,8 +152,8 @@ class BebanRealtimeController extends Controller
                     'PMT' => $pmt_get,
                     'PMT_COUNT' => $history_pmt->count(),
                     // 'PMT_PAGINATE' => $pmt_get,
-                    // 'PMT_PAGINATE' => $pmt_paginate->paginate(10),
-                    'PMT_LAST_DATE' => $merge,
+                    'PMT_PAGINATE' => $pmt_paginate->paginate(10),
+                    'PMT_LAST_DATE2' => $merge,
                 ),
                 // 'data' => $result, 
                 'status_code' => 200
