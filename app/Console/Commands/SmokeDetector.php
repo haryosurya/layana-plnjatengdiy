@@ -179,6 +179,7 @@ class SmokeDetector extends Command
             }
         }
 
-
+        echo 'Cron kita sudah jalan!';
+        \Log::info('Cron kita sudah jalan!');
     }
 }
