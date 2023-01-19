@@ -301,9 +301,26 @@ class RekapGangguanPmtController extends Controller
             $reslt = $rekap_gangguan
             ->where('ews_inspeksi_pd.id_inspeksi_pd',$id)
             ->first();
+            $d = [
+
+                'id_outgoing' => $reslt->id_outgoing,
+                'id_user' => $reslt->id_user,
+                'id_gardu_induk'=>$reslt->id_gardu_induk,
+                'tgl_entry'=>$reslt->tgl_entry,
+                'citicality'=>$reslt->citicality, 
+                'level_pd'=>$reslt->level_pd, 
+                'keterangan' => $reslt->keterangan,
+                'id_update' => $reslt->id_update,
+                'last_update' => $reslt->last_update,                
+                'foto_pelaksanaan' => json_decode($reslt->foto_pelaksanaan),
+                'foto_pengukuran' => json_decode($reslt->foto_pengukuran),
+            ];
+            /* image */
+
+
             return response()->json(array(        
                 'status'=>true,    
-                'data' => $reslt , 
+                'data' => $d  , 
                 'status_code' => 200
             ));
         } 
