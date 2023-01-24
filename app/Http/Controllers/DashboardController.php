@@ -45,7 +45,8 @@ class DashboardController extends AccountBaseController
         }
 
         if (in_array('employee', user_roles())) { 
-            return view('dashboard.employee.index', $this->data);
+            // return view('dashboard.employee.index', $this->data);
+            return view('dashboard.admin', $this->data);
 
         }
  

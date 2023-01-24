@@ -32,7 +32,8 @@ trait EmployeeDashboard
      */
     public function employeeDashboard()
     { 
-        return view('dashboard.employee.index', $this->data);
+        // return view('dashboard.employee.index', $this->data);
+        return view('dashboard.admin', $this->data);
     }
  
   
