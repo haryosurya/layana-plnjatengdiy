@@ -45,6 +45,10 @@ class DashboardController extends AccountBaseController
         }
 
         if (in_array('employee', user_roles())) { 
+            if (request()->ajax()) {
+                $html = view($this->view, $this->data)->render();
+                return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+            }
             // return view('dashboard.employee.index', $this->data);
             return view('dashboard.admin', $this->data);
 
