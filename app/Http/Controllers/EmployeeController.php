@@ -81,7 +81,8 @@ class EmployeeController extends AccountBaseController
         $this->teams = Team::all();
  
         $this->designations = Designation::allDesignations();
-        $this->apj = Dc_apj::select('APJ_ID','APJ_NAMA')->get();
+        $this->apj = Dc_apj::select('APJ_ID','APJ_NAMA')->where('dc_apj.APJ_ID','!=','12')
+        ->where('dc_apj.APJ_ID','!=','13')->get();
         $this->gi = Dc_gardu_induk::select('GARDU_INDUK_ID','GARDU_INDUK_NAMA')->get();
         $this->lastEmployeeID = EmployeeDetails::max('id');
 
