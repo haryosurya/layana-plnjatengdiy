@@ -44,7 +44,7 @@ class Dc_apjAPIController extends Controller
              ->where('dc_apj.APJ_ID','!=','13')
              ->groupBy('dc_apj.APJ_DCC');
              
-             if(auth()->user()->user_other_role != 'admin' ){ 
+             if(auth()->user()->user_other_role != 'admin' || auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13'){ 
                 $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
              }
 
@@ -87,7 +87,7 @@ class Dc_apjAPIController extends Controller
             ->where('dc_apj.APJ_ID','!=','13')
             ->groupBy('dc_apj.APJ_ID');
             
-            if(auth()->user()->user_other_role != 'admin' ){ 
+            if(auth()->user()->user_other_role != 'admin' || auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13'){ 
                 $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
              }
 
