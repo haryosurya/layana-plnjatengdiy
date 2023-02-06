@@ -111,14 +111,15 @@ class Dc_apjAPIController extends Controller
             }else{
                 if(auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13' ){ 
                     $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
+                }else{
+                    $result = $result->paginate(10); 
+    
+                    return response()->json( [           
+                        'status' => true,
+                        'data' => $result, 
+                        'status_code' => 200
+                    ]);
                 }
-                $result = $result->paginate(10); 
-
-                return response()->json( [           
-                    'status' => true,
-                    'data' => $result, 
-                    'status_code' => 200
-                ]);
             }
 
             
