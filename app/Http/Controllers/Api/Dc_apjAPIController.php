@@ -100,15 +100,7 @@ class Dc_apjAPIController extends Controller
                 $result = $result->where('GARDU_INDUK_ID','LIKE', "%{$keyword}%") ;
             } 
 
-            if(auth()->user()->user_other_role == 'admin'){
-                $result = $result->paginate(10); 
-
-                return response()->json( [           
-                    'status' => true,
-                    'data' => $result, 
-                    'status_code' => 200
-                ]); 
-            }else{
+            if(auth()->user()->user_other_role == 'employee'){
                 if(auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13' ){ 
                     $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
                     $result = $result->paginate(10); 
@@ -119,14 +111,23 @@ class Dc_apjAPIController extends Controller
                         'status_code' => 200
                     ]);
                 }else{
-                    $result = $result->paginate(10); 
-    
+                    $result = $result->paginate(10);  
                     return response()->json( [           
                         'status' => true,
                         'data' => $result, 
                         'status_code' => 200
                     ]);
                 }
+            }
+            // elseif(auth()->user()->user_other_role == 'admin'){
+            // } 
+            else{
+                $result = $result->paginate(10);  
+                return response()->json( [           
+                    'status' => true,
+                    'data' => $result, 
+                    'status_code' => 200
+                ]); 
             }
 
             
