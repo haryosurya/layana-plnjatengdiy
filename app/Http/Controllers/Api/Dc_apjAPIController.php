@@ -87,13 +87,9 @@ class Dc_apjAPIController extends Controller
             ->where('dc_apj.APJ_ID','!=','13')
             ->groupBy('dc_apj.APJ_ID');
             
-            if(auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13' || auth()->user()->user_other_role != 'admin'){ 
-                $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
-            }
             // if(auth()->user()->user_other_role != 'admin'){ 
-            // $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
-            // }
-
+                // $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
+            // } 
             $keyword = $request->get('APJ_DCC');    
             $result = $result->where('APJ_DCC', 'LIKE', "%{$keyword}%" ) ; 
 
@@ -105,11 +101,24 @@ class Dc_apjAPIController extends Controller
             } 
 
             $result = $result->paginate(10); 
-            return response()->json( [           
-                'status' => true,
-                'data' => $result, 
-                'status_code' => 200
-            ]);
+            if(auth()->user()->user_other_role == 'admin'){
+                return response()->json( [           
+                    'status' => true,
+                    'data' => $result, 
+                    'status_code' => 200
+                ]); 
+            }else{
+                if(auth()->user()->employeeDetail->apj_id != '12' || auth()->user()->employeeDetail->apj_id != '13' ){ 
+                    $result =  $result->where( 'dc_apj.APJ_ID',auth()->user()->employeeDetail->apj_id);
+                }
+                return response()->json( [           
+                    'status' => true,
+                    'data' => $result, 
+                    'status_code' => 200
+                ]);
+            }
+
+            
         } 
         else{ 
             return response()->json(['status'=>false,'Unauthenticated.',200]);
