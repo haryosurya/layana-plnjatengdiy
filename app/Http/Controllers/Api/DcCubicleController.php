@@ -13,6 +13,7 @@ use App\Models\Ews_history_meter;
 use App\Models\ews_inspeksi_aset;
 use App\Models\ews_inspeksi_pd;
 use App\Models\Sm_meter_gi;
+use DB;
 use Froiden\RestAPI\ApiResponse;
 use Illuminate\Http\Request;
 
@@ -36,10 +37,14 @@ class DcCubicleController extends Controller
                 dc_cubicle.CUBICLE_NAME,
                 dc_cubicle.INCOMING_ID as INCOMING_ID, 
                 dc_cubicle.PD_LEVEL, 
-                ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
+                ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURED,
+                (CASE WHEN IA >= IB AND IA >= IC THEN IA
+                                WHEN IB >= IA AND IB >= IC THEN IB
+                                ELSE IC END) as TEMPERATURE,
                 dc_cubicle.HUMIDITY,
                 dc_cubicle.PD_CRITICAL'
                 ) ;
+                
             if ($request->get('CUBICLE_NAME')) 
             {
                 $keyword = $request->get('CUBICLE_NAME');    
@@ -395,10 +400,16 @@ class DcCubicleController extends Controller
                 dc_cubicle.IA as A, 
                 dc_cubicle.IB as B, 
                 dc_cubicle.IC as C,  
-                dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,  
-                GREATEST( (dc_cubicle.IA), (dc_cubicle.IB), (dc_cubicle.IC) )  as TEMPERATURE,
-                dc_cubicle.PD_CRITICAL'
-                ) ;
+                dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,   
+                (CASE WHEN dc_cubicle.TEMP_A >= dc_cubicle.TEMP_B AND dc_cubicle.TEMP_A >= dc_cubicle.TEMP_C THEN dc_cubicle.TEMP_A
+                WHEN dc_cubicle.TEMP_B >= dc_cubicle.TEMP_A AND dc_cubicle.TEMP_B >= dc_cubicle.TEMP_C THEN dc_cubicle.TEMP_B
+                ELSE dc_cubicle.TEMP_C END) as TEMPERATURE,
+                dc_cubicle.PD_CRITICAL', 
+                )
+                // ->select(DB::raw("(CASE WHEN IA >= IB AND IA >= IC THEN IA
+                // WHEN IB >= IA AND IB >= IC THEN IB
+                // ELSE IC END) as max_value"))
+                ;
                 // MAX(dc_cubicle.IA,dc_cubicle.IB,dc_cubicle.IC) AS temp,
                 // ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
                 // MAX (VALUE (dc_cubicle.IA),(dc_cubicle.IB),(dc_cubicle.IC))      
