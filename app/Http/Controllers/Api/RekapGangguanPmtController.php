@@ -72,6 +72,12 @@ class RekapGangguanPmtController extends Controller
                 $rekap_gangguan = $rekap_gangguan->where('dc_gardu_induk.GARDU_INDUK_ID', '=',$keyword) ; 
                  
             }  
+
+            if ($request->UP3 !== null && $request->UP3 != 'null' && $request->UP3 != '') { 
+                $keyword = $request->get('UP3'); 
+                $rekap_gangguan = $rekap_gangguan->where('dc_gardu_induk.APJ_ID', '=',$keyword) ; 
+                 
+            }  
             if ($request->get('startDate') && $request->get('endDate')   ) {
  
                 $rekap_gangguan = $rekap_gangguan  

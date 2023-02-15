@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /* DCC APJ */
     Route::get('dcApjs',[ Dc_apjAPIController::class,'index']);
     Route::get('dcUpjLists',[ Dc_apjAPIController::class,'upjList']);
+    Route::get('dcUpjLists2',[ Dc_apjAPIController::class,'upjList2']);
     /* DCC APJ */
     Route::get('dcCubicle', [DcCubicleController::class,'index']);
     Route::get('dccSinglePMt/{id}',[ DcCubicleController::class,'dccSinglePMt']);
