@@ -132,8 +132,8 @@
                                     </a>
                                 </div> 
                             </td>
-                            <td width="15%">@if(!is_null($inspeksi->tgl_entry)) {{ $inspeksi->tgl_entry->format($global->date_format) }} @else -- @endif</td>
-                            <td class="f-14" width="20%">
+                            {{-- <td width="15%">@if(!is_null($inspeksi->tgl_entry)) {{ $inspeksi->tgl_entry->format($global->date_format) }} @else -- @endif</td> --}}
+                            <td width="15%">@if(!is_null($inspeksi->tgl_entry)) {{ \Carbon\Carbon::parse($inspeksi->tgl_entry)->format($global->date_format) }} @else -- @endif</td><td class="f-14" width="20%">
                                 @php
                                     if ($inspeksi->level_pd == 'good') {
                                         $level_pd = 'green';
