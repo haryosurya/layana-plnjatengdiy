@@ -87,7 +87,7 @@
                                 @if ($activity->ip_address != '127.0.0.1')
                                     @php 
                                         $location =  objetToArray(\Location::get($activity->ip_address));  
-                                        $city = $location['cityName'];
+                                        $city = $location['cityName']??'';
                                         // $city = implode($location); 
                                     @endphp 
                                 @else
