@@ -400,8 +400,8 @@ class DcCubicleController extends Controller
                 dc_cubicle.IA as A, 
                 dc_cubicle.IB as B, 
                 dc_cubicle.IC as C,  
-                dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,   
-                GREATEST(COALESCE(TEMP_A, -999999), COALESCE(TEMP_B, -999999), COALESCE(TEMP_C, -999999)) AS TEMPERATURE,
+                dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,  
+                GREATEST(NULLIF(TEMP_A, -999999), NULLIF(TEMP_B, -999999), NULLIF(TEMP_C, -999999)) AS TEMPERATURE,
                 dc_cubicle.PD_CRITICAL', 
                 ) 
                 ;
