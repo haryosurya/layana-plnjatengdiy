@@ -169,10 +169,10 @@ class DcCubicleController extends Controller
                     'incoming_name' => $gi['INCOMING_NAME'],
                     'incoming_alias' => $gi['NAMA_ALIAS_INCOMING'],
                     'combine_gardu_dan_incoming' => $gi->dcGarduInduk['NAMA_ALIAS_GARDU_INDUK'].' '.$gi['NAMA_ALIAS_INCOMING'],
-                    'temperatur_a' =>$gi['TEMP_A'],
-                    'temperatur_b' =>$gi['TEMP_B'],
-                    'temperatur_c' =>$gi['TEMP_C'],
-                    'humidity' => $gi['HUMIDITY'],
+                    'temperatur_a' =>$result['TEMP_A'],
+                    'temperatur_b' =>$result['TEMP_B'],
+                    'temperatur_c' =>$result['TEMP_C'],
+                    'humidity' => $result['HUMIDITY'],
                     'history_pd' => $pd,
                     'history_pmt' => $pm,
                     'history_asset' => $pa,
@@ -401,15 +401,24 @@ class DcCubicleController extends Controller
                 dc_cubicle.IB as B, 
                 dc_cubicle.IC as C,  
                 dc_cubicle.OPERATION_TYPE as OPERATION_TYPE,   
-                (CASE WHEN dc_cubicle.TEMP_A >= dc_cubicle.TEMP_B AND dc_cubicle.TEMP_A >= dc_cubicle.TEMP_C THEN dc_cubicle.TEMP_A
-                WHEN dc_cubicle.TEMP_B >= dc_cubicle.TEMP_A AND dc_cubicle.TEMP_B >= dc_cubicle.TEMP_C THEN dc_cubicle.TEMP_B
-                ELSE dc_cubicle.TEMP_C END) as TEMPERATURE,
+                GREATEST(COALESCE(TEMP_A, -999999), COALESCE(TEMP_B, -999999), COALESCE(TEMP_C, -999999)) AS TEMPERATURE,
                 dc_cubicle.PD_CRITICAL', 
-                )
-                // ->select(DB::raw("(CASE WHEN IA >= IB AND IA >= IC THEN IA
-                // WHEN IB >= IA AND IB >= IC THEN IB
-                // ELSE IC END) as max_value"))
+                ) 
                 ;
+                // (CASE WHEN dc_cubicle.TEMP_A >= dc_cubicle.TEMP_B 
+                // AND 
+                // dc_cubicle.TEMP_A >= dc_cubicle.TEMP_C 
+                // THEN 
+                // dc_cubicle.TEMP_A
+                // WHEN 
+                // dc_cubicle.TEMP_B >= dc_cubicle.TEMP_A 
+                // AND 
+                // dc_cubicle.TEMP_B >= dc_cubicle.TEMP_C 
+                // THEN 
+                // dc_cubicle.TEMP_B
+                // ELSE 
+                // dc_cubicle.TEMP_C 
+                // END) as TEMPERATURE,
                 // MAX(dc_cubicle.IA,dc_cubicle.IB,dc_cubicle.IC) AS temp,
                 // ROUND((dc_cubicle.IA+dc_cubicle.IB+dc_cubicle.IC)/3,2) as TEMPERATURE,
                 // MAX (VALUE (dc_cubicle.IA),(dc_cubicle.IB),(dc_cubicle.IC))      
